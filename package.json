@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "node-gyp": "^5.0.3",
+    "speaker": "^0.4.2",
+    "wavefile": "^8.4.5"
+  }
+}
