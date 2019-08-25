@@ -1,10 +1,9 @@
-import React, {Component} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Provider} from 'react-redux';
 import configureStore from 'redux/store/configureStore';
-import cookies from 'browser-cookies'
 import {createBrowserHistory} from 'history';
-import { syncHistoryWithStore, routerReducer } from 'react-router-redux'
-import { Router, Route, Link } from 'react-router-dom'
+import { syncHistoryWithStore } from 'react-router-redux'
+import pcm from './common/pcm'
 
 import './App.css'
 import Oscillator from "./modules/oscillator/Oscillator"
@@ -13,25 +12,47 @@ export const history = createBrowserHistory();
 
 syncHistoryWithStore(history, store);
 
-// if (cookies.get('id')) {
-//   history.push('#/party')
-// }
+const sampleRate = 44100;
+const amplitude = 100;
 
+export const play = () => setTimeout(() => new pcm({channels: 1, rate: sampleRate, depth: 8}).toWav(getOneSecondWave()).play(), 0)
 
-class App extends Component {
-	render() {
-		return (
-      <div styleName="container">
-        <Provider store={store}>
-         <div styleName="modules">
-           <div styleName="module">
-             <Oscillator />
-           </div>
+const electricity = (x) => x
+const modulesFunctions = [electricity];
+const pushToModulesFunctions = (func) => modulesFunctions.push(func)
+
+function getOneSecondWave() {
+  let sound = [];
+  
+  for (let i = 0; i < sampleRate; i++) {
+    sound[i] = modulesFunctions.reduce((acc, func, index) => func(acc), i)
+  }
+
+  return sound;
+}
+
+const App = (props) => {
+  const [isOn, setIsOn] = useState(false);
+
+  useEffect(() => {
+    isOn && play()
+  }, [isOn])
+
+  return (
+    <div styleName="container">
+      <Provider store={store}>
+        <div styleName="modules">
+          <div styleName="play" onClick={() => {
+            setIsOn(true)
+            setTimeout(() => setIsOn(false, 1000))
+          }}>Play!</div>
+          <div styleName="module">
+            <Oscillator addFunction={pushToModulesFunctions} />
           </div>
-        </Provider>
-      </div>
-		);
-	}
+        </div>
+      </Provider>
+    </div>
+  );
 }
 
 

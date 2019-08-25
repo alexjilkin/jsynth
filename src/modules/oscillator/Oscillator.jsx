@@ -1,12 +1,15 @@
-import React, {useState} from 'react';
-import "./logic"
+import React, {useState, useEffect} from 'react';
+import {play, getSineWave} from "./logic"
 
 import styles from './Oscillator.css'
 require('./Oscillator.css')
-console.log(styles)
-const Oscillator = (props) => {
-    const [isOn, setOn] = useState(false);
 
+const Oscillator = ({addFunction}) => {
+    const [isOn, setOn] = useState(false);
+    
+    useEffect(() => {
+        isOn && addFunction(getSineWave)
+    }, [isOn]);
     return(
         <div className={styles.container}>
             <div>An oscialltor.</div>

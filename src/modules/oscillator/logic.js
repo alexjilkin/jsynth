@@ -7,7 +7,7 @@ const sampleRate = 44100;
 const amplitude = 100;
 let currentNote = 0;
 const wave = getOneSecondWave2(frequencySong[0])
-setTimeout(() => new pcm({channels: 1, rate: sampleRate, depth: 8}).toWav(wave).play(), 0)
+const frequency = 440;
 
 function getOneSecondWave2(frequency) {
   let sound = [];
@@ -19,10 +19,12 @@ function getOneSecondWave2(frequency) {
   return sound;
 }
 
-function getSquareWave(frequency, x) {
+export const play = () => setTimeout(() => new pcm({channels: 1, rate: sampleRate, depth: 8}).toWav(wave).play(), 0)
+
+export function getSquareWave(x) {
   return Math.sign(Math.sin(Math.PI * 2 * (frequency) * x / sampleRate)) * amplitude;
 }
 
-function getSineWave(frequency, x) {
+export function getSineWave(x) {
   return  Math.sin(Math.PI * 2 * (frequency) * x / sampleRate) * amplitude
 }
