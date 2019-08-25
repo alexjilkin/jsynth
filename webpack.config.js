@@ -1,29 +1,44 @@
 const webpack = require('webpack');
 
+const path = require('path');
+const context = path.resolve(__dirname, 'src');
+
 module.exports = {
   entry: [
     'react-hot-loader/patch',
-    './src/index.js'
+    './index.js'
   ],
+  context,
   module: {
     rules: [
       {
         test: /\.(js|jsx)$/,
+        include: path.resolve(__dirname, './src'),
         exclude: /node_modules/,
-        use: ['babel-loader']
+        use: [{
+          loader: 'babel-loader',
+          options: {
+            "presets": [
+              "@babel/preset-env",
+              "@babel/preset-react"
+            ],
+            "plugins": [
+              ["react-css-modules", {
+                context,
+                "exclude": "node_modules",
+                generateScopedName: '[path]___[name]__[local]___[hash:base64:5]',
+                "webpackHotModuleReloading": true
+              }],
+            ],
+          }
+        }]
       }, 
       {
         test: /\.css$/,
+        include: path.resolve(__dirname, './src'),
         use: [
-          { loader: 'style-loader' },
-          {
-            loader: 'css-loader',
-            options: {
-              modules: true,
-              localIdentName: '[path]___[name]__[local]___[hash:base64:5]',
-            },
-          },
-          { loader: 'postcss-loader' }
+          'style-loader',
+          'css-loader?importLoader=1&modules&localIdentName=[path]___[name]__[local]___[hash:base64:5]'
         ]
       }
 
