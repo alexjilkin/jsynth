@@ -13,19 +13,25 @@ export const history = createBrowserHistory();
 syncHistoryWithStore(history, store);
 
 const sampleRate = 44100;
-const amplitude = 100;
 
-export const play = () => setTimeout(() => new pcm({channels: 1, rate: sampleRate, depth: 8}).toWav(getOneSecondWave()).play(), 0)
+export const play = () => {
+  setTimeout(play, 1000)
+  new pcm({channels: 1, rate: sampleRate, depth: 16}).toWav(get1sWave()).play()
+  
+}
 
-const electricity = (x) => x
-const modulesFunctions = [electricity];
+const electricity = (x) => x;
+
+let modulesFunctions = [];
 const pushToModulesFunctions = (func) => modulesFunctions.push(func)
+const removeFromModulesFunctions = (name) => 
+  modulesFunctions = modulesFunctions.filter((moduleFunction => moduleFunction.name !== name))
 
-function getOneSecondWave() {
+function get1sWave() {
   let sound = [];
   
-  for (let i = 0; i < sampleRate; i++) {
-    sound[i] = modulesFunctions.reduce((acc, func, index) => func(acc), i)
+  for (let i = 0; i < sampleRate * 2; i++) {
+    sound[i] = modulesFunctions.length ? modulesFunctions.reduce((acc, moduleFunction, index) => moduleFunction.func(acc), i) : 0
   }
 
   return sound;
@@ -33,7 +39,7 @@ function getOneSecondWave() {
 
 const App = (props) => {
   const [isOn, setIsOn] = useState(false);
-
+ 
   useEffect(() => {
     isOn && play()
   }, [isOn])
@@ -47,7 +53,7 @@ const App = (props) => {
             setTimeout(() => setIsOn(false, 1000))
           }}>Play!</div>
           <div styleName="module">
-            <Oscillator addFunction={pushToModulesFunctions} />
+            <Oscillator sampleRate={sampleRate} addFunction={(func) => pushToModulesFunctions({name: 'oscillator', func})} removeFunction={() => removeFromModulesFunctions('oscillator')}/>
           </div>
         </div>
       </Provider>

@@ -7898,7 +7898,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -8213,6 +8213,13 @@ react-select@^2.0.0-beta.3:
     raf "^3.4.0"
     react-input-autosize "^2.2.1"
     react-transition-group "^2.2.1"
+
+react-slider-simple@^4.0.5:
+  version "4.0.5"
+  resolved "https://registry.yarnpkg.com/react-slider-simple/-/react-slider-simple-4.0.5.tgz#16537e9d8d185e615301949545092539418888e1"
+  integrity sha512-JFPKywp0WM55JeD7dWuoCYQ5iUQvIPAC1ZCr7M8UAZsBgog7YLJ/TET2oNJoYGgnMsHna8q0okgiQvCrrhTsRA==
+  dependencies:
+    prop-types "^15.6.1"
 
 react-test-renderer@^16.3.2:
   version "16.9.0"

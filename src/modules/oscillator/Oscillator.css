@@ -1,8 +1,10 @@
 .container {
     width: 100px;
     height: 200px;
+    padding: 20px;
     background-color: grey;
-
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
 }
 
 .on {
