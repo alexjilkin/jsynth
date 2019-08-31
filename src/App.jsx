@@ -1,16 +1,11 @@
-import React, {useState, useEffect} from 'react';
-import {Provider} from 'react-redux';
-import configureStore from 'redux/store/configureStore';
+import React, {useState, useEffect, useCallback} from 'react';
 import {createBrowserHistory} from 'history';
-import { syncHistoryWithStore } from 'react-router-redux'
 import pcm from './common/pcm'
 
 import './App.css'
 import Oscillator from "./modules/oscillator/Oscillator"
-const store = configureStore();
 export const history = createBrowserHistory();
 
-syncHistoryWithStore(history, store);
 
 const sampleRate = 44100;
 
@@ -31,7 +26,13 @@ function get1sWave() {
   let sound = [];
   
   for (let i = 0; i < sampleRate * 2; i++) {
-    sound[i] = modulesFunctions.length ? modulesFunctions.reduce((acc, moduleFunction, index) => moduleFunction.func(acc), i) : 0
+
+    sound[i] = 0;
+
+    modulesFunctions.length && modulesFunctions.forEach(({func}) => {
+      sound[i] = sound[i] + func(i)
+    });
+
   }
 
   return sound;
@@ -39,24 +40,29 @@ function get1sWave() {
 
 const App = (props) => {
   const [isOn, setIsOn] = useState(false);
- 
+  const [modules, setModules] = useState([]);
+
   useEffect(() => {
     isOn && play()
   }, [isOn])
 
+  const addOscillator = useCallback(() => {
+    setModules([...modules, Oscillator]);
+  })
   return (
     <div styleName="container">
-      <Provider store={store}>
-        <div styleName="modules">
-          <div styleName="play" onClick={() => {
-            setIsOn(true)
-            setTimeout(() => setIsOn(false, 1000))
-          }}>Play!</div>
-          <div styleName="module">
-            <Oscillator sampleRate={sampleRate} addFunction={(func) => pushToModulesFunctions({name: 'oscillator', func})} removeFunction={() => removeFromModulesFunctions('oscillator')}/>
-          </div>
+      <div styleName="header">
+        <div styleName="button" onClick={play}>Play!</div>
+        <div styleName="button" onClick={addOscillator}>
+          Add Oscillator
         </div>
-      </Provider>
+      </div>
+      
+      <div styleName="modules">
+          {modules.map((Module, index) => 
+            <Module key={index} sampleRate={sampleRate} addFunction={(func) => pushToModulesFunctions({name: `oscillator-${index}`, func})} removeFunction={() => removeFromModulesFunctions(`oscillator-${index}`)}/>
+            )}
+      </div>
     </div>
   );
 }

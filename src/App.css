@@ -2,19 +2,25 @@
 .container {
 	font-family: Roboto;
 	height: 100%;
-	display: flex;
-	flex-direction: column;
-
-
 }
 
-.content {
-	display: flex;
-	flex-grow: 1;
+.header {
+	background-color: #101357;
+	display: grid;
+	grid-template-columns: 0.5fr repeat(5, 1fr);
+	grid-column-gap: 10px;
+	padding: 20px;
+}
+.button {
+	cursor: pointer;
+	padding: 6px;
+	border-radius: 5px;
+	background-color: #fbaf08;
 }
 
 .modules {
-	display: flex;
+	display: grid;
+	grid-template-columns: repeat(5, 1fr)
 }
 
 

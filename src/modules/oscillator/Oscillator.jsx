@@ -25,9 +25,10 @@ const Oscillator = ({addFunction, removeFunction}) => {
                 Frequency
                 <Slider 
                     value={frequency * 100 / 440}
-                    onChange={(percentage) => setFrequency(440 * percentage / 100)}
+                    onChange={(percentage) => setFrequency(Math.round(440 * percentage / 100))}
                 />
             </div>
+            Frequency: {frequency}
             <div className={isOn ? styles.on : styles.off} onClick={() => setOn(!isOn)}></div>
         </div>
     )
