@@ -2,8 +2,7 @@ import React, {useState, useEffect, useCallback} from 'react';
 import {getSineWave} from "./logic"
 import Slider from 'react-slider-simple';
 
-import styles from './Oscillator.css'
-require('./Oscillator.css')
+import './Oscillator.scss'
 
 const Oscillator = ({addFunction, removeFunction}) => {
     const [isOn, setOn] = useState(false);
@@ -11,14 +10,13 @@ const Oscillator = ({addFunction, removeFunction}) => {
     const [isSineOn, setIsSineOn] = useState(true);
     const [frequency, setFrequency] = useState(440);
 
-
     
     useEffect(() => {
         removeFunction()
         isOn && addFunction((x) => getSineWave(x, frequency))
     }, [isOn, frequency]);
     return(
-        <div className={styles.container}>
+        <div styleName="container">
             <div>An oscialltor.</div>
             <div>Sine wave</div>
             <div>
@@ -29,7 +27,7 @@ const Oscillator = ({addFunction, removeFunction}) => {
                 />
             </div>
             Frequency: {frequency}
-            <div className={isOn ? styles.on : styles.off} onClick={() => setOn(!isOn)}></div>
+            <div styleName={isOn ? "on" : "off"} onClick={() => setOn(!isOn)}></div>
         </div>
     )
 }

@@ -1,0 +1,24 @@
+.container {
+    width: 100px;
+    height: 200px;
+    padding: 20px;
+    background-color: grey;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    
+    @mixin power-indicator {
+        padding: 5;
+        width: 20px;
+        height: 20px;
+    }
+    .on {
+        @include power-indicator;
+        background-color: red;
+    }
+    
+    .off {
+        @include power-indicator;
+        background-color: black;
+    }
+}
+

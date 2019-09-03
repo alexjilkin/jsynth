@@ -25,6 +25,14 @@ module.exports = {
             "plugins": [
               ["react-css-modules", {
                 context,
+                "filetypes": {
+                  ".scss": {
+                    "syntax": "postcss-scss",
+                    "plugins": [
+                      "postcss-nested"
+                    ]
+                  }
+                },
                 "exclude": "node_modules",
                 generateScopedName: '[path]___[name]__[local]___[hash:base64:5]',
                 "webpackHotModuleReloading": true
@@ -39,6 +47,15 @@ module.exports = {
         use: [
           'style-loader',
           'css-loader?importLoader=1&modules&localIdentName=[path]___[name]__[local]___[hash:base64:5]'
+        ]
+      }, 
+      {
+        test: /\.scss$/,
+        include: path.resolve(__dirname, './src'),
+        use: [
+          'style-loader',
+          'css-loader?importLoader=1&modules&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
+          'sass-loader'
         ]
       }
 
