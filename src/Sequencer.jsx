@@ -2,23 +2,36 @@ import React, {useState, useEffect, useCallback} from 'react';
 import './Sequencer.scss'
 
 
-const sequenceLength = 8;
+const sequenceSize = 8;
 
 // Time to play each note
-const time = 0.2;
+const bpm = 180;
 
 const Sequencer = ({playBySeconds}) => {
-  const [sequence, setSequence] = useState(Array.from({length: sequenceLength}))
+  const [sequence, setSequence] = useState(Array.from({length: sequenceSize}))
+  const [isOn, setIsOn] = useState(false)
+  const [isPlaying, setIsPlaying] = useState(false)
 
+  const noteLength = 60 / bpm * (4 / sequenceSize)
+  const sequenceLength = noteLength * sequenceSize;
+  
   const toggleMarker = useCallback((index) => {
     setSequence([...sequence.slice(0, index), !sequence[index], ...sequence.slice(index + 1)])
   }, [sequence])
 
-  const play = useCallback(() => {
+  const play = () => {
     sequence.forEach((marker, index) => setTimeout(() => {
-      sequence[index] && playBySeconds(time)
-    }, time * 1000 * index))
-  }, [playBySeconds, sequence])
+      sequence[index] && playBySeconds(noteLength)
+    }, noteLength * 1000 * index))
+  }
+
+  useEffect(() => {
+    if (isOn && !isPlaying) {
+      setIsPlaying(true)
+      play();
+      setTimeout(() => setIsPlaying(false), sequenceLength * 1000)
+    }
+  }, [isOn, isPlaying])
 
   return (
       <div styleName="container">
@@ -29,7 +42,7 @@ const Sequencer = ({playBySeconds}) => {
               </div>
             )}
           </div>
-          <div onClick={play}> play </div>
+          <div onClick={() => setIsOn(true)}> play </div>
     </div>
   )
 }

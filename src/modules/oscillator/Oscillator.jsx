@@ -5,7 +5,7 @@ import Slider from 'react-slider-simple';
 import './Oscillator.scss'
 
 const Oscillator = ({addFunction, removeFunction}) => {
-    const [isOn, setOn] = useState(false);
+    const [isOn, setOn] = useState(true);
     const [isSquareOn, setIsSquareOn] = useState(true);
     const [isSineOn, setIsSineOn] = useState(true);
     const [frequency, setFrequency] = useState(440);
