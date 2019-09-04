@@ -11,6 +11,7 @@ const Sequencer = ({playBySeconds}) => {
   const [sequence, setSequence] = useState(Array.from({length: sequenceSize}))
   const [isOn, setIsOn] = useState(false)
   const [isPlaying, setIsPlaying] = useState(false)
+  const [currentStep, setCurrentStep] = useState(-1)
 
   const noteLength = 60 / bpm * (4 / sequenceSize)
   const sequenceLength = noteLength * sequenceSize;
@@ -22,6 +23,8 @@ const Sequencer = ({playBySeconds}) => {
   const play = () => {
     sequence.forEach((marker, index) => setTimeout(() => {
       sequence[index] && playBySeconds(noteLength)
+      setCurrentStep(index)
+
     }, noteLength * 1000 * index))
   }
 
@@ -37,7 +40,7 @@ const Sequencer = ({playBySeconds}) => {
       <div styleName="container">
           <div styleName="markers">
             {sequence.map((value, index) => 
-              <div styleName={`marker ${sequence[index] ? 'on' : ''}`} key={index} onClick={() => toggleMarker(index)}>
+              <div styleName={`marker ${currentStep === index  ? 'playing' : sequence[index] ? 'on' : ''}`} key={index} onClick={() => toggleMarker(index)}>
 
               </div>
             )}
