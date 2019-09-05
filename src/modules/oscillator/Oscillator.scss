@@ -6,6 +6,18 @@
     display: grid;
     grid-template-rows: 1fr 1fr 1fr;
     
+    .wave-types {
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-gap: 6px;
+        
+        .wave-type {
+            display: grid;
+            height: 20px;
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
     @mixin power-indicator {
         padding: 5;
         width: 20px;

@@ -18,7 +18,16 @@ const Oscillator = ({addFunction, removeFunction}) => {
     return(
         <div styleName="container">
             <div>An oscialltor.</div>
-            <div>Sine wave</div>
+            <div styleName="wave-types">
+                <div styleName="wave-type" onClick={() => setIsSquareOn(!isSquareOn)}>
+                    square
+                    <div styleName={`${isSquareOn ? 'on' : 'off'}`}></div>
+                </div>
+                <div styleName="wave-type" onClick={() => setIsSineOn(!isSineOn)}>
+                    sine
+                    <div styleName={`${isSineOn ? 'on' : 'off'}`}></div>
+                </div>
+            </div>
             <div>
                 Frequency
                 <Slider 
