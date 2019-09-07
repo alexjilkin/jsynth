@@ -12,7 +12,7 @@
     "browser-cookies": "^1.2.0",
     "enzyme": "^3.3.0",
     "history": "^4.9.0",
-    "lodash": "^4.17.10",
+    "lodash": "^4.17.15",
     "material-ui": "^0.20.1",
     "postcss-nested": "^4.1.2",
     "react": "^16.8.6",

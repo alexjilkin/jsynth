@@ -1,20 +1,34 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {getSineWave} from "./logic"
+import {getSineWave, getSquareWave, getSawWave} from "./logic"
 import Slider from 'react-slider-simple';
 
 import './Oscillator.scss'
 
 const Oscillator = ({addFunction, removeFunction}) => {
     const [isOn, setOn] = useState(true);
-    const [isSquareOn, setIsSquareOn] = useState(true);
+    const [isSquareOn, setIsSquareOn] = useState(false);
     const [isSineOn, setIsSineOn] = useState(true);
+    const [isSawOn, setIsSawOn] = useState(false);
     const [frequency, setFrequency] = useState(440);
 
     
     useEffect(() => {
         removeFunction()
-        isOn && addFunction((x) => getSineWave(x, frequency))
-    }, [isOn, frequency]);
+        if (isOn) {
+            let funcs = [];
+            isSineOn && funcs.push(getSineWave)
+            isSquareOn && funcs.push(getSquareWave)
+            isSawOn && funcs.push(getSawWave);
+
+            const oscillatorFunc = (y, x) => {
+                return funcs.reduce((acc, func) => {
+                    return acc + func(y, frequency)
+                }, 0)
+            }
+
+            addFunction(oscillatorFunc)
+        }
+    }, [isOn, frequency, isSquareOn, isSineOn, isSawOn]);
     return(
         <div styleName="container">
             <div>An oscialltor.</div>
@@ -26,6 +40,10 @@ const Oscillator = ({addFunction, removeFunction}) => {
                 <div styleName="wave-type" onClick={() => setIsSineOn(!isSineOn)}>
                     sine
                     <div styleName={`${isSineOn ? 'on' : 'off'}`}></div>
+                </div>
+                <div styleName="wave-type" onClick={() => setIsSawOn(!isSawOn)}>
+                    saw
+                    <div styleName={`${isSawOn ? 'on' : 'off'}`}></div>
                 </div>
             </div>
             <div>

@@ -1,16 +1,14 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import './Sequencer.scss'
+import {throttle} from 'lodash';
+import './Sequencer.scss';
 
 
 const sequenceSize = 8;
-
-// Time to play each note
+const sampleRate = 44100 * 2;
 const bpm = 180;
 
-const Sequencer = ({playBySeconds}) => {
+const Sequencer = ({addFunction, removeFunction}) => {
   const [sequence, setSequence] = useState(Array.from({length: sequenceSize}))
-  const [isOn, setIsOn] = useState(false)
-  const [isPlaying, setIsPlaying] = useState(false)
   const [currentStep, setCurrentStep] = useState(-1)
 
   const noteLength = 60 / bpm * (4 / sequenceSize)
@@ -20,21 +18,34 @@ const Sequencer = ({playBySeconds}) => {
     setSequence([...sequence.slice(0, index), !sequence[index], ...sequence.slice(index + 1)])
   }, [sequence])
 
-  const play = () => {
-    sequence.forEach((marker, index) => setTimeout(() => {
-      sequence[index] && playBySeconds(noteLength)
-      setCurrentStep(index)
-
-    }, noteLength * 1000 * index))
+  const sequenceAnimation = () => {
+    for (let i = 0; i < sequenceSize; i++) {
+      setTimeout(() => {
+        setCurrentStep(i)
+      }, noteLength * 1000 * i)
+     }
   }
 
   useEffect(() => {
-    if (isOn && !isPlaying) {
-      setIsPlaying(true)
-      play();
-      setTimeout(() => setIsPlaying(false), sequenceLength * 1000)
-    }
-  }, [isOn, isPlaying])
+      removeFunction();
+      const sectionSizeInSampleRate = sampleRate / sequenceSize;
+      addFunction((y, x) => {
+
+        const currentStepInPlaying = Math.floor(x / sectionSizeInSampleRate) % sequenceSize
+        
+        if (x % sampleRate === 0) {
+          sequenceAnimation()
+        }
+        
+        if (sequence[currentStepInPlaying]) {
+          return y
+        } else {
+          return 0;
+        }
+      })
+
+    console.log(sequence)
+  }, [sequence])
 
   return (
       <div styleName="container">
@@ -45,7 +56,6 @@ const Sequencer = ({playBySeconds}) => {
               </div>
             )}
           </div>
-          <div onClick={() => setIsOn(true)}> play </div>
     </div>
   )
 }

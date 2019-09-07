@@ -9,28 +9,26 @@ import Sequencer from './Sequencer'
 
 const sampleRate = 44100;
 let gen;
-let count = 0;
+let x = 0;
 gen = waveGenerator()
 
 export const play = () => {
 
-  setTimeout(play, 500)
+  setTimeout(play, 1000)
 
   const wave = []
 
-  for (let i = 0; i <= sampleRate  ; i++) {
+  for (let i = 0; i <= sampleRate * 2; i++) {
     wave[i] = waveGenerator().next().value
   }
-
   
   new pcm({channels: 1, rate: sampleRate, depth: 16}).toWav(wave).play()
 }
 
-
-const electricity = (x) => x;
-
 let modulesFunctions = [];
-const pushToModulesFunctions = (func) => modulesFunctions.push(func)
+const pushToModulesFunctions = (func, index) => {
+  modulesFunctions[index] = func
+}
 const removeFromModulesFunctions = (name) => 
   modulesFunctions = modulesFunctions.filter((moduleFunction => moduleFunction.name !== name))
 
@@ -40,27 +38,27 @@ function* waveGenerator() {
 
   while(true) {
 
-    let value = 0;
+    let y = x;
 
     modulesFunctions.length && modulesFunctions.forEach(({func}) => {
-      value = value + func(count)
+      y = func ? func(y, x) : y;
     });
 
-    count++;
-    yield value;
+    x++;
+    yield y;
   }
 }
 
 const App = (props) => {
   const [isOn, setIsOn] = useState(false);
-  const [modules, setModules] = useState([]);
+  const [modules, setModules] = useState([Sequencer]);
 
   useEffect(() => {
     isOn && play()
   }, [isOn])
 
   const addOscillator = useCallback(() => {
-    setModules([...modules, Oscillator]);
+    setModules([Oscillator, ...modules]);
   })
   return (
     <div styleName="container">
@@ -73,10 +71,9 @@ const App = (props) => {
       
       <div styleName="modules">
           {modules.map((Module, index) => 
-            <Module key={index} sampleRate={sampleRate} addFunction={(func) => pushToModulesFunctions({name: `oscillator-${index}`, func})} removeFunction={() => removeFromModulesFunctions(`oscillator-${index}`)}/>
+            <Module key={index} sampleRate={sampleRate} addFunction={(func) => pushToModulesFunctions({name: `${Module.componentName}-${index}`, func}, index)} removeFunction={() => removeFromModulesFunctions(`oscillator-${index}`)}/>
             )}
       </div>
-      <Sequencer playBySeconds={() => {}}/>
     </div>
   );
 }
