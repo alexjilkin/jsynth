@@ -3,7 +3,7 @@ import pcm from './pcm'
 
 const frequencySong = [660, 660, 660, 510, 660, 770, 380, 510, 380, 320, 440, 480, 450, 430, 380, 660, 760, 860, 700, 760, 660, 520]
 const sampleRate = 44100;
-const amplitude = Math.pow(2, 4);
+const amplitude = Math.pow(2, 3);
 let currentNote = 0;
 
 const frequency = 440;
