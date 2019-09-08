@@ -31,19 +31,15 @@ const Sequencer = ({addFunction, removeFunction}) => {
       removeFunction();
       const barInSampleRate = ((sampleRate / bps) * 4);
 
-      const sectionSizeInSampleRate = barInSampleRate / sequenceSize;
-
+      const sectionSizeInSampleRate = Math.floor(barInSampleRate / sequenceSize);
+      console.log(sectionSizeInSampleRate)
       addFunction((y, x) => {
         const currentStepInPlaying = Math.floor(x / sectionSizeInSampleRate) % sequenceSize
         
-        // if (x % (sampleRate * 2) === 0) {
-        //   sequenceAnimation()
-        // }
-        
-        if (x % sectionSizeInSampleRate === 0) {
-          console.log(currentStepInPlaying)
-
+        if (x % sectionSizeInSampleRate === 0 && currentStepInPlaying === 0) {
+          sequenceAnimation()
         }
+        
         if (sequence[currentStepInPlaying]) {
           return y
         } else {
@@ -51,12 +47,13 @@ const Sequencer = ({addFunction, removeFunction}) => {
         }
       })
 
-    console.log(sequence)
   }, [sequence])
 
   return (
       <div styleName="container">
+        The Sequenciator
           <div styleName="markers">
+            
             {sequence.map((value, index) => 
               <div styleName={`marker ${currentStep === index  ? 'playing' : sequence[index] ? 'on' : ''}`} key={index} onClick={() => toggleMarker(index)}>
 

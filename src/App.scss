@@ -2,20 +2,24 @@
 .container {
 	font-family: Roboto;
 	height: 100%;
+
+	.header {
+		background-color:#6ed3cf;
+		display: grid;
+		grid-template-columns: 0.5fr repeat(5, 1fr);
+		grid-column-gap: 10px;
+		padding: 20px;
+		margin-bottom: 15px;
+	}
+
 }
 
-.header {
-	background-color: #101357;
-	display: grid;
-	grid-template-columns: 0.5fr repeat(5, 1fr);
-	grid-column-gap: 10px;
-	padding: 20px;
-}
+
 .button {
 	cursor: pointer;
 	padding: 6px;
 	border-radius: 5px;
-	background-color: #fbaf08;
+	background-color:#9068be;
 }
 
 .modules {
@@ -25,7 +29,7 @@
 
 
 .module {
-	margin: 15px;
+	
 }
 
 
