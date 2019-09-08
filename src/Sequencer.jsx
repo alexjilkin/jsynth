@@ -5,7 +5,8 @@ import './Sequencer.scss';
 
 const sequenceSize = 8;
 const sampleRate = 44100 * 2;
-const bpm = 180;
+const bpm = 130;
+const bps = bpm / 60;
 
 const Sequencer = ({addFunction, removeFunction}) => {
   const [sequence, setSequence] = useState(Array.from({length: sequenceSize}))
@@ -28,15 +29,21 @@ const Sequencer = ({addFunction, removeFunction}) => {
 
   useEffect(() => {
       removeFunction();
-      const sectionSizeInSampleRate = sampleRate / sequenceSize;
-      addFunction((y, x) => {
+      const barInSampleRate = ((sampleRate / bps) * 4);
 
+      const sectionSizeInSampleRate = barInSampleRate / sequenceSize;
+
+      addFunction((y, x) => {
         const currentStepInPlaying = Math.floor(x / sectionSizeInSampleRate) % sequenceSize
         
-        if (x % sampleRate === 0) {
-          sequenceAnimation()
-        }
+        // if (x % (sampleRate * 2) === 0) {
+        //   sequenceAnimation()
+        // }
         
+        if (x % sectionSizeInSampleRate === 0) {
+          console.log(currentStepInPlaying)
+
+        }
         if (sequence[currentStepInPlaying]) {
           return y
         } else {

@@ -19,7 +19,7 @@ export const play = () => {
   const wave = []
 
   for (let i = 0; i <= sampleRate * 2; i++) {
-    wave[i] = waveGenerator().next().value
+    wave[i] = gen.next().value
   }
   
   new pcm({channels: 1, rate: sampleRate, depth: 16}).toWav(wave).play()
