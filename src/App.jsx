@@ -5,7 +5,7 @@ import pcm from './common/pcm'
 import './App.scss'
 import Oscillator from "./modules/oscillator/Oscillator"
 export const history = createBrowserHistory();
-import Sequencer from './Sequencer'
+import Sequencer from './modules/Sequencer'
 import Oscilloscope from './modules/Oscilloscope'
 const sampleRate = 44100;
 let gen;
@@ -51,7 +51,7 @@ function* waveGenerator() {
       }
 
       // Small hack to make sequencer as the end of the signal
-      if (name.includes('Sequencer')) {
+      if (name.slice(0,9) === 'Sequencer') {
         y = func(y, x)
         wavesInAColumn.push(y);
         y = x;
@@ -93,7 +93,7 @@ const App = (props) => {
       
       <div styleName="modules">
           {modules.map((Module, index) => 
-            <Module key={index} sampleRate={sampleRate} addFunction={(func) => pushToModulesFunctions({name: `${Module.name}-${index}`, func}, index)} removeFunction={() => removeFromModulesFunctions(`${Module.name}-${index}`)}/>
+            <Module key={index} sampleRate={sampleRate * 2} addFunction={(func) => pushToModulesFunctions({name: `${Module.name}-${index}`, func}, index)} removeFunction={() => removeFromModulesFunctions(`${Module.name}-${index}`)}/>
             )}
       </div>
     </div>

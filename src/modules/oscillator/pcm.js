@@ -83,14 +83,6 @@ if (typeof module !== "undefined" && module.exports) {
       return [i&0xFF, (i>>8)&0xFF];
     }
   
-    function split16bitArray(data) {
-      var r = [], j,i = 0, len = data.length;
-      for (i = 0; i < len; i+=1) {
-        r[j+=1] = data[i] & 0xFF;
-        r[j+=1] = (data[i]>>8) & 0xFF;
-      }
-      return r;
-    }
   
     _.build= function(data) {
       header.blockAlign = (header.numChannels * header.bitsPerSample) >> 3;

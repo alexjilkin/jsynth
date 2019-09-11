@@ -7898,7 +7898,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@^15.5.10, prop-types@^15.5.4, prop-types@^15.5.6, prop-types@^15.5.7, prop-types@^15.5.8, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -8089,6 +8089,18 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
+react-canvas-knob@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/react-canvas-knob/-/react-canvas-knob-0.5.0.tgz#5712742379345ab872d7999046989cf2be574172"
+  integrity sha512-KTxOpeluRXcC+VO6VJkhxvUHMlHQH+do4DBQdQZP8deI/F1kcI023lLON+NVwrM2KQsKUoFldOr1OpttVN0iVA==
+  dependencies:
+    prop-types "^15.5.10"
+
+react-deep-force-update@^1.0.0:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-1.1.2.tgz#3d2ae45c2c9040cbb1772be52f8ea1ade6ca2ee1"
+  integrity sha512-WUSQJ4P/wWcusaH+zZmbECOk7H5N2pOIl0vzheeornkIMhu+qrNdGFm0bDZLCb0hSF0jf/kH1SgkNGfBdTc4wA==
+
 react-deep-force-update@^2.1.1:
   version "2.1.3"
   resolved "https://registry.yarnpkg.com/react-deep-force-update/-/react-deep-force-update-2.1.3.tgz#740612322e617bcced38f61794a4af75dc3d98e7"
@@ -8147,6 +8159,14 @@ react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
+
+react-proxy@^1.1.7:
+  version "1.1.8"
+  resolved "https://registry.yarnpkg.com/react-proxy/-/react-proxy-1.1.8.tgz#9dbfd9d927528c3aa9f444e4558c37830ab8c26a"
+  integrity sha1-nb/Z2SdSjDqp9ETkVYw3gwq4wmo=
+  dependencies:
+    lodash "^4.6.1"
+    react-deep-force-update "^1.0.0"
 
 react-proxy@^3.0.0-alpha.0:
   version "3.0.0-alpha.1"
@@ -8230,6 +8250,19 @@ react-test-renderer@^16.3.2:
     prop-types "^15.6.2"
     react-is "^16.9.0"
     scheduler "^0.15.0"
+
+react-transform-catch-errors@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/react-transform-catch-errors/-/react-transform-catch-errors-1.0.2.tgz#1b4d4a76e97271896fc16fe3086c793ec88a9eeb"
+  integrity sha1-G01KdulycYlvwW/jCGx5PsiKnus=
+
+react-transform-hmr@^1.0.4:
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/react-transform-hmr/-/react-transform-hmr-1.0.4.tgz#e1a40bd0aaefc72e8dfd7a7cda09af85066397bb"
+  integrity sha1-4aQL0Krvxy6N/Xp82gmvhQZjl7s=
+  dependencies:
+    global "^4.3.0"
+    react-proxy "^1.1.7"
 
 react-transition-group@^1.2.1:
   version "1.2.1"

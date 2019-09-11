@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 
-const width = 400;
-const height = 200;
+const width = 200;
+const height = 100;
 const xUnit = width / (2000) 
 const yUnit = height / 100;
 let lastX = 0;

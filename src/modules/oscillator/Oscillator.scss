@@ -1,12 +1,17 @@
 .container {
-    width: 100px;
-    height: 200px;
     border-radius: 3px;
+    width: 200px;
     padding: 20px;
+    padding-top: 5px;
     background-color: grey;
     display: grid;
-    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    grid-row-gap: 16px;
     
+    .title {
+        font-size: 18px;
+        font-weight: 900;
+    }
     .wave-types {
         display: grid;
         grid-template-rows: 1fr 1fr 1fr;
@@ -23,6 +28,11 @@
         display: grid;
         grid-template-columns: 1fr 1fr;
         margin: 10px;
+    }
+
+    .frequency {
+        display: grid;
+        justify-content: center;
     }
 
     @mixin power-indicator {

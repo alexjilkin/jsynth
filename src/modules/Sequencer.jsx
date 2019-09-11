@@ -4,11 +4,10 @@ import './Sequencer.scss';
 
 
 const sequenceSize = 8;
-const sampleRate = 44100 * 2;
 const bpm = 130;
 const bps = bpm / 60;
 
-const Sequencer = ({addFunction, removeFunction}) => {
+const Sequencer = ({addFunction, removeFunction, sampleRate}) => {
   const [sequence, setSequence] = useState(Array.from({length: sequenceSize}))
   const [currentStep, setCurrentStep] = useState(-1)
 
