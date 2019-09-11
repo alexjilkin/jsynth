@@ -47,7 +47,7 @@ const Oscillator = ({addFunction, removeFunction}) => {
 
     return(
         <div styleName="container">
-            <div styleName="title">An oscialltor.</div>
+            <div styleName="title">An osciallator.</div>
 
             <div styleName="frequency">
                 <Knob 

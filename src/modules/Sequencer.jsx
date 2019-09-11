@@ -1,15 +1,14 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {throttle} from 'lodash';
 import './Sequencer.scss';
-
+import Knob from 'react-canvas-knob';
 
 const sequenceSize = 8;
-const bpm = 130;
-const bps = bpm / 60;
 
 const Sequencer = ({addFunction, removeFunction, sampleRate}) => {
   const [sequence, setSequence] = useState(Array.from({length: sequenceSize}))
   const [currentStep, setCurrentStep] = useState(-1)
+  const [bpm, setBpm] = useState(90)
 
   const noteLength = 60 / bpm * (4 / sequenceSize)
   const sequenceLength = noteLength * sequenceSize;
@@ -28,6 +27,7 @@ const Sequencer = ({addFunction, removeFunction, sampleRate}) => {
 
   useEffect(() => {
       removeFunction();
+      const bps = bpm / 60;
       const barInSampleRate = ((sampleRate / bps) * 4);
 
       const sectionSizeInSampleRate = Math.floor(barInSampleRate / sequenceSize);
@@ -47,13 +47,29 @@ const Sequencer = ({addFunction, removeFunction, sampleRate}) => {
         } else {
           return 0;
         }
-      })
+      }, true)
 
-  }, [sequence])
+  }, [sequence, bpm])
 
   return (
       <div styleName="container">
         The Sequenciator
+        <div styleName="bpm-container">
+          <div styleName="bpm">
+            {bpm}
+          </div>
+          <Knob 
+            min={0}
+            max={220}
+            width={70}
+            height={70}
+            fgColor="black"
+            displayInput={false}
+            thickness={1}
+            value={bpm}
+            onChange={setBpm}
+          />
+        </div>
           <div styleName="markers">
             
             {sequence.map((value, index) => 

@@ -37,21 +37,19 @@ const removeFromModulesFunctions = (name) => {
 
 
 function* waveGenerator() {
-  let sound = [];
-
   while(true) {
 
     let y = x;
 
     const wavesInAColumn = []
 
-    modulesFunctions.length && modulesFunctions.forEach(({func, name}) => {
+    modulesFunctions.length && modulesFunctions.forEach(({func, id, isSignalEnd}) => {
       if (!func) {
         return
       }
 
       // Small hack to make sequencer as the end of the signal
-      if (name.slice(0,9) === 'Sequencer') {
+      if (isSignalEnd) {
         y = func(y, x)
         wavesInAColumn.push(y);
         y = x;
@@ -93,7 +91,7 @@ const App = (props) => {
       
       <div styleName="modules">
           {modules.map((Module, index) => 
-            <Module key={index} sampleRate={sampleRate * 2} addFunction={(func) => pushToModulesFunctions({name: `${Module.name}-${index}`, func}, index)} removeFunction={() => removeFromModulesFunctions(`${Module.name}-${index}`)}/>
+            <Module key={index} sampleRate={sampleRate * 2} addFunction={(func, isSignalEnd = false) => pushToModulesFunctions({id: `${Module.name}-${index}`, func, isSignalEnd}, index)} removeFunction={() => removeFromModulesFunctions(`${Module.name}-${index}`)}/>
             )}
       </div>
     </div>

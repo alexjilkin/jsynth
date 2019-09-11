@@ -1,10 +1,27 @@
 .container {
     background-color: #e1e8f0;
     display: grid;
-    height: 50px;
+
     width: 200px;
 	padding: 5px;
     
+    .bpm-container {
+        display: grid;
+        justify-content: center;
+        
+        .bpm {
+            display: grid;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            font-family: 'Fjalla One';
+            width: 80px;
+            height: 40px;
+            background-color: black;
+            color: red;
+        }
+
+    }
 	.markers {
 		padding: 5px;
         display: grid;
