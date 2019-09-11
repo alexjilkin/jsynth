@@ -40,6 +40,9 @@ const Sequencer = ({addFunction, removeFunction}) => {
           sequenceAnimation()
         }
         
+        if (x === y) {
+          return 0;
+        }
         if (sequence[currentStepInPlaying]) {
           return y
         } else {

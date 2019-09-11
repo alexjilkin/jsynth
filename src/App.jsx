@@ -43,12 +43,27 @@ function* waveGenerator() {
 
     let y = x;
 
-    modulesFunctions.length && modulesFunctions.forEach(({func}) => {
-      y = func ? func(y, x) : y;
+    const wavesInAColumn = []
+
+    modulesFunctions.length && modulesFunctions.forEach(({func, name}) => {
+      if (!func) {
+        return
+      }
+
+      // Small hack to make sequencer as the end of the signal
+      if (name.includes('Sequencer')) {
+        y = func(y, x)
+        wavesInAColumn.push(y);
+        y = x;
+      } else {
+        y = func ? func(y, x) : y;
+      }
+
+      
     });
 
     x++;
-    yield y;
+    yield wavesInAColumn.reduce((acc, value) => acc + value, 0);
   }
 }
 
