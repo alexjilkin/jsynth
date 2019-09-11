@@ -24,13 +24,16 @@ export const play = () => {
   
   new pcm({channels: 1, rate: sampleRate, depth: 16}).toWav(wave).play()
 }
-
 let modulesFunctions = [];
 const pushToModulesFunctions = (func, index) => {
   modulesFunctions[index] = func
 }
-const removeFromModulesFunctions = (name) => 
-  modulesFunctions = modulesFunctions.filter((moduleFunction => moduleFunction.name !== name))
+const removeFromModulesFunctions = (name) => {
+  const index = modulesFunctions.findIndex((moduleFunction => moduleFunction.name === name))
+  if (index !== -1) {
+    modulesFunctions[index] = (y, x) => y;
+  }
+}
 
 
 function* waveGenerator() {
@@ -71,7 +74,7 @@ const App = (props) => {
       
       <div styleName="modules">
           {modules.map((Module, index) => 
-            <Module key={index} sampleRate={sampleRate} addFunction={(func) => pushToModulesFunctions({name: `${Module.componentName}-${index}`, func}, index)} removeFunction={() => removeFromModulesFunctions(`oscillator-${index}`)}/>
+            <Module key={index} sampleRate={sampleRate} addFunction={(func) => pushToModulesFunctions({name: `${Module.name}-${index}`, func}, index)} removeFunction={() => removeFromModulesFunctions(`${Module.name}-${index}`)}/>
             )}
       </div>
     </div>

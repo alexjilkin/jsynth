@@ -3,11 +3,11 @@ const sampleRate = 44100 * 2;
 const amplitude = Math.pow(2, 4);
 
 export function getSquareWave(x, frequency = 440) {
-  return Math.sign(Math.sin(Math.PI * 2 * (frequency) * x / sampleRate)) * amplitude;
+  return Math.sign(Math.sin(Math.PI * 2 * (frequency) * x / sampleRate)) * (amplitude / 2);
 }
 
 export function getSawWave(x, frequency = 440) {
-  return (-1) * 2 * amplitude  * arcctg(ctg(x * Math.PI * frequency / sampleRate)) / Math.PI
+  return (-1) * 2 * (amplitude / 2)  * arcctg(ctg(x * Math.PI * frequency / sampleRate)) / Math.PI
 }
 
 export function getSineWave(x, frequency = 440) {

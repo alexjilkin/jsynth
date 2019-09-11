@@ -1,6 +1,7 @@
 .container {
     width: 100px;
     height: 200px;
+    border-radius: 3px;
     padding: 20px;
     background-color: grey;
     display: grid;
@@ -18,10 +19,17 @@
         }
     }
 
+    .harmonics {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        margin: 10px;
+    }
+
     @mixin power-indicator {
         padding: 5;
         width: 20px;
         height: 20px;
+        border-radius: 50%;
     }
     .on {
         @include power-indicator;
