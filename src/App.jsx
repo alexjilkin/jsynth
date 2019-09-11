@@ -6,7 +6,7 @@ import './App.scss'
 import Oscillator from "./modules/oscillator/Oscillator"
 export const history = createBrowserHistory();
 import Sequencer from './Sequencer'
-
+import Oscilloscope from './modules/Oscilloscope'
 const sampleRate = 44100;
 let gen;
 let x = 0;
@@ -54,7 +54,7 @@ function* waveGenerator() {
 
 const App = (props) => {
   const [isOn, setIsOn] = useState(false);
-  const [modules, setModules] = useState([Sequencer]);
+  const [modules, setModules] = useState([Oscillator, Oscilloscope, Sequencer]);
 
   useEffect(() => {
     isOn && play()
@@ -63,11 +63,15 @@ const App = (props) => {
   const addOscillator = useCallback(() => {
     setModules([Oscillator, ...modules]);
   })
+
+  const addOscillatorAndSequencer = () => {
+    setModules([...modules, Oscillator, Sequencer]);
+  }
   return (
     <div styleName="container">
       <div styleName="header">
         <div styleName="button" onClick={play}>Play!</div>
-        <div styleName="button" onClick={addOscillator}>
+        <div styleName="button" onClick={addOscillatorAndSequencer}>
           Add Oscillator
         </div>
       </div>
