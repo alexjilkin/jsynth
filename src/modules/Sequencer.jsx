@@ -30,7 +30,7 @@ const Sequencer = ({addFunction, removeFunction, sampleRate}) => {
       const barInSampleRate = ((sampleRate / bps) * 4);
 
       const sectionSizeInSampleRate = Math.floor(barInSampleRate / sequenceSize);
-      console.log(sectionSizeInSampleRate)
+
       addFunction((y, x) => {
         const currentStepInPlaying = Math.floor(x / sectionSizeInSampleRate) % sequenceSize
         
