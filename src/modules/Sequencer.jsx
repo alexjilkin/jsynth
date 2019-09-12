@@ -7,7 +7,7 @@ const sequenceSize = 8;
 const Sequencer = ({addFunction, removeFunction, sampleRate}) => {
   const [sequence, setSequence] = useState(Array.from({length: sequenceSize}))
   const [currentStep, setCurrentStep] = useState(-1)
-  const [bpm, setBpm] = useState(90)
+  const [bpm, setBpm] = useState(120)
 
   const noteLength = 60 / bpm * (4 / sequenceSize)
   const sequenceLength = noteLength * sequenceSize;
@@ -59,7 +59,7 @@ const Sequencer = ({addFunction, removeFunction, sampleRate}) => {
           </div>
           <Knob 
             min={0}
-            max={220}
+            max={300}
             width={70}
             height={70}
             fgColor="black"
