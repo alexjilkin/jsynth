@@ -12,20 +12,29 @@ let gen;
 let x = 0;
 gen = waveGenerator()
 
+let timeToGenerateWave = 0;
+
 export const play = () => {
 
-  setTimeout(play, 1000)
+  
 
   const wave = []
 
   let i = 0;
+  let t0 = performance.now()
 
-  // Wait until the wave is at zero value to prevent the "pop" sound
-  while (i <= sampleRate * 2 || wave[i - 1] !== 0) {
+  // TODO: Wait until the wave is at zero value to prevent the "pop" sound
+  while (i <= sampleRate * 2) {
     wave[i] = gen.next().value
 
     i++;
   }
+
+  let t1 = performance.now()
+
+  console.log(t1 - t0)
+  
+  setTimeout(play, ((1000 / 88200) * i) - (t1 - t0))
   
   new pcm({channels: 1, rate: sampleRate, depth: 16}).toWav(wave).play()
 }
