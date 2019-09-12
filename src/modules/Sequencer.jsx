@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useCallback} from 'react';
-import {throttle} from 'lodash';
 import './Sequencer.scss';
 import Knob from 'react-canvas-knob';
 
