@@ -18,8 +18,13 @@ export const play = () => {
 
   const wave = []
 
-  for (let i = 0; i <= sampleRate * 2; i++) {
+  let i = 0;
+
+  // Wait until the wave is at zero value to prevent the "pop" sound
+  while (i <= sampleRate * 2 || wave[i - 1] !== 0) {
     wave[i] = gen.next().value
+
+    i++;
   }
   
   new pcm({channels: 1, rate: sampleRate, depth: 16}).toWav(wave).play()
