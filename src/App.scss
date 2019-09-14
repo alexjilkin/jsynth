@@ -22,10 +22,19 @@
 	background-color:#9068be;
 }
 
-.modules {
+.groups {
 	display: grid;
-	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+	grid-template-columns: 1fr 1fr;
+	grid-template-rows: 1fr 1fr 1fr;
 	grid-gap: 15px;
+
+	.group {
+		display: grid;
+		grid-template-columns: 1fr 1fr;
+		width: 500px;
+		padding: 10px;
+		border: 1px solid #6ed3cf;
+	}
 }
 
 

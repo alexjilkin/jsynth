@@ -13,8 +13,6 @@ const Oscillator = ({addFunction, removeFunction}) => {
     const [is5thOn, setIs5thOn] = useState(false);
     
     useEffect(() => {
-        removeFunction()
-
         let funcs = [];
         isSineOn && funcs.push(getSineWave)
         isSquareOn && funcs.push(getSquareWave)
