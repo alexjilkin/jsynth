@@ -31,25 +31,23 @@ const Sequencer = ({addFunction, removeFunction, sampleRate}) => {
 
       const sectionSizeInSampleRate = Math.floor(barInSampleRate / sequenceSize);
 
-      if (sequence.some((step) => step)) {
-       
-        addFunction((y, x) => {
-          const currentStepInPlaying = Math.floor(x / sectionSizeInSampleRate) % sequenceSize
-          
-          if (x % sectionSizeInSampleRate === 0 && currentStepInPlaying === 0) {
-            sequenceAnimation()
-          }
-          
-          if (x === y) {
-            return 0;
-          }
-          if (sequence[currentStepInPlaying]) {
-            return y
-          } else {
-            return 0;
-          }
-        })
-      }
+      addFunction((y, x) => {
+        const currentStepInPlaying = Math.floor(x / sectionSizeInSampleRate) % sequenceSize
+        
+        if (x % sectionSizeInSampleRate === 0 && currentStepInPlaying === 0) {
+          sequenceAnimation()
+        }
+        
+        if (x === y) {
+          return 0;
+        }
+        if (sequence[currentStepInPlaying]) {
+          return y
+        } else {
+          return 0;
+        }
+      })
+      
 
   }, [sequence, bpm])
 

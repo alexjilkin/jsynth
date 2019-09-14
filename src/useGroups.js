@@ -14,12 +14,15 @@ function useGroups(initialGroups = []) {
     }, [groups])
     
     const updateModuleFunc = useCallback((func, groupIndex, funcIndex) => {
-        const group = groups[groupIndex]
-        const theModule = group[funcIndex]
-        
-        setGroups([...groups.slice(0, groupIndex), 
+        setGroups((prevGroups) => {
+          const group = prevGroups[groupIndex]
+          const theModule = group[funcIndex]
+
+          return [...prevGroups.slice(0, groupIndex), 
             [...group.slice(0, funcIndex), {...theModule, func}, ...group.slice(funcIndex + 1)]
-        , ...groups.slice(groupIndex + 1)])
+        , ...prevGroups.slice(groupIndex + 1)]
+    })
+
     }, [groups])
 
     return [groups, addGroup, removeGroup, updateModuleFunc];
