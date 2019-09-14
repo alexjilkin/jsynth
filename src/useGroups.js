@@ -3,8 +3,6 @@ import React, {useState, useCallback} from 'react';
 function useGroups(initialGroups = []) {
     const [groups, setGroups] = useState(initialGroups)
 
-    console.log(groups)
-
     const addGroup = useCallback((group = []) => {
         setGroups([...groups, group])
     }, [groups])

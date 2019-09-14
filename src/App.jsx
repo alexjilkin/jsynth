@@ -29,6 +29,7 @@ export const play = (waveGenerator) => {
   const t1 = performance.now()
   setTimeout(() => play(waveGenerator), ((1000 / 88200) * i) - (t1 - t0))
 }
+
 let globalGroups = [];
 
 function* waveGenerator() {
@@ -52,12 +53,15 @@ function* waveGenerator() {
   }
 }
 
-const App = (props) => {
+const bypassFunction = (y, x) => y;
+const basicGroup = [{Module: Oscillator, func: bypassFunction}, {Module: Sequencer, func: bypassFunction}];
+
+const App = () => {
   const [isOn, setIsOn] = useState(false);
-  const [groups, addGroup, removeGroup, updateModuleFunc] = useGroups();
+  const [groups, addGroup, removeGroup, updateModuleFunc] = useGroups([basicGroup]);
 
   const start = useCallback(() => {
-   const waveGen = waveGenerator(groups)
+   const waveGen = waveGenerator()
 
    play(waveGen);
   }, [groups])
@@ -70,9 +74,8 @@ const App = (props) => {
     globalGroups = groups;
   }, [groups])
 
-  const bypassFunction = (y, x) => y;
   const addOscillatorAndSequencer = () => {
-    addGroup([{Module: Oscillator, func: bypassFunction}, {Module: Sequencer, func: bypassFunction}]);
+    addGroup(basicGroup);
   }
 
   return (
@@ -86,21 +89,18 @@ const App = (props) => {
       
       <div styleName="content">
         <div styleName="groups">
-            {groups.map((group, groupIndex) => {
-              console.log(group)
-              return <div styleName="group" key={groupIndex}>
+            {groups.map((group, groupIndex) => 
+              <div styleName="group" key={groupIndex}>
                 {group.map(({Module, func}, moduleIndex) => 
                   <Module key={`${groupIndex}-${moduleIndex}`} sampleRate={sampleRate * 2} addFunction={(func) => updateModuleFunc(func, groupIndex, moduleIndex)} removeFunction={() =>{}} />
                 )}
               </div>
-            })}
+            )}
         </div>
       
         </div>
       </div>
   );
 }
-
-
 
 export default App;
