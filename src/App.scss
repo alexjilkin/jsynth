@@ -2,30 +2,42 @@
 .container {
 	font-family: Roboto;
 	height: 100%;
+	display: grid;
+	grid-template-rows: 80px 1fr;
 
-	.header {
+	header {
 		background-color:#6ed3cf;
-		display: grid;
-		grid-template-columns: 0.5fr repeat(5, 1fr);
-		grid-column-gap: 10px;
+		display: flex;
 		padding: 20px;
-		margin-bottom: 15px;
+
+		.button {
+			cursor: pointer;
+			display: grid;
+			justify-content: center;
+			align-items: center;
+			padding: 6px;
+			border-radius: 5px;
+			background-color:#9068be;
+
+			&:not(:last-child) {
+				margin-right: 10px;
+			}
+		}
+	}
+
+	.content {
+		padding: 10px;
 	}
 
 }
 
 
-.button {
-	cursor: pointer;
-	padding: 6px;
-	border-radius: 5px;
-	background-color:#9068be;
-}
+
 
 .groups {
 	display: grid;
-	grid-template-columns: 1fr 1fr;
-	grid-template-rows: 1fr 1fr 1fr;
+	grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+	grid-template-rows: repeat(auto-fit, minmax(265px, 1fr));
 	grid-gap: 15px;
 
 	.group {

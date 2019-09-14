@@ -77,24 +77,27 @@ const App = (props) => {
 
   return (
     <div styleName="container">
-      <div styleName="header">
+      <header>
         <div styleName="button" onClick={start}>Play!</div>
         <div styleName="button" onClick={addOscillatorAndSequencer}>
-          Add Oscillator
+          Add Group 
+        </div>
+      </header>
+      
+      <div styleName="content">
+        <div styleName="groups">
+            {groups.map((group, groupIndex) => {
+              console.log(group)
+              return <div styleName="group" key={groupIndex}>
+                {group.map(({Module, func}, moduleIndex) => 
+                  <Module key={`${groupIndex}-${moduleIndex}`} sampleRate={sampleRate * 2} addFunction={(func) => updateModuleFunc(func, groupIndex, moduleIndex)} removeFunction={() =>{}} />
+                )}
+              </div>
+            })}
+        </div>
+      
         </div>
       </div>
-      
-      <div styleName="groups">
-          {groups.map((group, groupIndex) => {
-            console.log(group)
-            return <div styleName="group" key={groupIndex}>
-              {group.map(({Module, func}, moduleIndex) => 
-                <Module key={`${groupIndex}-${moduleIndex}`} sampleRate={sampleRate * 2} addFunction={(func) => updateModuleFunc(func, groupIndex, moduleIndex)} removeFunction={() =>{}} />
-              )}
-            </div>
-          })}
-      </div>
-    </div>
   );
 }
 
