@@ -1,5 +1,5 @@
 # jsynth
-A modular web syhthesizer.
+A WIP of a modular web syhthesizer.
 
 https://alexjilkin.github.io/jsynth/index.html
 
