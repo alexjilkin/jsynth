@@ -7,7 +7,7 @@ import Oscillator from "./modules/oscillator/Oscillator"
 export const history = createBrowserHistory();
 import Sequencer from './modules/Sequencer'
 import Oscilloscope from './modules/Oscilloscope'
-
+import ErrorBoundary  from './common/ErrorBoundary'
 import useGroups from './useGroups'
 
 const sampleRate = 44100;
@@ -92,7 +92,9 @@ const App = () => {
             {groups.map((group, groupIndex) => 
               <div styleName="group" key={groupIndex}>
                 {group.map(({Module, func}, moduleIndex) => 
-                  <Module key={`${groupIndex}-${moduleIndex}`} sampleRate={sampleRate * 2} addFunction={(func) => updateModuleFunc(func, groupIndex, moduleIndex)} removeFunction={() =>{}} />
+                  <ErrorBoundary>
+                    <Module key={`${groupIndex}-${moduleIndex}`} sampleRate={sampleRate * 2} addFunction={(func) => updateModuleFunc(func, groupIndex, moduleIndex)} removeFunction={() =>{}} />
+                  </ErrorBoundary>
                 )}
               </div>
             )}
