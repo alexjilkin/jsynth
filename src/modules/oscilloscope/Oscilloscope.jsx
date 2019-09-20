@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react';
 
-const width = 400;
+const width = 500;
 const height = 200;
 const xUnit = width / (2000) 
 const yUnit = height / 100;
@@ -14,13 +14,16 @@ const Oscilloscope = ({addFunction, removeFunction}) => {
         const canvas = canvasRef.current;
 
         addFunction((y, x) => {
+            if (y === 0) {
+                return y;
+            }
             if (canvas.getContext) {
                 const context = canvas.getContext('2d')
                 const canvasWorldX = (x * xUnit) % width;
                 const canvasWorldY = (height * (3/5)) + (y * yUnit)
                 context.fillRect(canvasWorldX, canvasWorldY , 1, 1);
 
-                if (canvasWorldX % width === 0) {
+                if (canvasWorldX % (width) === 0) {
                     context.clearRect(0, 0, width, height)
                 }
 
