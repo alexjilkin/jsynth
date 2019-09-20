@@ -31,7 +31,8 @@
 
 		.marker {
             background-color: black;
-
+            cursor: pointer;
+            
             &.on {
                 background-color: blue;
             }
