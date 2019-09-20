@@ -1,64 +1,16 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {createBrowserHistory} from 'history';
-import pcm from './common/pcm'
-
 import './App.scss'
-import Oscillator from "./modules/oscillator/Oscillator"
+import {Oscilloscope} from 'modules'
 export const history = createBrowserHistory();
-import Sequencer from './modules/Sequencer'
-import Oscilloscope from './modules/Oscilloscope'
+
 import ErrorBoundary  from './common/ErrorBoundary'
-import useGroups from './useGroups'
-
-const sampleRate = 44100;
-const pcmObject = new pcm({channels: 1, rate: sampleRate, depth: 16});
-
-export const play = (waveGenerator) => {
-  const wave = []
-  let i = 1;
-  const t0 = performance.now()
-  
-  // TODO: Prevent "pop" sound
-  while (i <= sampleRate * 2) {
-    wave[i] = waveGenerator.next().value
-
-    i++;
-  }
-
-  pcmObject.toWav(wave).play()
-  const t1 = performance.now()
-  setTimeout(() => play(waveGenerator), ((1000 / 88200) * i) - (t1 - t0))
-}
-
-let globalGroups = [];
-
-function* waveGenerator() {
-  let x = 0;
-
-  while(true) {
-    const wavesInAColumn = []
-
-    globalGroups.forEach((modules, index) => {
-      let y = x;
-
-      modules.forEach(({func}) => {
-        y = func ? func(y, x) : y;
-      })
-
-      wavesInAColumn.push(y)
-    })
-
-    x++;
-    yield wavesInAColumn.reduce((acc, value) => acc + value, 0);
-  }
-}
-
-const bypassFunction = (y, x) => y;
-const basicGroup = [{Module: Oscillator, func: bypassFunction}, {Module: Sequencer, func: bypassFunction}];
+import useGroups from './synth/hooks/useGroups'
+import {play, basicGroup, setGroups, sampleRate, waveGenerator} from 'synth'
 
 const App = () => {
   const [isOn, setIsOn] = useState(false);
-  const [groups, addGroup, removeGroup, updateModuleFunc] = useGroups([basicGroup]);
+  const [groups, addGroup, removeGroup, updateModuleFunc] = useGroups([basicGroup, [{Module: Oscilloscope, func: (y,x) => x}]]);
 
   const start = useCallback(() => {
    const waveGen = waveGenerator()
@@ -70,9 +22,7 @@ const App = () => {
     isOn && start()
   }, [isOn]);
 
-  useEffect(() => {
-    globalGroups = groups;
-  }, [groups])
+
 
   const addOscillatorAndSequencer = () => {
     addGroup(basicGroup);
@@ -92,10 +42,11 @@ const App = () => {
             {groups.map((group, groupIndex) => 
               <div styleName="group" key={groupIndex}>
                 {group.map(({Module, func}, moduleIndex) => 
-                  <ErrorBoundary>
+                  <ErrorBoundary key={`${groupIndex}-${moduleIndex}`}>
                     <Module key={`${groupIndex}-${moduleIndex}`} sampleRate={sampleRate * 2} addFunction={(func) => updateModuleFunc(func, groupIndex, moduleIndex)} removeFunction={() =>{}} />
                   </ErrorBoundary>
                 )}
+
               </div>
             )}
         </div>

@@ -1,11 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
 
-const width = 200;
-const height = 100;
+const width = 400;
+const height = 200;
 const xUnit = width / (2000) 
 const yUnit = height / 100;
 let lastX = 0;
 let lastY = 0;
+
 const Oscilloscope = ({addFunction, removeFunction}) => {
     const canvasRef = useRef(null)
 
@@ -29,6 +30,7 @@ const Oscilloscope = ({addFunction, removeFunction}) => {
                     context.lineTo(canvasWorldX, canvasWorldY);
                     context.stroke();
                 }
+
                 lastX = canvasWorldX;
                 lastY = canvasWorldY;
             }
