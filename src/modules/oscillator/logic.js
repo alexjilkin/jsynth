@@ -11,26 +11,41 @@ export function getSquareWave(x, frequency = 440) {
 }
 
 let sawWaveCache = {}
+
 export function getSawWave(x, frequency = 440) {
-  const cyclicX = x % sampleRate;
+  const cyclicX = x % (Math.floor(sampleRate / frequency));
 
   if (sawWaveCache[frequency]) {
     return sawWaveCache[frequency][cyclicX]
   } else {
-    
-    const values = [];
-    for (let i = 0; i < sampleRate; i++) {
-      values.push((-1) * (amplitude)  * arcctg(ctg((i) * frequency * PiDividedBySampleRate)) / Math.PI)
-    }
+    sawWaveCache[frequency] = [];
 
-    sawWaveCache[frequency] = values
+    // Create lookup array;
+    for (let i = 0; i < sampleRate; i++) {
+      sawWaveCache[frequency].push((-1) * (amplitude)  * arcctg(ctg((i) * frequency * PiDividedBySampleRate)) / Math.PI)
+    }
   }
 
   return sawWaveCache[frequency][cyclicX];
 }
 
+let sineWaveCache = {}
+
 export function getSineWave(x, frequency = 440) {
-  return  (Math.sin(frequency * twoPiDividedBySampleRate * (x % sampleRate)) * amplitude) 
+  const cyclicX = x % (Math.floor(sampleRate / frequency));
+
+  if (sineWaveCache[frequency]) {
+    return sineWaveCache[frequency][cyclicX]
+  } else {
+    sineWaveCache[frequency] = [];
+
+    // Create lookup array;
+    for (let i = 0; i < (sampleRate / frequency); i++) {
+      sineWaveCache[frequency].push(Math.sin(frequency * twoPiDividedBySampleRate * i) * amplitude)
+    }
+  }
+
+  return sineWaveCache[frequency][cyclicX]
 }
 
 function ctg(x) { return 1 / Math.tan(x); }
