@@ -1,5 +1,5 @@
 import pcm from 'common/pcm'
-import {Oscillator, Sequencer, Oscilloscope} from 'modules'
+import {Oscillator, Sequencer, Delay} from 'modules'
 export const sampleRate = 44100;
 const pcmObject = new pcm({channels: 1, rate: sampleRate, depth: 16});
 
@@ -52,6 +52,6 @@ export const setGlobalGroups = (groups) => {
     globalGroups = groups;
 }
 
-export const basicGroup = [{Module: Oscillator, func: bypassFunction}, {Module: Sequencer, func: bypassFunction}];
+export const basicGroup = [{Module: Oscillator, func: bypassFunction}, {Module: Sequencer, func: bypassFunction}, {Module: Delay, func: bypassFunction}];
 
 export const bypassFunction = (y, x) => y;
