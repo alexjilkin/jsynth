@@ -8,7 +8,7 @@ const Delay = ({addFunction, removeFunction}) => {
     const feedback = useRef([]);
     const [isOn, setIsOn] = useState(false);
     const [delayAmount, setDelayAmount] = useState(0.25);
-    const [delayDepth, setDelayDepth] = useState(10);
+    const [delayDepth, setDelayDepth] = useState(5);
 
     const feedbackSize = sampleRate * 4 * delayDepth;
 
@@ -19,7 +19,10 @@ const Delay = ({addFunction, removeFunction}) => {
             addFunction((y, x) => {
                 const cyclicX = x % feedbackSize
                 feedback.current[cyclicX] = y;
-
+                if (y !== 0) {
+                    return y;
+                }
+                
                 return delayFunc(y, cyclicX, feedback.current);
             })
         } else {
