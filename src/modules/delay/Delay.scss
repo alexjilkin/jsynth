@@ -1,3 +1,10 @@
+.container {
+    padding: 16px;
+    display: grid;
+    column-gap: 10px;
+    row-gap: 10px;
+}
+
 @mixin power-indicator {
     padding: 5;
     width: 20px;

@@ -7,6 +7,7 @@ export const history = createBrowserHistory();
 import ErrorBoundary  from './common/ErrorBoundary'
 import useGroups from './synth/hooks/useGroups'
 import {play, basicGroup, setGroups, sampleRate, waveGenerator} from 'synth'
+import { bypassFunction } from './synth';
 
 const App = () => {
   const [isOn, setIsOn] = useState(false);
@@ -21,8 +22,6 @@ const App = () => {
   useEffect(() => {
     isOn && start()
   }, [isOn]);
-
-
 
   const addOscillatorAndSequencer = () => {
     addGroup(basicGroup);
@@ -43,7 +42,7 @@ const App = () => {
               <div styleName="group" key={groupIndex}>
                 {group.map(({Module, func}, moduleIndex) => 
                   <ErrorBoundary key={`${groupIndex}-${moduleIndex}`}>
-                    <Module key={`${groupIndex}-${moduleIndex}`} sampleRate={sampleRate * 2} addFunction={(func) => updateModuleFunc(func, groupIndex, moduleIndex)} removeFunction={() =>{}} />
+                    <Module key={`${groupIndex}-${moduleIndex}`} sampleRate={sampleRate * 2} addFunction={(func) => updateModuleFunc(func, groupIndex, moduleIndex)} removeFunction={(func) => updateModuleFunc(bypassFunction , groupIndex, moduleIndex)} />
                   </ErrorBoundary>
                 )}
 
