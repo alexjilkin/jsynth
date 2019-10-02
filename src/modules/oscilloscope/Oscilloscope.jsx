@@ -13,12 +13,14 @@ const Oscilloscope = ({addFunction, removeFunction}) => {
     useEffect(() => {
         const canvas = canvasRef.current;
 
-        addFunction((y, x) => {
-            if (y === 0) {
-                return y;
-            }
-            if (canvas.getContext) {
-                const context = canvas.getContext('2d')
+        if (canvas.getContext) {
+
+            const context = canvas.getContext('2d');
+            addFunction((y, x) => {
+                if (y === 0) {
+                    return y;
+                }
+
                 const canvasWorldX = (x * xUnit) % width;
                 const canvasWorldY = (height * (3/5)) + (y * yUnit)
                 context.fillRect(canvasWorldX, canvasWorldY , 1, 1);
@@ -36,10 +38,11 @@ const Oscilloscope = ({addFunction, removeFunction}) => {
 
                 lastX = canvasWorldX;
                 lastY = canvasWorldY;
-            }
-
-            return y;
-        })
+            
+                return y;
+            })
+        }
+        
         
     }, [canvasRef])
     return (
