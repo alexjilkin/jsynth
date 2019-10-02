@@ -39,17 +39,17 @@ const Delay = ({addFunction, removeFunction}) => {
 
     const delayFunc = useCallback((y, cyclicX, feedback) => {
         const feedbackSize = sampleRate * 4 * delayDepth;
-        let result = y;
+        
         const delayAmountBySamples = delayAmount * sampleRate;
 
         for(let i = 1; i < delayDepth; i++) {     
             const currentFeedbackIndex = cyclicX - (i * delayAmountBySamples) < 0 ? feedbackSize - (i * delayAmountBySamples) : cyclicX - (i * delayAmountBySamples)
 
             const currentFeedback = feedback[currentFeedbackIndex]
-            result += Math.pow(gain, i) * (y + currentFeedback)
+            y += Math.pow(gain, i) * (y + currentFeedback)
         }
     
-        return result;
+        return y;
     }, [delayAmount, feedback, delayDepth, gain])
 
     const toggleDelay = useCallback(() => {
