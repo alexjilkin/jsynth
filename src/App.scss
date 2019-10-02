@@ -35,11 +35,12 @@
 	display: grid;
 	grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
 	grid-template-rows: repeat(auto-fit, minmax(265px, 1fr));
-	grid-gap: 15px;
+	grid-gap: 16px;
 
 	.group {
 		display: grid;
 		grid-template-columns: 1fr 1fr;
+		grid-gap: 16px;
 		width: 500px;
 		padding: 10px;
 		border: 1px solid #6ed3cf;

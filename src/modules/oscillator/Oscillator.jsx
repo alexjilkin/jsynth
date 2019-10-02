@@ -9,6 +9,7 @@ const Oscillator = ({addFunction, removeFunction}) => {
     const [isSineOn, setIsSineOn] = useState(true);
     const [isSawOn, setIsSawOn] = useState(false);
     const [frequency, setFrequency] = useState(440);
+    const [isFirstOn, setIsFirstOn] = useState(true);
     const [is3rdOn, setIs3rdOn] = useState(false);
     const [is5thOn, setIs5thOn] = useState(false);
     
@@ -20,15 +21,10 @@ const Oscillator = ({addFunction, removeFunction}) => {
 
         const oscillatorFunc = (y, x) => {
             const wave = funcs.reduce((acc, func) => {
-                acc += func(x, frequency)
-                if (is3rdOn) {
-                    acc += func(x, frequency * 1.2);
-                }
+                isFirstOn && (acc += func(x, frequency));
+                is3rdOn && (acc += func(x, frequency * 1.2));
+                is5thOn && (acc += func(x, frequency * 1.5));
                 
-                if (is5thOn) {
-                    acc += func(x, frequency * 1.5);
-                }
-
                 return acc;
             }, 0)
             if (x !== y) {
@@ -41,7 +37,7 @@ const Oscillator = ({addFunction, removeFunction}) => {
         
         addFunction(oscillatorFunc)
         
-    }, [frequency, isSquareOn, isSineOn, isSawOn, is3rdOn, is5thOn]);
+    }, [frequency, isSquareOn, isSineOn, isSawOn, isFirstOn, is3rdOn, is5thOn]);
 
     return(
         <div styleName="container">
@@ -73,6 +69,9 @@ const Oscillator = ({addFunction, removeFunction}) => {
                 </div>
             </div>
             <div styleName="harmonics">
+                <div onClick={() => setIsFirstOn(!isFirstOn)}>
+                    root <div styleName={`${isFirstOn ? 'on' : 'off'}`}></div>
+                </div>
                 <div onClick={() => setIs3rdOn(!is3rdOn)}>
                     3rd <div styleName={`${is3rdOn ? 'on' : 'off'}`}></div>
                 </div>

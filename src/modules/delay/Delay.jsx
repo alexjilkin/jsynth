@@ -2,18 +2,20 @@ import React, {useEffect, useRef, useState, useCallback} from 'react'
 import Knob from 'react-canvas-knob';
 import './Delay.scss'
 const sampleRate = 44100;
-const gain = 0.7;
 
 const Delay = ({addFunction, removeFunction}) => {
     const feedback = useRef([]);
     const [isOn, setIsOn] = useState(false);
     const [delayAmount, setDelayAmount] = useState(0.25);
     const [delayDepth, setDelayDepth] = useState(5);
+    const [gain, setGain] = useState(0.5);
 
-    const feedbackSize = sampleRate * 4 * delayDepth;
+    
 
     useEffect(() => {
         // TODO: dont save feedback forever.
+
+        const feedbackSize = sampleRate * 4 * delayDepth;
 
         if(isOn) {
             addFunction((y, x) => {
@@ -28,26 +30,27 @@ const Delay = ({addFunction, removeFunction}) => {
         } else {
             addFunction((y, x) => {
                 const cyclicX = x % feedbackSize
-                feedback.current[cyclicX] = y;;
+                feedback.current[cyclicX] = y;
 
                 return y;
             })
         }
-    }, [isOn, delayAmount, delayDepth])
+    }, [isOn, delayAmount, delayDepth, gain])
 
     const delayFunc = useCallback((y, cyclicX, feedback) => {
+        const feedbackSize = sampleRate * 4 * delayDepth;
         let result = y;
         const delayAmountBySamples = delayAmount * sampleRate;
 
         for(let i = 1; i < delayDepth; i++) {     
             const currentFeedbackIndex = cyclicX - (i * delayAmountBySamples) < 0 ? feedbackSize - (i * delayAmountBySamples) : cyclicX - (i * delayAmountBySamples)
 
-            const currentFeedback = feedback[ currentFeedbackIndex]
+            const currentFeedback = feedback[currentFeedbackIndex]
             result += Math.pow(gain, i) * (y + currentFeedback)
         }
     
         return result;
-    }, [delayAmount, feedback, delayDepth])
+    }, [delayAmount, feedback, delayDepth, gain])
 
     const toggleDelay = useCallback(() => {
         setIsOn(!isOn)
@@ -55,17 +58,51 @@ const Delay = ({addFunction, removeFunction}) => {
 
     return (
         <div styleName="container">
-            Delay.
-            <Knob 
-                min={0}
-                max={3}
-                step={0.1}
-                width={100}
-                height={100}
-                fgColor="#9068be"
-                value={delayAmount}
-                onChange={setDelayAmount}
-                />
+            <div styleName="title">Delay.</div>
+            <div styleName="knobs">
+                <div styleName="knob">
+                    Time
+                    <Knob 
+                        min={0}
+                        max={3}
+                        step={0.1}
+                        width={70}
+                        height={70}
+                        fgColor="#9068be"
+                        value={delayAmount}
+                        onChange={setDelayAmount}
+                    />
+                </div>
+
+                <div styleName="knob">
+                    Depth
+                    <Knob 
+                        min={0}
+                        max={15}
+                        step={1}
+                        width={70}
+                        height={70}
+                        fgColor="#9068be"
+                        value={delayDepth}
+                        onChange={setDelayDepth}
+                    />
+                </div>
+
+                <div styleName="knob">
+                    Gain
+                    <Knob 
+                        min={0}
+                        max={1}
+                        step={0.1}
+                        width={70}
+                        height={70}
+                        fgColor="#9068be"
+                        value={gain}
+                        onChange={setGain}
+                    />
+                </div>
+            
+            </div>
             <div onClick={toggleDelay} styleName={isOn ? 'on' : 'off'}></div>
 
         </div>
