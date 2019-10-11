@@ -32,6 +32,10 @@ export function* waveGenerator() {
     
     const oscilloscopeGroup = groups.pop()
     groups.forEach((modules, index) => {
+      if (modules.length === 0) {
+        return;
+      }
+
       let y = x;
 
       modules.forEach(({func}) => {

@@ -29,7 +29,17 @@ function useGroups(initialGroups = []) {
 
     }, [groups])
 
-    return [groups, addGroup, removeGroup, updateModuleFunc];
+    const addModuleToGroup = useCallback((theModule, groupIndex) => {
+        setGroups((prevGroups) => {
+            const group = prevGroups[groupIndex]
+
+          return [...prevGroups.slice(0, groupIndex), 
+            [...group, theModule]
+            , ...prevGroups.slice(groupIndex + 1)]
+        })
+    })
+
+    return [groups, addGroup, removeGroup, updateModuleFunc, addModuleToGroup];
 }
 
 export default useGroups

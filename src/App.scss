@@ -33,17 +33,31 @@
 
 .groups {
 	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
-	grid-template-rows: repeat(auto-fit, minmax(265px, 1fr));
+
 	grid-gap: 16px;
 
 	.group {
-		display: grid;
-		grid-template-columns: 1fr 1fr;
-		grid-gap: 16px;
-		width: 500px;
+
 		padding: 10px;
 		border: 1px solid #6ed3cf;
+		display: grid;
+		grid-template-rows: 0.1fr 0.9fr;
+
+		.add-modules {
+			display: flex;
+			.button {
+				margin: 10px;
+			}
+			
+		}
+
+		.modules {
+			display: flex;
+
+			.module {
+				margin: 10px;
+			}
+		}
 	}
 }
 

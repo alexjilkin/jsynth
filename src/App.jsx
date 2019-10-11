@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {createBrowserHistory} from 'history';
 import './App.scss'
-import {Oscilloscope} from 'modules'
+import {Oscilloscope, Oscillator, Sequencer, Delay} from 'modules'
 export const history = createBrowserHistory();
 
 import ErrorBoundary  from './common/ErrorBoundary'
@@ -11,7 +11,7 @@ import { bypassFunction } from './synth';
 
 const App = () => {
   const [isOn, setIsOn] = useState(false);
-  const [groups, addGroup, removeGroup, updateModuleFunc] = useGroups([basicGroup, [{Module: Oscilloscope, func: (y,x) => x}]]);
+  const [groups, addGroup, removeGroup, updateModuleFunc, addModuleToGroup] = useGroups([[], [{Module: Oscilloscope, func: (y,x) => x}]]);
 
   const start = useCallback(() => {
    const waveGen = waveGenerator()
@@ -24,7 +24,7 @@ const App = () => {
   }, [isOn]);
 
   const addOscillatorAndSequencer = () => {
-    addGroup(basicGroup);
+    addGroup();
   }
 
   return (
@@ -40,16 +40,25 @@ const App = () => {
         <div styleName="groups">
             {groups.map((group, groupIndex) => 
               <div styleName="group" key={groupIndex}>
-                {group.map(({Module, func}, moduleIndex) => 
-                  <ErrorBoundary key={`${groupIndex}-${moduleIndex}`}>
-                    <Module key={`${groupIndex}-${moduleIndex}`} sampleRate={sampleRate * 2} addFunction={(func) => updateModuleFunc(func, groupIndex, moduleIndex)} removeFunction={(func) => updateModuleFunc(bypassFunction , groupIndex, moduleIndex)} />
-                  </ErrorBoundary>
-                )}
-
+                <div styleName="add-modules">
+                  <div styleName="button" onClick={() => addModuleToGroup({Module: Oscillator, func: bypassFunction}, groupIndex)}>Oscillator</div>
+                  <div styleName="button" onClick={() => addModuleToGroup({Module: Sequencer, func: bypassFunction}, groupIndex)}>Sequencer</div>
+                  <div styleName="button" onClick={() => addModuleToGroup({Module: Delay, func: bypassFunction}, groupIndex)}>Delay</div>
+                </div>
+                <div styleName="modules"> 
+                  {group.map(({Module, func}, moduleIndex) => 
+                    <div styleName="module">
+                      <ErrorBoundary key={`${groupIndex}-${moduleIndex}`}>
+                        <Module key={`${groupIndex}-${moduleIndex}`} sampleRate={sampleRate * 2} addFunction={(func) => updateModuleFunc(func, groupIndex, moduleIndex)} removeFunction={(func) => updateModuleFunc(bypassFunction , groupIndex, moduleIndex)} />
+                      </ErrorBoundary>
+                    </div>
+                  )}
+                </div>
+                
+                
               </div>
             )}
         </div>
-      
         </div>
       </div>
   );
