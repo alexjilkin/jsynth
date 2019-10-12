@@ -1,0 +1,14 @@
+.group {
+    padding: 10px;
+    margin: 10px;;
+    border: 1px solid #6ed3cf;
+    display: flex;
+
+    .modules {
+        display: flex;
+
+        .module {
+            margin: 10px;
+        }
+    }
+}

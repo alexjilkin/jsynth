@@ -1,6 +1,7 @@
 import pcm from 'common/pcm'
 import {Oscillator, Sequencer, Delay} from 'modules'
-export const sampleRate = 44100;
+import {sampleRate} from './consts'
+
 const pcmObject = new pcm({channels: 1, rate: sampleRate, depth: 16});
 
 export const play = (waveGenerator) => {
@@ -33,7 +34,7 @@ export function* waveGenerator() {
     const oscilloscopeGroup = groups.pop()
     groups.forEach((modules, index) => {
       if (modules.length === 0) {
-        return;
+        return; 
       }
 
       let y = x;

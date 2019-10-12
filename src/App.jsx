@@ -1,13 +1,18 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import {createBrowserHistory} from 'history';
+import { DndProvider, useDrag, useDrop } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+
 import './App.scss'
 import {Oscilloscope, Oscillator, Sequencer, Delay} from 'modules'
 export const history = createBrowserHistory();
 
-import ErrorBoundary  from './common/ErrorBoundary'
 import useGroups from './synth/hooks/useGroups'
 import {play, basicGroup, setGroups, sampleRate, waveGenerator} from 'synth'
 import { bypassFunction } from './synth';
+import Group from 'synth/Group';
+
+import {ItemTypes} from 'synth/consts'
 
 const App = () => {
   const [isOn, setIsOn] = useState(false);
@@ -36,32 +41,47 @@ const App = () => {
         </div>
       </header>
       
-      <div styleName="content">
-        <div styleName="groups">
-            {groups.map((group, groupIndex) => 
-              <div styleName="group" key={groupIndex}>
-                <div styleName="add-modules">
-                  <div styleName="button" onClick={() => addModuleToGroup({Module: Oscillator, func: bypassFunction}, groupIndex)}>Oscillator</div>
-                  <div styleName="button" onClick={() => addModuleToGroup({Module: Sequencer, func: bypassFunction}, groupIndex)}>Sequencer</div>
-                  <div styleName="button" onClick={() => addModuleToGroup({Module: Delay, func: bypassFunction}, groupIndex)}>Delay</div>
-                </div>
-                <div styleName="modules"> 
-                  {group.map(({Module, func}, moduleIndex) => 
-                    <div styleName="module">
-                      <ErrorBoundary key={`${groupIndex}-${moduleIndex}`}>
-                        <Module key={`${groupIndex}-${moduleIndex}`} sampleRate={sampleRate * 2} addFunction={(func) => updateModuleFunc(func, groupIndex, moduleIndex)} removeFunction={(func) => updateModuleFunc(bypassFunction , groupIndex, moduleIndex)} />
-                      </ErrorBoundary>
-                    </div>
-                  )}
-                </div>
-                
-                
+      
+        <DndProvider backend={HTML5Backend}>
+          <div styleName="content">
+            <div styleName="add-modules">
+              <AddModule Module={Oscillator} name="Oscillator" />
+              <AddModule Module={Sequencer} name="Sequencer" />
+            </div>
+            <div styleName="groups">
+                {groups.map((group, groupIndex) => 
+                  <Group key={groupIndex} group={group} index={groupIndex} updateModuleFunc={updateModuleFunc} addModuleToGroup={addModuleToGroup}/>
+                )}
               </div>
-            )}
-        </div>
-        </div>
+            </div>
+          </DndProvider>
+        
       </div>
   );
+}
+
+
+const AddModule = ({Module, name}) => {
+  const [{isDragging}, drag] = useDrag({
+    item: { type: ItemTypes.MODULE, Module },
+		collect: monitor => ({
+      isDragging: !!monitor.isDragging()
+		}),
+  })
+
+  return (
+    <div
+    style={{
+      opacity: isDragging ? 0.5 : 1,
+      fontSize: 25,
+      fontWeight: 'bold',
+      cursor: 'move',
+    }}
+    ref={drag}
+    styleName="button" 
+    onClick={() => addModuleToGroup({Module, func: bypassFunction}, 0)}
+    >{name}</div>
+  )
 }
 
 export default App;

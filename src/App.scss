@@ -3,7 +3,7 @@
 	font-family: Roboto;
 	height: 100%;
 	display: grid;
-	grid-template-rows: 80px 1fr;
+	grid-auto-rows: 80px;
 
 	header {
 		background-color:#6ed3cf;
@@ -27,38 +27,25 @@
 
 	.content {
 		padding: 10px;
+		display: grid;
+		grid-template-rows: 0.1fr;
+
 	}
 
 }
 
 .groups {
-	display: grid;
+	display: flex;
 
-	grid-gap: 16px;
+	
+}
 
-	.group {
-
-		padding: 10px;
-		border: 1px solid #6ed3cf;
-		display: grid;
-		grid-template-rows: 0.1fr 0.9fr;
-
-		.add-modules {
-			display: flex;
-			.button {
-				margin: 10px;
-			}
-			
-		}
-
-		.modules {
-			display: flex;
-
-			.module {
-				margin: 10px;
-			}
-		}
+.add-modules {
+	display: flex;
+	.button {
+		margin: 10px;
 	}
+	
 }
 
 
