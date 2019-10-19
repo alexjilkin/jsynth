@@ -22,7 +22,7 @@ export function getSawWave(x, frequency = 440) {
 
     // Create lookup array;
     for (let i = 0; i < sampleRate; i++) {
-      sawWaveCache[frequency].push((-1) * (amplitude)  * arcctg(ctg((i) * frequency * PiDividedBySampleRate)) / Math.PI)
+      sawWaveCache[frequency].push((-1) * (amplitude / 2)  * arcctg(ctg((i) * frequency * PiDividedBySampleRate)) / Math.PI)
     }
   }
 

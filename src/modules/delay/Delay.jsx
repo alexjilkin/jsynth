@@ -10,7 +10,21 @@ const Delay = ({addFunction, removeFunction}) => {
     const [delayDepth, setDelayDepth] = useState(5);
     const [gain, setGain] = useState(0.5);
 
+    const delayFunc = useCallback((y, cyclicX, feedback) => {
+        const feedbackSize = sampleRate * 4 * delayDepth;
+        
+        const delayAmountBySamples = delayAmount * sampleRate;
+
+        for(let i = 1; i < delayDepth; i++) {     
+            const currentFeedbackIndex = cyclicX - (i * delayAmountBySamples) < 0 ? feedbackSize - (i * delayAmountBySamples) : cyclicX - (i * delayAmountBySamples)
+
+            const currentFeedback = feedback[currentFeedbackIndex]
+            y += Math.pow(gain, i) * (y + currentFeedback)
+        }
     
+        return y;
+    }, [delayAmount, feedback, delayDepth, gain])
+
 
     useEffect(() => {
         // TODO: dont save feedback forever.
@@ -36,21 +50,6 @@ const Delay = ({addFunction, removeFunction}) => {
             })
         }
     }, [isOn, delayAmount, delayDepth, gain])
-
-    const delayFunc = useCallback((y, cyclicX, feedback) => {
-        const feedbackSize = sampleRate * 4 * delayDepth;
-        
-        const delayAmountBySamples = delayAmount * sampleRate;
-
-        for(let i = 1; i < delayDepth; i++) {     
-            const currentFeedbackIndex = cyclicX - (i * delayAmountBySamples) < 0 ? feedbackSize - (i * delayAmountBySamples) : cyclicX - (i * delayAmountBySamples)
-
-            const currentFeedback = feedback[currentFeedbackIndex]
-            y += Math.pow(gain, i) * (y + currentFeedback)
-        }
-    
-        return y;
-    }, [delayAmount, feedback, delayDepth, gain])
 
     const toggleDelay = useCallback(() => {
         setIsOn(!isOn)
