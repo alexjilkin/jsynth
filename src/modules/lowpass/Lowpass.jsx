@@ -4,14 +4,17 @@ import {sampleRate} from 'synth/consts'
 
 const PiDividedBySampleRate = Math.PI / sampleRate;
 const twoPiDividedBySampleRate = PiDividedBySampleRate * 2;
+let prevY = 0;
 
-const LFO = ({addFunction, removeFunction}) => { 
+const Lowpass = ({addFunction, removeFunction}) => { 
     const [frequency, setFrequency] = useState(10);
 
     useEffect(() => {
         addFunction((y, x) => {
-            const cyclicX = x % (Math.floor(sampleRate / frequency));
-            return y * Math.sin(Math.sin(frequency * twoPiDividedBySampleRate * cyclicX));
+            const result = prevY + ((frequency / 10) * (y - prevY))
+
+            prevY = result;
+            return result;
         })
     }, [frequency])
 
@@ -32,4 +35,4 @@ const LFO = ({addFunction, removeFunction}) => {
     )
 }
 
-export default LFO
+export default Lowpass

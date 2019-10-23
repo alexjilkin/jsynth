@@ -3,7 +3,7 @@
 	font-family: Roboto;
 	height: 100%;
 	display: grid;
-	grid-auto-rows: 80px;
+	grid-auto-rows: 0.1fr 0.9fr;
 
 	header {
 		background-color:#6ed3cf;
@@ -28,7 +28,7 @@
 	.content {
 		padding: 10px;
 		display: grid;
-		grid-template-rows: 0.1fr;
+		grid-template-rows: 0.1fr fit-content(1000px);
 
 	}
 
@@ -36,7 +36,7 @@
 
 .groups {
 	display: flex;
-
+	flex-direction: column;
 	
 }
 
