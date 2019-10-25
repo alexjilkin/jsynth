@@ -9,16 +9,21 @@ export const play = (waveGenerator) => {
   let i = 1;
   const t0 = performance.now()
   
+  const samplesPerWav = sampleRate * 2
   // TODO: Prevent "pop" sound
-  while (i <= sampleRate * 2) {
+  while (i <= samplesPerWav) {
     wave[i] = waveGenerator.next().value
 
     i++;
   }
 
+  for (let j = wave.length - 100; j < wave.length; j++) {
+    wave[j] = wave[j] / Math.pow(2, (j - (wave.length - 100)))
+  }
+
   pcmObject.toWav(wave).play()
   const t1 = performance.now()
-  setTimeout(() => play(waveGenerator), ((1000 / 88200) * i) - (t1 - t0))
+  setTimeout(() => play(waveGenerator), (samplesPerWav / (sampleRate * 2) * 1000) - (t1 - t0))
 }
 
 let globalGroups = [];
@@ -47,7 +52,7 @@ export function* waveGenerator() {
     })
 
     x++;
-    
+
     let wavesSum = wavesInAColumn.reduce((acc, value) => acc + value, 0);
     masterGroup.forEach(({func}) => {
       wavesSum = func(wavesSum, x)

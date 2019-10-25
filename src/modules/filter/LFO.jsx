@@ -2,12 +2,13 @@ import React, {useState, useEffect} from 'react'
 import Knob from 'react-canvas-knob';
 import {sampleRate} from 'synth/consts'
 
-const PiDividedBySampleRate = Math.PI / sampleRate;
-const twoPiDividedBySampleRate = PiDividedBySampleRate * 2;
 
-const LFO = ({addFunction, removeFunction}) => { 
+
+const LFO = ({addFunction, removeFunction, sampleRate}) => { 
     const [frequency, setFrequency] = useState(10);
 
+    const PiDividedBySampleRate = Math.PI / sampleRate;
+const twoPiDividedBySampleRate = PiDividedBySampleRate * 2;
     useEffect(() => {
         addFunction((y, x) => {
             const cyclicX = x % (Math.floor(sampleRate / frequency));

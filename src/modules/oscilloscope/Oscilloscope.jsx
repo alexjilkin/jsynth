@@ -1,5 +1,4 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {sampleRate} from 'synth/consts'
 const width = 500;
 const height = 200;
 const xUnit = width / (2000) 

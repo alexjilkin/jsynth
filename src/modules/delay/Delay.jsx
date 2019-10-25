@@ -1,9 +1,8 @@
 import React, {useEffect, useRef, useState, useCallback} from 'react'
 import Knob from 'react-canvas-knob';
 import './Delay.scss'
-const sampleRate = 44100;
 
-const Delay = ({addFunction, removeFunction}) => {
+const Delay = ({addFunction, removeFunction, sampleRate}) => {
     const feedback = useRef([]);
     const [isOn, setIsOn] = useState(false);
     const [delayAmount, setDelayAmount] = useState(0.25);

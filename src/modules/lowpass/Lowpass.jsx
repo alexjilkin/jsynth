@@ -3,8 +3,6 @@ import Knob from 'react-canvas-knob';
 import {sampleRate} from 'synth/consts'
 import './Lowpass.scss';
 
-const PiDividedBySampleRate = Math.PI / sampleRate;
-const twoPiDividedBySampleRate = PiDividedBySampleRate * 2;
 let prevY = 0;
 
 const Lowpass = ({addFunction, removeFunction}) => { 
