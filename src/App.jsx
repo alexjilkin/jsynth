@@ -4,7 +4,7 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
 import './App.scss'
-import {Oscilloscope, Oscillator, Sequencer, Delay, LFO} from 'modules'
+import {Oscilloscope, Oscillator, Sequencer, Delay, Lowpass, LFO} from 'modules'
 export const history = createBrowserHistory();
 
 import useGroups from './synth/hooks/useGroups'
@@ -16,7 +16,7 @@ import {ItemTypes} from 'synth/consts'
 
 const App = () => {
   const [isOn, setIsOn] = useState(false);
-  const [groups, addGroup, removeGroup, updateModuleFunc, addModuleToGroup] = useGroups([[{Module: Oscillator, func: bypassFunction}, {Module: Sequencer, func: bypassFunction}, {Module: Delay, func: bypassFunction}, {Module: LFO, func: bypassFunction}], [{Module: Oscilloscope, func: (y,x) => x}]]);
+  const [groups, addGroup, removeGroup, updateModuleFunc, addModuleToGroup] = useGroups([[{Module: Oscillator, func: bypassFunction}, {Module: Sequencer, func: bypassFunction}, {Module: Delay, func: bypassFunction}], [{Module: Oscilloscope, func: (y,x) => x}]]);
 
   const start = useCallback(() => {
    const waveGen = waveGenerator()
@@ -48,6 +48,8 @@ const App = () => {
               <AddModule Module={Oscillator} name="Oscillator" />
               <AddModule Module={Sequencer} name="Sequencer" />
               <AddModule Module={Delay} name="Delay" />
+              <AddModule Module={LFO} name="LFO" />
+              <AddModule Module={Lowpass} name="Lowpass" />
             </div>
             <div styleName="groups">
                 {groups.map((group, groupIndex) => 

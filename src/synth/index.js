@@ -31,7 +31,7 @@ export function* waveGenerator() {
     
     const groups = [...globalGroups]
     
-    const oscilloscopeGroup = groups.pop()
+    const masterGroup = groups.pop()
     groups.forEach((modules, index) => {
       if (modules.length === 0) {
         return; 
@@ -47,8 +47,13 @@ export function* waveGenerator() {
     })
 
     x++;
-    const wavesSum = wavesInAColumn.reduce((acc, value) => acc + value, 0);
-    oscilloscopeGroup[0].func(wavesSum, x)
+    
+    let wavesSum = wavesInAColumn.reduce((acc, value) => acc + value, 0);
+    masterGroup.forEach(({func}) => {
+      wavesSum = func(wavesSum, x)
+    })
+
+
     yield wavesSum
   }
 }

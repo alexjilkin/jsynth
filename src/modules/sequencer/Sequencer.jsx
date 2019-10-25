@@ -28,7 +28,6 @@ const Sequencer = ({addFunction, removeFunction, sampleRate}) => {
   }, [sequenceSize])
 
   useEffect(() => {
-      removeFunction();
       const bps = bpm / 60;
       const barInSampleRate = ((sampleRate / bps) * 4);
 
