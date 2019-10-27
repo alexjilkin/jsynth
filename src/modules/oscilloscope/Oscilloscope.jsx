@@ -1,4 +1,5 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useEffect, useRef} from 'react';
+
 const width = 500;
 const height = 200;
 const xUnit = width / (2000) 
@@ -24,11 +25,11 @@ const Oscilloscope = ({addFunction, removeFunction}) => {
                 const canvasWorldY = (height * (3/5)) + (y * yUnit)
                 context.fillRect(canvasWorldX, canvasWorldY , 1, 1);
 
-                if (canvasWorldX === 0) {
+                if (canvasWorldX % (width) === 0) {
                     context.clearRect(0, 0, width, height)
                 }
 
-                if (Math.abs(canvasWorldY - lastY) > 3 && canvasWorldX !== 0) {
+                if (Math.abs(canvasWorldY - lastY) > 5 && canvasWorldX !== 0) {
                     context.beginPath();
                     context.moveTo(lastX, lastY);
                     context.lineTo(canvasWorldX, canvasWorldY);

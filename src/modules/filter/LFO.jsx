@@ -9,6 +9,7 @@ const LFO = ({addFunction, removeFunction, sampleRate}) => {
 
     const PiDividedBySampleRate = Math.PI / sampleRate;
 const twoPiDividedBySampleRate = PiDividedBySampleRate * 2;
+
     useEffect(() => {
         addFunction((y, x) => {
             const cyclicX = x % (Math.floor(sampleRate / frequency));
