@@ -14,7 +14,6 @@ const Group = ({group, index, updateModuleFunc, addModuleToGroup}) => {
   
     return (
       <div styleName="group" key={index} ref={drop}>
-        <div styleName="modules"> 
           {group.map(({Module, func}, moduleIndex) => 
             <div styleName="module" key={`${index}-${moduleIndex}`}>
               <ErrorBoundary >
@@ -22,7 +21,6 @@ const Group = ({group, index, updateModuleFunc, addModuleToGroup}) => {
               </ErrorBoundary>
             </div>
           )}
-        </div>
       </div>
       )
   }

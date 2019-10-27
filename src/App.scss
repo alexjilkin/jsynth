@@ -32,13 +32,14 @@
 
 	}
 
+	.groups {
+		display: flex;
+		flex-wrap: wrap;
+	}
+
 }
 
-.groups {
-	display: flex;
-	flex-direction: column;
-	
-}
+
 
 .add-modules {
 	display: flex;
@@ -48,10 +49,6 @@
 	
 }
 
-
-.module {
-	
-}
 
 
 .play {
