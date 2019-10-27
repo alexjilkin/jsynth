@@ -49,4 +49,17 @@
         font-weight: 900;
         font-size: 20px;
     }
+
+    .envelope {
+        margin-left: 10px;
+        cursor: pointer;
+        
+        &.on {
+            color: black;
+        }
+
+        &.off {
+            color: lightgrey;
+        }
+    }
 }

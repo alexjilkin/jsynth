@@ -15,11 +15,11 @@ const Group = ({group, index, updateModuleFunc, addModuleToGroup}) => {
     return (
       <div styleName="group" key={index} ref={drop}>
           {group.map(({Module, func}, moduleIndex) => 
-            <div styleName="module" key={`${index}-${moduleIndex}`}>
+            <span styleName="module" key={`${index}-${moduleIndex}`}>
               <ErrorBoundary >
                 <Module key={`${index}-${moduleIndex}`} sampleRate={sampleRate * 2} addFunction={(func) => updateModuleFunc(func, index, moduleIndex)} removeFunction={(func) => updateModuleFunc(bypassFunction , index, moduleIndex)} />
               </ErrorBoundary>
-            </div>
+            </span>
           )}
       </div>
       )

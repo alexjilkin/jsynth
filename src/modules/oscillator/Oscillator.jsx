@@ -1,7 +1,7 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useState, useEffect} from 'react';
 import {getSineWave, getSquareWave, getSawWave} from "./logic"
 import Knob from 'react-canvas-knob';
-
+import debounce from 'lodash/debounce'
 import './Oscillator.scss'
 
 const Oscillator = ({addFunction, removeFunction}) => {
@@ -13,7 +13,8 @@ const Oscillator = ({addFunction, removeFunction}) => {
     const [is3rdOn, setIs3rdOn] = useState(false);
     const [is5thOn, setIs5thOn] = useState(false);
     
-    useEffect(() => {
+
+    useEffect(debounce(() => {
         let funcs = [];
         isSineOn && funcs.push(getSineWave)
         isSquareOn && funcs.push(getSquareWave)
@@ -36,9 +37,8 @@ const Oscillator = ({addFunction, removeFunction}) => {
         }
         
         addFunction(oscillatorFunc)
-        
-    }, [frequency, isSquareOn, isSineOn, isSawOn, isFirstOn, is3rdOn, is5thOn]);
-
+    }, 200), [frequency, isSquareOn, isSineOn, isSawOn, isFirstOn, is3rdOn, is5thOn]);
+    
     return(
         <div styleName="container">
             <div styleName="title">An osciallator.</div>
