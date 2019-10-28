@@ -16,7 +16,7 @@ import {ItemTypes} from 'synth/consts'
 
 const App = () => {
   const [isOn, setIsOn] = useState(false);
-  const [groups, addGroup, removeGroup, updateModuleFunc, addModuleToGroup] = useGroups([[{Module: Oscillator, func: bypassFunction}, {Module: Sequencer, func: bypassFunction}, {Module: Delay, func: bypassFunction}], [{Module: Oscilloscope, func: (y,x) => x}, {Module: FrequencyView, func: bypassFunction}]]);
+  const [groups, addGroup, removeGroup, updateModuleFunc, addModuleToGroup] = useGroups([[{Module: Oscillator, func: bypassFunction}, {Module: Sequencer, func: bypassFunction}], [{Module: Oscilloscope, func: (y,x) => x}, {Module: FrequencyView, func: bypassFunction}]]);
 
   const start = useCallback(() => {
    const waveGen = waveGenerator()
