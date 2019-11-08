@@ -40,23 +40,29 @@ const App = () => {
 
   return (
     <div styleName="container">
+      <DndProvider backend={HTML5Backend}>
       <header>
-        <div styleName="button" onClick={start}>Play!</div>
-        <div styleName="button" onClick={addOscillatorAndSequencer}>
-          Add Group 
+        <div styleName="play-button-container">
+          <div styleName={`play-button ${isOn ? 'playing' : ''}`} onClick={() => setIsOn(!isOn)}></div>
+          Play
         </div>
+        <div styleName="add-group" onClick={addOscillatorAndSequencer}>
+              Add Group 
+        </div>
+          <div styleName="modules">
+            <AddModule name="Oscillator" />
+            <AddModule name="Sequencer" />
+            <AddModule name="Delay" />
+            <AddModule name="LFO" />
+            <AddModule name="Lowpass" />
+          </div>
       </header>
       
       
-        <DndProvider backend={HTML5Backend}>
+        
           <div styleName="content">
-            <div styleName="add-modules">
-              <AddModule name="Oscillator" />
-              <AddModule name="Sequencer" />
-              <AddModule name="Delay" />
-              <AddModule name="LFO" />
-              <AddModule name="Lowpass" />
-            </div>
+            
+            
             <div styleName="groups">
                 {groups.map((group, groupIndex) => 
                   <Group 
@@ -87,10 +93,10 @@ const AddModule = ({name}) => {
 
   return (
     <div
-      style={{opacity: isDragging ? 0.5 : 1, fontSize: 25, fontWeight: 'bold', cursor: 'move'}}
+      style={{opacity: isDragging ? 0.5 : 1, fontSize: 25, fontWeight: 'bold', cursor: 'move', marginRight: 10}}
       ref={drag}
-      styleName="button" 
       onClick={() => addModuleToGroup({module: name, func: bypassFunction}, 0)}
+      styleName="module"
     >{name}</div>
   )
 }

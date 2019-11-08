@@ -1,4 +1,9 @@
 
+
+
+
+
+
 .container {
 	font-family: Roboto;
 	height: 100%;
@@ -7,20 +12,62 @@
 
 	header {
 		background-color:#6ed3cf;
-		display: flex;
-		padding: 20px;
+		display: grid;
+		grid-template-columns: 100px 1fr;
+		grid-template-rows: 50px 50px;
+		padding: 10px;
 
-		.button {
+
+			.modules {
+				display: flex;
+				align-items: center;
+				grid-row: 2;
+				grid-column: 2;
+
+				.module {
+					font-size: 25;
+					font-weight: bold;
+					cursor: move;
+					margin-right: 10;
+
+					&:hover {
+						color: white;
+					}
+				}
+
+			
+			}
+			
+			
+		
+
+		.add-group {
+			grid-row: 1;
+			grid-column: 2;
 			cursor: pointer;
-			display: grid;
-			justify-content: center;
-			align-items: center;
-			padding: 6px;
-			border-radius: 5px;
-			background-color:#9068be;
+		}
 
-			&:not(:last-child) {
-				margin-right: 10px;
+		.play-button-container {
+			grid-column: 1;
+			grid-row: 1 / 2;
+			display: grid;
+			text-align: center;
+			margin-right: 20px;
+		
+			.play-button {
+				cursor: pointer;
+				display: grid;
+				justify-content: center;
+				align-items: center;
+				padding: 6px;
+				border-radius: 5px;
+				background-color:#9068be;
+				width: 60px;
+				height: 60px;
+		
+				&.playing {
+					background-color:#8f57ac;
+				}
 			}
 		}
 	}
@@ -37,16 +84,6 @@
 		flex-wrap: wrap;
 	}
 
-}
-
-
-
-.add-modules {
-	display: flex;
-	.button {
-		margin: 10px;
-	}
-	
 }
 
 
