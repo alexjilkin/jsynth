@@ -2,12 +2,18 @@ import React, {useState, useEffect, useCallback} from 'react';
 import './Sequencer.scss';
 import Knob from 'react-canvas-knob';
 
-const Sequencer = ({addFunction, removeFunction, sampleRate}) => {
-  const [sequenceSize, setSequenceSize] = useState(8)
-  const [sequence, setSequence] = useState(Array.from({length: sequenceSize}))
+const defaultState = {
+  sequenceSize: 8,
+  sequence: Array.from({length: 8}),
+  bpm: 120,
+  isEnvelopeOn: false
+}
+const Sequencer = ({addFunction, removeFunction, sampleRate, updateState, persistentState = defaultState}) => {
+  const [sequenceSize, setSequenceSize] = useState(persistentState.sequenceSize)
+  const [sequence, setSequence] = useState(persistentState.sequence)
   const [currentStep, setCurrentStep] = useState(-1)
-  const [bpm, setBpm] = useState(120)
-  const [isEnvelopeOn, setIsEnvelopeOn] = useState(false)
+  const [bpm, setBpm] = useState(persistentState.bpm)
+  const [isEnvelopeOn, setIsEnvelopeOn] = useState(persistentState.isEnvelopeOn)
 
   const noteLength = 60 / bpm * (4 / sequenceSize)
   const sequenceLength = noteLength * sequenceSize;
@@ -25,7 +31,9 @@ const Sequencer = ({addFunction, removeFunction, sampleRate}) => {
   }
 
   useEffect(() => {
-    setSequence(Array.from({length: sequenceSize}))
+    if (sequence.length !== sequenceSize) {
+      setSequence(Array.from({length: sequenceSize}))
+    }
   }, [sequenceSize])
 
   useEffect(() => {
@@ -34,6 +42,7 @@ const Sequencer = ({addFunction, removeFunction, sampleRate}) => {
 
       const sectionSizeInSampleRate = Math.floor(barInSampleRate / sequenceSize);
 
+      updateState({sequence, bpm, sequenceSize, isEnvelopeOn})
       addFunction((y, x) => {
         const xRelativeToSection = x % sectionSizeInSampleRate;
 

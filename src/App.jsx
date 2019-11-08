@@ -8,7 +8,7 @@ import {Oscilloscope, Oscillator, Sequencer, Delay, Lowpass, LFO, FrequencyView}
 export const history = createBrowserHistory();
 
 import useGroups from './synth/hooks/useGroups'
-import {play, basicGroup, setGroups, sampleRate, waveGenerator} from 'synth'
+import {play, basicGroup, basicMasterGroup, waveGenerator} from 'synth'
 import { bypassFunction } from './synth';
 import Group from 'synth/Group';
 
@@ -16,7 +16,13 @@ import {ItemTypes} from 'synth/consts'
 
 const App = () => {
   const [isOn, setIsOn] = useState(false);
-  const [groups, addGroup, removeGroup, updateModuleFunc, addModuleToGroup] = useGroups([[{Module: Oscillator, func: bypassFunction}, {Module: Sequencer, func: bypassFunction}], [{Module: Oscilloscope, func: (y,x) => x}, {Module: FrequencyView, func: bypassFunction}]]);
+  const {groups, addGroup, removeGroup, updateModuleFunc, updateModulePersistentState, addModuleToGroup} = useGroups(
+    localStorage.getItem('groups') && JSON.parse(localStorage.getItem('groups')) || 
+    [basicGroup, basicMasterGroup]);
+
+  useEffect(() => {
+    localStorage.setItem('groups', JSON.stringify(groups))
+  }, [groups])
 
   const start = useCallback(() => {
    const waveGen = waveGenerator()
@@ -45,15 +51,22 @@ const App = () => {
         <DndProvider backend={HTML5Backend}>
           <div styleName="content">
             <div styleName="add-modules">
-              <AddModule Module={Oscillator} name="Oscillator" />
-              <AddModule Module={Sequencer} name="Sequencer" />
-              <AddModule Module={Delay} name="Delay" />
-              <AddModule Module={LFO} name="LFO" />
-              <AddModule Module={Lowpass} name="Lowpass" />
+              <AddModule name="Oscillator" />
+              <AddModule name="Sequencer" />
+              <AddModule name="Delay" />
+              <AddModule name="LFO" />
+              <AddModule name="Lowpass" />
             </div>
             <div styleName="groups">
                 {groups.map((group, groupIndex) => 
-                  <Group key={groupIndex} group={group} index={groupIndex} updateModuleFunc={updateModuleFunc} addModuleToGroup={addModuleToGroup}/>
+                  <Group 
+                    key={groupIndex} 
+                    group={group} 
+                    index={groupIndex} 
+                    updateModuleFunc={updateModuleFunc} 
+                    addModuleToGroup={addModuleToGroup}
+                    updateState={updateModulePersistentState}
+                  />
                 )}
               </div>
             </div>
@@ -64,9 +77,9 @@ const App = () => {
 }
 
 
-const AddModule = ({Module, name}) => {
+const AddModule = ({name}) => {
   const [{isDragging}, drag] = useDrag({
-    item: { type: ItemTypes.MODULE, Module },
+    item: { type: ItemTypes.MODULE, name },
 		collect: monitor => ({
       isDragging: !!monitor.isDragging()
 		}),
@@ -74,15 +87,10 @@ const AddModule = ({Module, name}) => {
 
   return (
     <div
-    style={{
-      opacity: isDragging ? 0.5 : 1,
-      fontSize: 25,
-      fontWeight: 'bold',
-      cursor: 'move',
-    }}
-    ref={drag}
-    styleName="button" 
-    onClick={() => addModuleToGroup({Module, func: bypassFunction}, 0)}
+      style={{opacity: isDragging ? 0.5 : 1, fontSize: 25, fontWeight: 'bold', cursor: 'move'}}
+      ref={drag}
+      styleName="button" 
+      onClick={() => addModuleToGroup({module: name, func: bypassFunction}, 0)}
     >{name}</div>
   )
 }

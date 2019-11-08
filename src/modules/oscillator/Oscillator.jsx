@@ -4,15 +4,25 @@ import Knob from 'react-canvas-knob';
 import debounce from 'lodash/debounce'
 import './Oscillator.scss'
 
-const Oscillator = ({addFunction, removeFunction}) => {
-    const [isSquareOn, setIsSquareOn] = useState(false);
-    const [isSineOn, setIsSineOn] = useState(true);
-    const [isSawOn, setIsSawOn] = useState(false);
-    const [frequency, setFrequency] = useState(440);
-    const [isFirstOn, setIsFirstOn] = useState(true);
-    const [is3rdOn, setIs3rdOn] = useState(false);
-    const [is5thOn, setIs5thOn] = useState(false);
-    
+
+const defaultState = {
+    isSquareOn: false,
+    isSineOn: true,
+    isSawOn: false,
+    frequency: 440,
+    isFirstOn: true,
+    is3rdOn: false,
+    is5thOn: false
+}
+
+const Oscillator = ({addFunction, removeFunction, updateState, persistentState = defaultState}) => {
+    const [isSquareOn, setIsSquareOn] = useState(persistentState.isSquareOn);
+    const [isSineOn, setIsSineOn] = useState(persistentState.isSineOn);
+    const [isSawOn, setIsSawOn] = useState(persistentState.isSawOn);
+    const [frequency, setFrequency] = useState(persistentState.frequency);
+    const [isFirstOn, setIsFirstOn] = useState(persistentState.isFirstOn);
+    const [is3rdOn, setIs3rdOn] = useState(persistentState.is3rdOn);
+    const [is5thOn, setIs5thOn] = useState(persistentState.is5thOn);
 
     useEffect(debounce(() => {
         let funcs = [];
@@ -37,6 +47,7 @@ const Oscillator = ({addFunction, removeFunction}) => {
         }
         
         addFunction(oscillatorFunc)
+        updateState({frequency, isSquareOn, isSineOn, isSawOn, isFirstOn, is3rdOn, is5thOn})
     }, 200), [frequency, isSquareOn, isSineOn, isSawOn, isFirstOn, is3rdOn, is5thOn]);
     
     return(

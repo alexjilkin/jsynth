@@ -67,6 +67,6 @@ export const setGlobalGroups = (groups) => {
     globalGroups = groups;
 }
 
-export const basicGroup = [{Module: Oscillator, func: bypassFunction}, {Module: Sequencer, func: bypassFunction}, {Module: Delay, func: bypassFunction}];
-
+export const basicGroup = [{module: 'Oscillator', func: bypassFunction}, {module: 'Sequencer', func: bypassFunction}];
+export const basicMasterGroup = [{module: 'Oscilloscope', func: (y,x) => x}, {module: 'FrequencyView', func: bypassFunction}];
 export const bypassFunction = (y, x) => y;

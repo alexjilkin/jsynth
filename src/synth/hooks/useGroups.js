@@ -29,6 +29,19 @@ function useGroups(initialGroups = []) {
 
     }, [groups])
 
+
+    const updateModulePersistentState = useCallback((persistentState, groupIndex, funcIndex) => {
+        setGroups((prevGroups) => {
+          const group = prevGroups[groupIndex]
+          const theModule = group[funcIndex]
+
+          return [...prevGroups.slice(0, groupIndex), 
+            [...group.slice(0, funcIndex), {...theModule, persistentState}, ...group.slice(funcIndex + 1)]
+        , ...prevGroups.slice(groupIndex + 1)]
+    })
+
+    }, [groups])
+
     const addModuleToGroup = useCallback((theModule, groupIndex) => {
         setGroups((prevGroups) => {
             const group = prevGroups[groupIndex]
@@ -39,7 +52,7 @@ function useGroups(initialGroups = []) {
         })
     })
 
-    return [groups, addGroup, removeGroup, updateModuleFunc, addModuleToGroup];
+    return {groups, addGroup, removeGroup, updateModuleFunc, updateModulePersistentState, addModuleToGroup};
 }
 
 export default useGroups
