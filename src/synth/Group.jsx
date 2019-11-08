@@ -7,36 +7,36 @@ import './Group.scss'
 import * as Modules from 'modules'
 
 const Group = ({group, index, updateModuleFunc, addModuleToGroup, updateState}) => {
-    const [, drop] = useDrop({
-      accept: ItemTypes.MODULE,
-      drop: monitor => addModuleToGroup({module: monitor.name, func: bypassFunction}, index),
-    })
-  
-    return (
-      <div styleName="group" key={index} ref={drop}>
-          {group.map(({module: moduleName, func, persistentState}, moduleIndex) => 
-            <span styleName="module" key={`${index}-${moduleIndex}`}>
-              <ErrorBoundary >
-                {(() => {
+  const [, drop] = useDrop({
+    accept: ItemTypes.MODULE,
+    drop: monitor => addModuleToGroup({module: monitor.name, func: bypassFunction}, index),
+  })
 
-                  const Module = Modules[moduleName]
+  return (
+    <div styleName="group" key={index} ref={drop}>
+        {group.map(({module: moduleName, func, persistentState}, moduleIndex) => 
+          <span styleName="module" key={`${index}-${moduleIndex}`}>
+            <ErrorBoundary >
+              {(() => {
 
-                  return (
-                    <Module
-                      key={`${index}-${moduleIndex}`}
-                      sampleRate={sampleRate * 2} 
-                      addFunction={(func) => updateModuleFunc(func, index, moduleIndex)}
-                      updateState={(nextState) => updateState(nextState, index, moduleIndex)}
-                      persistentState={persistentState}
-                    />
-                  )
-                })()}
-                
-              </ErrorBoundary>
-            </span>
-          )}
-      </div>
-      )
+                const Module = Modules[moduleName]
+
+                return (
+                  <Module
+                    key={`${index}-${moduleIndex}`}
+                    sampleRate={sampleRate * 2} 
+                    addFunction={(func) => updateModuleFunc(func, index, moduleIndex)}
+                    updateState={(nextState) => updateState(nextState, index, moduleIndex)}
+                    persistentState={persistentState}
+                  />
+                )
+              })()}
+              
+            </ErrorBoundary>
+          </span>
+        )}
+    </div>
+    )
   }
 
   export default Group

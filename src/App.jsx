@@ -12,13 +12,13 @@ import {play, basicGroup, basicMasterGroup, waveGenerator} from 'synth'
 import { bypassFunction } from './synth';
 import Group from 'synth/Group';
 
-import {ItemTypes} from 'synth/consts'
+import {ItemTypes, demoState} from 'synth/consts'
 
 const App = () => {
   const [isOn, setIsOn] = useState(false);
   const {groups, addGroup, removeGroup, updateModuleFunc, updateModulePersistentState, addModuleToGroup} = useGroups(
     localStorage.getItem('groups') && JSON.parse(localStorage.getItem('groups')) || 
-    [basicGroup, basicMasterGroup]);
+    demoState);
 
   useEffect(() => {
     localStorage.setItem('groups', JSON.stringify(groups))
