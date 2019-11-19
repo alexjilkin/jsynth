@@ -42,17 +42,27 @@ function useGroups(initialGroups = []) {
 
     }, [groups])
 
-    const addModuleToGroup = useCallback((theModule, groupIndex) => {
+    const addModuleToGroup = useCallback((theModule, groupIndex, moduleIndex) => {
+        setGroups((prevGroups) => {
+            const group = prevGroups[groupIndex]
+            moduleIndex = typeof moduleIndex === "undefined" ? group.length : moduleIndex;
+
+            return [...prevGroups.slice(0, groupIndex), 
+                [...group.slice(0, moduleIndex), {...theModule}, ...group.slice(moduleIndex)]
+                , ...prevGroups.slice(groupIndex + 1)]
+        })
+    })
+    const removeModuleFromGroup = useCallback((groupIndex, moduleIndex) => {
         setGroups((prevGroups) => {
             const group = prevGroups[groupIndex]
 
           return [...prevGroups.slice(0, groupIndex), 
-            [...group, theModule]
+            [...group.slice(0, moduleIndex), ...group.slice(moduleIndex + 1)]
             , ...prevGroups.slice(groupIndex + 1)]
         })
     })
 
-    return {groups, addGroup, removeGroup, updateModuleFunc, updateModulePersistentState, addModuleToGroup};
+    return {groups, addGroup, removeGroup, updateModuleFunc, updateModulePersistentState, addModuleToGroup, removeModuleFromGroup};
 }
 
 export default useGroups

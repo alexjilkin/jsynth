@@ -16,7 +16,7 @@ import {ItemTypes, demoState} from 'synth/consts'
 
 const App = () => {
   const [isOn, setIsOn] = useState(false);
-  const {groups, addGroup, removeGroup, updateModuleFunc, updateModulePersistentState, addModuleToGroup} = useGroups(
+  const {groups, addGroup, removeGroup, updateModuleFunc, updateModulePersistentState, addModuleToGroup, removeModuleFromGroup} = useGroups(
     localStorage.getItem('groups') && JSON.parse(localStorage.getItem('groups')) || 
     demoState);
 
@@ -71,6 +71,7 @@ const App = () => {
                     index={groupIndex} 
                     updateModuleFunc={updateModuleFunc} 
                     addModuleToGroup={addModuleToGroup}
+                    removeModuleFromGroup={removeModuleFromGroup}
                     updateState={updateModulePersistentState}
                   />
                 )}
@@ -93,7 +94,7 @@ const AddModule = ({name}) => {
 
   return (
     <div
-      style={{opacity: isDragging ? 0.5 : 1, fontSize: 25, fontWeight: 'bold', cursor: 'move', marginRight: 10}}
+      style={{opacity: isDragging ? 0.5 : 1}}
       ref={drag}
       onClick={() => addModuleToGroup({module: name, func: bypassFunction}, 0)}
       styleName="module"
