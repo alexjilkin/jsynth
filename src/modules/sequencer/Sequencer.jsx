@@ -40,13 +40,13 @@ const Sequencer = ({addFunction, removeFunction, sampleRate, updateState, persis
       const bps = bpm / 60;
       const barInSampleRate = ((sampleRate / bps) * 4);
 
-      const sectionSizeInSampleRate = Math.floor(barInSampleRate / sequenceSize);
+      const sectionSizeInSampleRate = ~~(barInSampleRate / sequenceSize);
 
       updateState({sequence, bpm, sequenceSize, isEnvelopeOn})
       addFunction((y, x) => {
         const xRelativeToSection = x % sectionSizeInSampleRate;
 
-        const currentStepInPlaying = Math.floor(x / sectionSizeInSampleRate) % sequenceSize
+        const currentStepInPlaying = ~~(x / sectionSizeInSampleRate) % sequenceSize
         
         if (xRelativeToSection === 0 && currentStepInPlaying === 0) {
           sequenceAnimation()

@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from 'react' 
 import Knob from 'react-canvas-knob';
-import {sampleRate} from 'synth/consts'
 import './Lowpass.scss';
 
 let prevY = 0;

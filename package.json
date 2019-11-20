@@ -26,8 +26,10 @@
     "react-router-redux": "^4.0.8",
     "react-select": "^2.0.0-beta.3",
     "react-slider-simple": "^4.0.5",
+    "react-three-fiber": "^3.0.14",
     "react-transform-catch-errors": "^1.0.2",
-    "react-transform-hmr": "^1.0.4"
+    "react-transform-hmr": "^1.0.4",
+    "three": "^0.110.0"
   },
   "devDependencies": {
     "@babel/core": "^7.5.5",

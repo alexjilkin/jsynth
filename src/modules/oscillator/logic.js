@@ -1,7 +1,6 @@
 const frequencySong = [660, 660, 660, 510, 660, 770, 380, 510, 380, 320, 440, 480, 450, 430, 380, 660, 760, 860, 700, 760, 660, 520]
-const sampleRate = 44100 * 2;
-const amplitude = Math.pow(2, 4);
-
+const sampleRate = 22050 * 2;
+const amplitude = Math.pow(2, 3);
 
 const PiDividedBySampleRate = Math.PI / sampleRate;
 const twoPiDividedBySampleRate = PiDividedBySampleRate * 2;
@@ -13,7 +12,7 @@ export function getSquareWave(x, frequency = 440) {
 let sawWaveCache = {}
 
 export function getSawWave(x, frequency = 440) {
-  const cyclicX = x % (Math.floor(sampleRate / frequency));
+  const cyclicX = x % (~~(sampleRate / frequency));
 
   if (sawWaveCache[frequency]) {
     return sawWaveCache[frequency][cyclicX]
@@ -29,23 +28,22 @@ export function getSawWave(x, frequency = 440) {
   return sawWaveCache[frequency][cyclicX];
 }
 
-let sineWaveCache = {}
+let sineWaveCache = new Map();
 
 export function getSineWave(x, frequency = 440) {
-  const cyclicX = x % (Math.floor(sampleRate / frequency));
+  const cyclicX = x % (~~(sampleRate / frequency));
 
-  if (sineWaveCache[frequency]) {
-    return sineWaveCache[frequency][cyclicX]
-  } else {
-    sineWaveCache[frequency] = [];
+  if (!sineWaveCache.has(frequency)) {
+    
+    sineWaveCache.set(frequency, []);
 
     // Create lookup array;
     for (let i = 0; i < (sampleRate / frequency); i++) {
-      sineWaveCache[frequency].push(Math.sin(frequency * twoPiDividedBySampleRate * i) * amplitude)
+      sineWaveCache.get(frequency).push(Math.sin(frequency * twoPiDividedBySampleRate * i) * amplitude)
     }
   }
 
-  return sineWaveCache[frequency][cyclicX]
+  return sineWaveCache.get(frequency)[cyclicX]
 }
 
 function ctg(x) { return 1 / Math.tan(x); }
