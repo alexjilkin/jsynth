@@ -1,5 +1,6 @@
 # Web modular synthesizer
-All waves are generated in your browser.
+Waves and music generated in your browser.
+
 ![modular synth](https://user-images.githubusercontent.com/16067593/69498908-a9fe1980-0ef5-11ea-90ef-b40e907743d4.png)
 
 https://alexjilkin.github.io/module-web-synth/
