@@ -1,29 +1,35 @@
-import pcm from 'common/pcm'
 import {Oscillator, Sequencer, Delay} from 'modules'
 import {sampleRate} from './consts'
+var master = new AudioContext({sampleRate: 44100});
 
-const pcmObject = new pcm({channels: 1, rate: sampleRate, depth: 16});
+const bufSize = 4096;
+const rate = master.sampleRate
+const buffer = master.createBuffer(1, bufSize, master.sampleRate)
 
 export const play = (waveGenerator) => {
-  const wave = []
-  let i = 1;
-  const t0 = performance.now()
+
+  const func = () => {
+    return waveGenerator.next().value
+  }
+
+  const createBuffer = (output) => {
+    for (let i = 0; i < buffer.length; i++) {
+      const value = func();
   
-  const samplesPerWav = sampleRate * 2
-  // TODO: Prevent "pop" sound
-  while (i <= samplesPerWav) {
-    wave[i] = waveGenerator.next().value
-
-    i++;
+      output[i] = value
+    }
   }
 
-  for (let j = wave.length - 100; j < wave.length; j++) {
-    wave[j] = wave[j] / Math.pow(2, (j - (wave.length - 100)))
-  }
+  const source = master.createScriptProcessor(bufSize, 1, 1);
+  source.buffer = buffer;
 
-  pcmObject.toWav(wave).play()
-  const t1 = performance.now()
-  setTimeout(() => play(waveGenerator), (samplesPerWav / (sampleRate * 2) * 1000) - (t1 - t0))
+  source.connect(master.destination);
+  
+
+  source.addEventListener('audioprocess', (e) => {
+    createBuffer(e.outputBuffer.getChannelData(0));
+  })
+  
 }
 
 let globalGroups = [];

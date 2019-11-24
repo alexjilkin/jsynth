@@ -18,7 +18,7 @@ const Group = ({group, index, updateModuleFunc, addModuleToGroup,removeModuleFro
                       theModule={group[moduleIndex]}
                       groupIndex={index}
                       moduleIndex={moduleIndex}
-                      sampleRate={sampleRate * 2} 
+                      sampleRate={sampleRate} 
                       addFunction={(func) => updateModuleFunc(func, index, moduleIndex)}
                       updateState={(nextState) => updateState(nextState, index, moduleIndex)}
                       persistentState={persistentState}

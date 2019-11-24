@@ -3,7 +3,7 @@ import React, {useEffect, useRef} from 'react';
 const width = 500;
 const height = 200;
 const xUnit = width / (2000) 
-const yUnit = height / 100;
+const yUnit = height;
 let lastX = 0;
 let lastY = 0;
 

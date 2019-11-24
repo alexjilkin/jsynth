@@ -1,6 +1,7 @@
-const frequencySong = [660, 660, 660, 510, 660, 770, 380, 510, 380, 320, 440, 480, 450, 430, 380, 660, 760, 860, 700, 760, 660, 520]
-const sampleRate = 22050 * 2;
-const amplitude = Math.pow(2, 3);
+import {sampleRate} from 'synth/consts'
+
+
+const amplitude = 0.17
 
 const PiDividedBySampleRate = Math.PI / sampleRate;
 const twoPiDividedBySampleRate = PiDividedBySampleRate * 2;
