@@ -1,15 +1,18 @@
 import {Oscillator, Sequencer, Delay} from 'modules'
 import {sampleRate} from './consts'
-var master = new AudioContext({sampleRate: 44100});
 
+let master;
 const bufSize = 4096;
-const rate = master.sampleRate
-const buffer = master.createBuffer(1, bufSize, master.sampleRate)
-const source = master.createScriptProcessor(bufSize, 1, 1);
+let buffer;
+let source;
 
 let isPlaying = false;
 
 export const play = (waveGenerator) => {
+  master = new AudioContext({sampleRate: 44100});
+  buffer = master.createBuffer(1, bufSize, sampleRate)
+  source = master.createScriptProcessor(bufSize, 1, 1);
+
   isPlaying = true;
 
   const func = () => {
