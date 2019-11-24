@@ -8,7 +8,7 @@ import {Oscilloscope, Oscillator, Sequencer, Delay, Lowpass, LFO, FrequencyView}
 export const history = createBrowserHistory();
 
 import useGroups from './synth/hooks/useGroups'
-import {play, basicGroup, basicMasterGroup, waveGenerator} from 'synth'
+import {play, stop, basicGroup, basicMasterGroup, waveGenerator} from 'synth'
 import { bypassFunction } from './synth';
 import Group from 'synth/Group';
 
@@ -25,13 +25,13 @@ const App = () => {
   }, [groups])
 
   const start = useCallback(() => {
-   const waveGen = waveGenerator()
+    const waveGen = waveGenerator()
 
-   play(waveGen);
+    play(waveGen);
   }, [groups])
 
   useEffect(() => {
-    isOn && start()
+    isOn ? start() : stop()
   }, [isOn]);
 
   const addOscillatorAndSequencer = () => {

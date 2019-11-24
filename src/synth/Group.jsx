@@ -4,16 +4,17 @@ import {ItemTypes, sampleRate} from 'synth/consts'
 import ErrorBoundary  from 'common/ErrorBoundary'
 import {bypassFunction} from 'synth'
 import './Group.scss'
-import DragabbleModule from './dnd/DraggableModule'
+import DraggableModule from './dnd/DraggableModule'
 
 const Group = ({group, index, updateModuleFunc, addModuleToGroup,removeModuleFromGroup, updateState}) => {
   return (
     <div styleName="group" key={index}>
+      <InBetween {...{groupIndex: index, moduleIndex: 0, addModuleToGroup, removeModuleFromGroup}} />
         {group.map(({module: moduleName, func, persistentState}, moduleIndex) => 
           <span key={`${index}-${moduleIndex}`} styleName="module-and-inbetween">
             <div styleName="module">
               <ErrorBoundary >
-                    <DragabbleModule
+                    <DraggableModule
                       key={`${index}-${moduleIndex}`}
                       theModule={group[moduleIndex]}
                       groupIndex={index}
@@ -42,7 +43,7 @@ const Group = ({group, index, updateModuleFunc, addModuleToGroup,removeModuleFro
       drop: (item, monitor) => {
         const {groupIndex: sourceGroupIndex, moduleIndex: sourceModuleIndex, name, theModule = {module: name, func: bypassFunction}} = item;
 
-        if (sourceModuleIndex + 1 === moduleIndex) {
+        if (sourceModuleIndex + 1 === moduleIndex || sourceModuleIndex === moduleIndex) {
           return;
         }
 

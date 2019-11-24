@@ -5,8 +5,12 @@ var master = new AudioContext({sampleRate: 44100});
 const bufSize = 4096;
 const rate = master.sampleRate
 const buffer = master.createBuffer(1, bufSize, master.sampleRate)
+const source = master.createScriptProcessor(bufSize, 1, 1);
+
+let isPlaying = false;
 
 export const play = (waveGenerator) => {
+  isPlaying = true;
 
   const func = () => {
     return waveGenerator.next().value
@@ -20,16 +24,20 @@ export const play = (waveGenerator) => {
     }
   }
 
-  const source = master.createScriptProcessor(bufSize, 1, 1);
+  
   source.buffer = buffer;
 
   source.connect(master.destination);
   
 
   source.addEventListener('audioprocess', (e) => {
-    createBuffer(e.outputBuffer.getChannelData(0));
+    isPlaying && createBuffer(e.outputBuffer.getChannelData(0));
   })
   
+}
+
+export const stop = () => {
+  isPlaying = false;
 }
 
 let globalGroups = [];

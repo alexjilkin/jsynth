@@ -59,7 +59,8 @@ function Cube({onXChange, onYChange, onZChange}) {
         addLights(scene);
         addCube(scene)
 
-        camera.position.z = orbitRadius;
+        camera.position.x = orbitRadius;
+        camera.position.z = orbitRadius / 2;
         ref.current.appendChild( renderer.domElement );
 
         setControls(camera, renderer.domElement);
@@ -153,7 +154,7 @@ const Oscillator = ({addFunction, removeFunction, updateState, persistentState =
                 />
             </div>
             <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Cube onXChange={debounce(setSineAmount, 200)} onYChange={debounce(setSquareAmount, 200)} onZChange={debounce(setSawAmount, 200)}/>
+            <Cube onXChange={debounce(setSineAmount, 100)} onYChange={debounce(setSquareAmount, 100)} onZChange={debounce(setSawAmount, 100)}/>
             </div>
             
             <div styleName="harmonics">

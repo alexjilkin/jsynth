@@ -4,7 +4,7 @@ import {ItemTypes} from 'synth/consts'
 import * as Modules from 'modules'
 import './DraggableModule.scss'
 
-const DragabbleModule = ({moduleName, groupIndex, moduleIndex, theModule, ...props}) => {
+const DraggableModule = ({moduleName, groupIndex, moduleIndex, theModule, ...props}) => {
 
     const [{isDragging}, drag] = useDrag({
       item: { type: ItemTypes.MODULE, groupIndex, moduleIndex, theModule },
@@ -16,9 +16,11 @@ const DragabbleModule = ({moduleName, groupIndex, moduleIndex, theModule, ...pro
     const Module = Modules[moduleName]
 
     return (
-      <div styleName={'container'}>
-        <div styleName="drag" ref={drag}>
+      <div styleName="container">
+        <div styleName="drag-container"  ref={drag}>
+          <div styleName="drag">
 
+          </div>
         </div>
         <Module {...props} />
         {isDragging && <div styleName="overlay"></div>}
@@ -26,4 +28,4 @@ const DragabbleModule = ({moduleName, groupIndex, moduleIndex, theModule, ...pro
     )
   }
 
-  export default DragabbleModule;
+  export default DraggableModule;

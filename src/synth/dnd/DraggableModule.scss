@@ -1,11 +1,22 @@
 .container{
     backdrop-filter: blur(2px);
-    .drag {
+    .drag-container {
         width: 100%;
-        height: 10px;
-        background-color: grey;
+        height: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #e1e8f0;
         cursor: move;
+        
+        .drag {
+            width: 60%;
+            height: 2px;
+            background-color: grey;
+            
+        }
     }
+    
 
     .overlay{
         position: absolute;
