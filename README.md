@@ -1,10 +1,11 @@
-# jsynth
+# Web modular synthesizer
 A WIP of a modular web syhthesizer.
 
-Press play to start playing, drag and drop modules from the menu.
+
+Press play to start playing
+Rotate the cube to change level of oscialltor waves
+drag and drop modules.
 
 https://alexjilkin.github.io/jsynth/
-
-Currently consists of a simple oscillator combined with a sequencer and a canvas oscilloscope at the end.
 
 yarn && yarn start to run locally.
