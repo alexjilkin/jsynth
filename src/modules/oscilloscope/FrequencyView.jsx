@@ -32,7 +32,7 @@ const FrequencyView = ({addFunction, removeFunction, sampleRate}) => {
 
                     for (let x = 0; x < frequencies.length; x++) {
                         const canvasWorldX = (x * xUnit);
-                        const canvasWorldY = (height * (3/5)) + (frequencies[x][0])
+                        const canvasWorldY = (height * (1/2)) + (frequencies[x][0] * yUnit)
                         context.fillRect(canvasWorldX, canvasWorldY , 1, 1);
         
                         if (canvasWorldX === 0) {
