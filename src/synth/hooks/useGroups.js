@@ -1,6 +1,5 @@
-import React, {useState, useCallback, useEffect} from 'react';
+import React, {useState, useCallback, useEffect, createContext} from 'react';
 import {setGlobalGroups} from 'synth'
-import {Oscilloscope} from 'modules'
 
 function useGroups(initialGroups = []) {
     const [groups, setGroups] = useState(initialGroups)
@@ -61,7 +60,7 @@ function useGroups(initialGroups = []) {
             , ...prevGroups.slice(groupIndex + 1)]
         })
     })
-
+    
     return {groups, addGroup, removeGroup, updateModuleFunc, updateModulePersistentState, addModuleToGroup, removeModuleFromGroup};
 }
 

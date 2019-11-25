@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from 'react';
 
-const width = 500;
+const width = 300;
 const height = 200;
 const xUnit = width / (2000) 
 const yUnit = height;

@@ -16,7 +16,7 @@ import {ItemTypes, demoState} from 'synth/consts'
 
 const App = () => {
   const [isOn, setIsOn] = useState(false);
-  const {groups, addGroup, removeGroup, updateModuleFunc, updateModulePersistentState, addModuleToGroup, removeModuleFromGroup} = useGroups(
+  const {groups, addGroup, masterGroup, removeGroup, updateModuleFunc, updateModulePersistentState, addModuleToGroup, removeModuleFromGroup} = useGroups(
     localStorage.getItem('groups') && JSON.parse(localStorage.getItem('groups')) || 
     demoState);
 
@@ -49,35 +49,44 @@ const App = () => {
         <div styleName="add-group" onClick={addOscillatorAndSequencer}>
               Add Group 
         </div>
-          <div styleName="modules">
-            <AddModule name="Oscillator" />
-            <AddModule name="Sequencer" />
-            <AddModule name="Delay" />
-            <AddModule name="LFO" />
-            <AddModule name="Lowpass" />
-          </div>
+        <div styleName="modules">
+          <AddModule name="Oscillator" />
+          <AddModule name="Sequencer" />
+          <AddModule name="Delay" />
+          <AddModule name="LFO" />
+          <AddModule name="Lowpass" />
+        </div>
       </header>
-      
-      
-        
-          <div styleName="content">
-            
-            
-            <div styleName="groups">
-                {groups.map((group, groupIndex) => 
-                  <Group 
-                    key={groupIndex} 
-                    group={group} 
-                    index={groupIndex} 
-                    updateModuleFunc={updateModuleFunc} 
-                    addModuleToGroup={addModuleToGroup}
-                    removeModuleFromGroup={removeModuleFromGroup}
-                    updateState={updateModulePersistentState}
-                  />
-                )}
-              </div>
-            </div>
-          </DndProvider>
+        <div styleName="content">
+          <div styleName="groups">
+              {groups.slice(0, groups.length - 1).map((group, groupIndex) => 
+                <Group 
+                  key={groupIndex} 
+                  group={group} 
+                  index={groupIndex} 
+                  updateModuleFunc={updateModuleFunc} 
+                  addModuleToGroup={addModuleToGroup}
+                  removeModuleFromGroup={removeModuleFromGroup}
+                  updateState={updateModulePersistentState}
+                />
+              )}
+          </div>
+          <div styleName="master">
+                Master channel
+                <Group
+                  key={groups.length - 1} 
+                  group={groups[groups.length - 1]} 
+                  index={groups.length - 1} 
+                  updateModuleFunc={updateModuleFunc} 
+                  addModuleToGroup={addModuleToGroup}
+                  removeModuleFromGroup={removeModuleFromGroup}
+                  updateState={updateModulePersistentState}
+                >
+                  
+                </Group>
+          </div>
+        </div>
+      </DndProvider>
         
       </div>
   );
