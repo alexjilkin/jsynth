@@ -1,8 +1,9 @@
 .container {
     background-color: #e1e8f0;
     display: grid;
+    border-radius: 6px;
     grid-template-rows: 30px 150px 30px 50px;
-    width: 200px;
+    width: 180px;
 	padding: 5px;
     
     .bpm-container {
@@ -23,10 +24,10 @@
 
     }
 	.markers {
-		padding: 5px;
+		padding: 4px;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(15px, 1fr));
-        grid-gap: 10px;
+        grid-template-columns: repeat(auto-fit, minmax(14px, 1fr));
+        grid-gap: 8px;
         background-color: grey;
 
 		.marker {

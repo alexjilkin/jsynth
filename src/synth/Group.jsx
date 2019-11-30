@@ -6,7 +6,7 @@ import {bypassFunction} from 'synth'
 import './Group.scss'
 import DraggableModule from './dnd/DraggableModule'
 
-const Group = ({group, index, updateModuleFunc, addModuleToGroup,removeModuleFromGroup, updateState}) => {
+const Group = ({group, index, updateModuleFunc, addModuleToGroup, removeModuleFromGroup, updateState}) => {
   return (
     <div styleName="group" key={index}>
       <InBetween {...{groupIndex: index, moduleIndex: 0, addModuleToGroup, removeModuleFromGroup}} />
@@ -19,8 +19,9 @@ const Group = ({group, index, updateModuleFunc, addModuleToGroup,removeModuleFro
                       theModule={group[moduleIndex]}
                       groupIndex={index}
                       moduleIndex={moduleIndex}
-                      sampleRate={sampleRate} 
-                      addFunction={(func) => updateModuleFunc(func, index, moduleIndex)}
+                      sampleRate={sampleRate}
+                      removeModuleFromGroup={removeModuleFromGroup}
+                      updateModulationFunction={(func) => updateModuleFunc(func, index, moduleIndex)}
                       updateState={(nextState) => updateState(nextState, index, moduleIndex)}
                       persistentState={persistentState}
                       moduleName={moduleName}

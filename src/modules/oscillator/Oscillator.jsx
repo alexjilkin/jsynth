@@ -1,14 +1,12 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {getSineWave, getSquareWave, getSawWave} from "./logic"
+import {getSineWave, getSquareWave, getSawWave} from "./waveFunctions"
 import Knob from 'react-canvas-knob';
 import debounce from 'lodash/debounce'
 
 import './Oscillator.scss'
 
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-
-const debounced = debounce((y) => console.log(y), 1000)
+import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
 const defaultState = {
     isSquareOn: false,
@@ -99,7 +97,7 @@ function Cube({onXChange, onYChange, onZChange}) {
     )
   }
 
-const Oscillator = ({addFunction, removeFunction, updateState, persistentState = defaultState}) => {
+const Oscillator = ({updateModulationFunction, removeFunction, updateState, persistentState = defaultState}) => {
     const [isSquareOn, setIsSquareOn] = useState(persistentState.isSquareOn);
     const [isSineOn, setIsSineOn] = useState(persistentState.isSineOn);
     const [isSawOn, setIsSawOn] = useState(persistentState.isSawOn);
@@ -131,10 +129,9 @@ const Oscillator = ({addFunction, removeFunction, updateState, persistentState =
             } else {
                 return wave;
             }
-            
         }
         
-        addFunction(oscillatorFunc)
+        updateModulationFunction(oscillatorFunc)
         updateState({frequency, isSquareOn, isSineOn, isSawOn, isFirstOn, is3rdOn, is5thOn})
     }), [frequency, isSquareOn, isSineOn, isSawOn, isFirstOn, is3rdOn, is5thOn, squareAmount, sineAmount]);
     

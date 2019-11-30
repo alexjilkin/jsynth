@@ -7,7 +7,7 @@ const yUnit = height;
 let lastX = 0;
 let lastY = 0;
 
-const Oscilloscope = ({addFunction, removeFunction}) => {
+const Oscilloscope = ({updateModulationFunction, removeFunction}) => {
     const canvasRef = useRef(null)
 
     useEffect(() => {
@@ -16,7 +16,7 @@ const Oscilloscope = ({addFunction, removeFunction}) => {
         if (canvas.getContext) {
 
             const context = canvas.getContext('2d');
-            addFunction((y, x) => {
+            updateModulationFunction((y, x) => {
                 if (y === 0) {
                     return y;
                 }

@@ -1,13 +1,13 @@
 import React, {useState, useEffect, useRef} from 'react';
 
-const width = 500;
+const width = 300;
 const height = 200;
-const xUnit = width / (1000) 
-const yUnit = height / 100;
+const xUnit = width / (200) 
+const yUnit = height / (height / 2);
 let lastX = 0;
 let lastY = 0;
 
-const FrequencyView = ({addFunction, removeFunction, sampleRate}) => {
+const FrequencyView = ({updateModulationFunction, removeFunction, sampleRate}) => {
     const canvasRef = useRef(null)
 
     useEffect(() => {
@@ -19,13 +19,12 @@ const FrequencyView = ({addFunction, removeFunction, sampleRate}) => {
             const sampleSize = 512;
 
             const context = canvas.getContext('2d');
-            addFunction((y, x) => {
+            updateModulationFunction((y, x) => {
                 if (y === 0) {
                     return y;
                 }
 
                 amplitudes.push(y);
-
 
                 if (amplitudes.length === sampleRate) {
                     const frequencies = dft(amplitudes.slice(0, sampleSize))
@@ -39,7 +38,7 @@ const FrequencyView = ({addFunction, removeFunction, sampleRate}) => {
                             context.clearRect(0, 0, width, height)
                         }
         
-                        if (Math.abs(canvasWorldY - lastY) > 2 && canvasWorldX !== 0) {
+                        if (canvasWorldY - lastY > 4 || canvasWorldX - lastX > 1.5) {
                             context.beginPath();
                             context.moveTo(lastX, lastY);
                             context.lineTo(canvasWorldX, canvasWorldY);
@@ -53,8 +52,6 @@ const FrequencyView = ({addFunction, removeFunction, sampleRate}) => {
                     amplitudes = [];
                 }
 
-               
-            
                 return y;
             })
         }

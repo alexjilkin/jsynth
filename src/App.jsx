@@ -4,14 +4,11 @@ import { DndProvider, useDrag, useDrop } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
 import './App.scss'
-import {Oscilloscope, Oscillator, Sequencer, Delay, Lowpass, LFO, FrequencyView} from 'modules'
 export const history = createBrowserHistory();
-
 import useGroups from './synth/hooks/useGroups'
-import {play, stop, basicGroup, basicMasterGroup, waveGenerator} from 'synth'
-import { bypassFunction } from './synth';
+import {play, stop, waveGenerator} from 'synth'
+import {bypassFunction} from 'synth/consts';
 import Group from 'synth/Group';
-
 import {ItemTypes, demoState} from 'synth/consts'
 
 const App = () => {

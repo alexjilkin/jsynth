@@ -4,11 +4,11 @@ import './Lowpass.scss';
 
 let prevY = 0;
 
-const Lowpass = ({addFunction, removeFunction}) => { 
+const Lowpass = ({updateModulationFunction, removeFunction}) => { 
     const [frequency, setFrequency] = useState(1);
 
     useEffect(() => {
-        addFunction((y, x) => {
+        updateModulationFunction((y, x) => {
             const result = prevY + ((frequency) * (y - prevY))
 
             prevY = result;

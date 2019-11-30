@@ -8,7 +8,7 @@ const defaultState = {
   bpm: 120,
   isEnvelopeOn: false
 }
-const Sequencer = ({addFunction, removeFunction, sampleRate, updateState, persistentState = defaultState}) => {
+const Sequencer = ({updateModulationFunction, removeFunction, sampleRate, updateState, persistentState = defaultState}) => {
   const [sequenceSize, setSequenceSize] = useState(persistentState.sequenceSize)
   const [sequence, setSequence] = useState(persistentState.sequence)
   const [currentStep, setCurrentStep] = useState(-1)
@@ -43,7 +43,7 @@ const Sequencer = ({addFunction, removeFunction, sampleRate, updateState, persis
       const sectionSizeInSampleRate = ~~(barInSampleRate / sequenceSize);
 
       updateState({sequence, bpm, sequenceSize, isEnvelopeOn})
-      addFunction((y, x) => {
+      updateModulationFunction((y, x) => {
         const xRelativeToSection = x % sectionSizeInSampleRate;
 
         const currentStepInPlaying = ~~(x / sectionSizeInSampleRate) % sequenceSize

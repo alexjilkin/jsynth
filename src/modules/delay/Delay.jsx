@@ -2,7 +2,7 @@ import React, {useEffect, useRef, useState, useCallback} from 'react'
 import Knob from 'react-canvas-knob';
 import './Delay.scss'
 
-const Delay = ({addFunction, removeFunction, sampleRate}) => {
+const Delay = ({updateModulationFunction, removeFunction, sampleRate}) => {
     const feedback = useRef([]);
     const [isOn, setIsOn] = useState(false);
     const [delayAmount, setDelayAmount] = useState(0.25);
@@ -31,7 +31,7 @@ const Delay = ({addFunction, removeFunction, sampleRate}) => {
         const feedbackSize = sampleRate * 4 * delayDepth;
 
         if(isOn) {
-            addFunction((y, x) => {
+            updateModulationFunction((y, x) => {
                 const cyclicX = x % feedbackSize
                 feedback.current[cyclicX] = y;
                 if (y !== 0) {
@@ -41,7 +41,7 @@ const Delay = ({addFunction, removeFunction, sampleRate}) => {
                 return delayFunc(y, cyclicX, feedback.current);
             })
         } else {
-            addFunction((y, x) => {
+            updateModulationFunction((y, x) => {
                 const cyclicX = x % feedbackSize
                 feedback.current[cyclicX] = y;
 

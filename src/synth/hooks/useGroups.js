@@ -1,4 +1,4 @@
-import React, {useState, useCallback, useEffect, createContext} from 'react';
+import React, {useState, useCallback, useEffect} from 'react';
 import {setGlobalGroups} from 'synth'
 
 function useGroups(initialGroups = []) {
