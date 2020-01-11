@@ -18,8 +18,8 @@ const Sequencer = ({updateModulationFunction, removeFunction, sampleRate, update
   const noteLength = 60 / bpm * (4 / sequenceSize)
   const sequenceLength = noteLength * sequenceSize;
   
-  const toggleMarker = useCallback((index) => {
-    setSequence([...sequence.slice(0, index), !sequence[index], ...sequence.slice(index + 1)])
+  const changeMarkerValue = useCallback((index, value) => {
+    setSequence([...sequence.slice(0, index), value, ...sequence.slice(index + 1)])
   }, [sequence, sequenceSize])
 
   const sequenceAnimation = () => {
@@ -52,17 +52,13 @@ const Sequencer = ({updateModulationFunction, removeFunction, sampleRate, update
           sequenceAnimation()
         }
         
-        if (x === y) {
-          return 0;
-        }
+        // if (x === y)
 
-        if (sequence[currentStepInPlaying]) {
-          if (isEnvelopeOn) {
-            return envelope(y, xRelativeToSection, sectionSizeInSampleRate)
-          } else {
-            return y;
-          }
-          
+        const interval = sequence[currentStepInPlaying]
+        if (interval) {
+          const intervalRatio = intervals[sequence[currentStepInPlaying]];
+
+          return intervalRatio;
         } else {
           return 0;
         }
@@ -104,9 +100,17 @@ const Sequencer = ({updateModulationFunction, removeFunction, sampleRate, update
         <div styleName="markers">
 
           {sequence.map((value, index) => 
-            <div styleName={`marker ${currentStep === index  ? 'playing' : sequence[index] ? 'on' : ''}`} key={index} onClick={() => toggleMarker(index)}>
-
-            </div>
+            <Knob 
+              key={index}
+              min={0}
+              max={7}
+              step={1}
+              width={32}
+              height={32}
+              fgColor={currentStep === index ? '#b28ad0' : '#9068be'}
+              value={value || 0}
+              onChange={(value) => changeMarkerValue(index, value)}
+            />
           )}
         </div>
     </div>
@@ -122,6 +126,11 @@ function envelope(y, x, size) {
   return x < attack * size ? 
     y * (x * m1) : 
     y * ((x * m2) + (1 / release))
+}
+
+const intervals =  [1, 1.066, 1.2, 1.333, 1.5, 1.6, 1.75]
+function intervalToFrequency(interval, frequency) {
+  return frequency * (intervals[interval] || 0)
 }
 
 export default Sequencer;

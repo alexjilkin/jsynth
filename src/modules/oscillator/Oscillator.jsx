@@ -9,13 +9,10 @@ import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
 const defaultState = {
-    isSquareOn: false,
-    isSineOn: true,
-    isSawOn: false,
     frequency: 440,
-    isFirstOn: true,
-    is3rdOn: false,
-    is5thOn: false
+    sineAmount: 1,
+    sawAmount: 1.1,
+    squareAmount: 0
 }
 
 const orbitRadius = 12;
@@ -98,42 +95,35 @@ function Cube({onXChange, onYChange, onZChange}) {
   }
 
 const Oscillator = ({updateModulationFunction, removeFunction, updateState, persistentState = defaultState}) => {
-    const [isSquareOn, setIsSquareOn] = useState(persistentState.isSquareOn);
-    const [isSineOn, setIsSineOn] = useState(persistentState.isSineOn);
-    const [isSawOn, setIsSawOn] = useState(persistentState.isSawOn);
     const [frequency, setFrequency] = useState(persistentState.frequency);
-    const [isFirstOn, setIsFirstOn] = useState(persistentState.isFirstOn);
-    const [is3rdOn, setIs3rdOn] = useState(persistentState.is3rdOn);
-    const [is5thOn, setIs5thOn] = useState(persistentState.is5thOn);
 
-    const [squareAmount, setSquareAmount] = useState(1)
-    const [sawAmount, setSawAmount] = useState(1)
-    const [sineAmount, setSineAmount] = useState(1)
+    const [squareAmount, setSquareAmount] = useState(persistentState.squareAmount)
+    const [sawAmount, setSawAmount] = useState(persistentState.sawAmount)
+    const [sineAmount, setSineAmount] = useState(persistentState.sineAmount)
 
     useEffect((() => {
-        let funcs = [];
-        funcs.push((x, f) => getSineWave(x, f) * Math.abs(sineAmount))
-        funcs.push((x, f) => getSquareWave(x, f) * Math.abs(squareAmount))
-        funcs.push((x, f) => getSawWave(x, f) * Math.abs(sawAmount))
-
         const oscillatorFunc = (y, x) => {
-            const wave = funcs.reduce((acc, func) => {
-                isFirstOn && (acc += func(x, frequency));
-                is3rdOn && (acc += func(x, frequency * 1.2));
-                is5thOn && (acc += func(x, frequency * 1.5));
-                
-                return acc;
-            }, 0)
-            if (x !== y) {
-                return y + wave;
-            } else {
-                return wave;
+            if (y === 0) {
+                return 0
             }
+
+            let funcs = [];
+            funcs.push((x, f) => getSineWave(x, f) * Math.abs(sineAmount))
+            funcs.push((x, f) => getSquareWave(x, f) * Math.abs(squareAmount))
+            funcs.push((x, f) => getSawWave(x, f) * Math.abs(sawAmount))
+
+            const wave = funcs.reduce((acc, func) => {
+                
+                return acc + func(x, frequency * y)
+            }, 0)
+
+            return wave;
+            
         }
         
         updateModulationFunction(oscillatorFunc)
-        updateState({frequency, isSquareOn, isSineOn, isSawOn, isFirstOn, is3rdOn, is5thOn})
-    }), [frequency, isSquareOn, isSineOn, isSawOn, isFirstOn, is3rdOn, is5thOn, squareAmount, sineAmount]);
+        updateState({frequency, sawAmount, squareAmount, sineAmount})
+    }), [frequency, squareAmount, sineAmount, sawAmount]);
     
     return(
         <div styleName="container">
@@ -152,20 +142,7 @@ const Oscillator = ({updateModulationFunction, removeFunction, updateState, pers
             </div>
             <div style={{display: 'flex', justifyContent: 'center'}}>
             <Cube onXChange={debounce(setSineAmount, 100)} onYChange={debounce(setSquareAmount, 100)} onZChange={debounce(setSawAmount, 100)}/>
-            </div>
-            
-            <div styleName="harmonics">
-                <div onClick={() => setIsFirstOn(!isFirstOn)}>
-                    root <div styleName={`${isFirstOn ? 'on' : 'off'}`}></div>
-                </div>
-                <div onClick={() => setIs3rdOn(!is3rdOn)}>
-                    3rd <div styleName={`${is3rdOn ? 'on' : 'off'}`}></div>
-                </div>
-                <div onClick={() => setIs5thOn(!is5thOn)}>
-                    5th <div styleName={`${is5thOn ? 'on' : 'off'}`}></div>
-                </div>
-            </div>
-            
+            </div>   
         </div>
     )
 }

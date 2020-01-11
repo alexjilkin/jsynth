@@ -3,7 +3,7 @@
     display: grid;
     border-radius: 6px;
     grid-template-rows: 30px 150px 30px 50px;
-    width: 180px;
+    width: 300px;
 	padding: 5px;
     
     .bpm-container {
@@ -26,9 +26,8 @@
 	.markers {
 		padding: 4px;
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(14px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(27px, 1fr));
         grid-gap: 8px;
-        background-color: grey;
 
 		.marker {
             background-color: black;
