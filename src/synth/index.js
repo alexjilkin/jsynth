@@ -12,22 +12,29 @@ let globalGroups = [];
 
 export function* waveGenerator() {
   let x = 0;
+  let frequencyModulation = 1;
+  
 
   while(true) {
     const wavesInAColumn = []
-    
     const groups = [...globalGroups]
-    
+    let y = 1;
     const masterGroup = groups.pop()
     groups.forEach((modules, index) => {
       if (modules.length === 0) {
         return; 
       }
 
-      let y = x;
-
       modules.forEach(({func}) => {
-        y = func ? func(y, x) : y;
+        if(func) {
+          const result = func(y, x, frequencyModulation);
+          if (typeof result === 'object') {
+            [y, frequencyModulation] = result
+          } else {
+            y = result
+          }
+          
+        }
       })
 
       wavesInAColumn.push(y)
@@ -37,7 +44,7 @@ export function* waveGenerator() {
 
     let wavesSum = wavesInAColumn.reduce((acc, value) => acc + value, 0);
     masterGroup.forEach(({func}) => {
-      wavesSum = func(wavesSum, x)
+      [wavesSum] = func(wavesSum, x, frequencyModulation)
     })
 
 

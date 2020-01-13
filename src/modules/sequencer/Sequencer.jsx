@@ -43,7 +43,7 @@ const Sequencer = ({updateModulationFunction, removeFunction, sampleRate, update
       const sectionSizeInSampleRate = ~~(barInSampleRate / sequenceSize);
 
       updateState({sequence, bpm, sequenceSize, isEnvelopeOn})
-      updateModulationFunction((y, x) => {
+      updateModulationFunction((y, x, frequencyModulation) => {
         const xRelativeToSection = x % sectionSizeInSampleRate;
 
         const currentStepInPlaying = ~~(x / sectionSizeInSampleRate) % sequenceSize
@@ -51,16 +51,14 @@ const Sequencer = ({updateModulationFunction, removeFunction, sampleRate, update
         if (xRelativeToSection === 0 && currentStepInPlaying === 0) {
           sequenceAnimation()
         }
-        
-        // if (x === y)
 
         const interval = sequence[currentStepInPlaying]
         if (interval) {
           const intervalRatio = intervals[sequence[currentStepInPlaying]];
-
-          return intervalRatio;
+          const result = isEnvelopeOn ? envelope(y, xRelativeToSection, sectionSizeInSampleRate) : y;
+          return [result, intervalRatio];
         } else {
-          return 0;
+          return [0, frequencyModulation];
         }
       })
       
@@ -130,7 +128,7 @@ function envelope(y, x, size) {
 
 const intervals =  [1, 1.066, 1.2, 1.333, 1.5, 1.6, 1.75]
 function intervalToFrequency(interval, frequency) {
-  return frequency * (intervals[interval] || 0)
+  return frequency * (intervals[interval] || 1)
 }
 
 export default Sequencer;

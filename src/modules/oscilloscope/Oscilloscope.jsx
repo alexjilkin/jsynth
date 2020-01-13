@@ -16,9 +16,9 @@ const Oscilloscope = ({updateModulationFunction, removeFunction}) => {
         if (canvas.getContext) {
 
             const context = canvas.getContext('2d');
-            updateModulationFunction((y, x) => {
+            updateModulationFunction((y, x, frequencyModulation) => {
                 if (y === 0) {
-                    return y;
+                    return [y, frequencyModulation];
                 }
 
                 const canvasWorldX = (x * xUnit) % width;
@@ -39,7 +39,7 @@ const Oscilloscope = ({updateModulationFunction, removeFunction}) => {
                 lastX = canvasWorldX;
                 lastY = canvasWorldY;
             
-                return y;
+                return [y, frequencyModulation];
             })
         }
         

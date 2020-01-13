@@ -102,9 +102,9 @@ const Oscillator = ({updateModulationFunction, removeFunction, updateState, pers
     const [sineAmount, setSineAmount] = useState(persistentState.sineAmount)
 
     useEffect((() => {
-        const oscillatorFunc = (y, x) => {
+        const oscillatorFunc = (y, x, frequencyModulation) => {
             if (y === 0) {
-                return 0
+                return [0, frequencyModulation]
             }
 
             let funcs = [];
@@ -114,10 +114,10 @@ const Oscillator = ({updateModulationFunction, removeFunction, updateState, pers
 
             const wave = funcs.reduce((acc, func) => {
                 
-                return acc + func(x, frequency * y)
+                return acc + func(x, frequency * frequencyModulation)
             }, 0)
 
-            return wave;
+            return [wave, frequencyModulation];
             
         }
         

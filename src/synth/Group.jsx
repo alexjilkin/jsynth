@@ -2,7 +2,7 @@ import React from 'react';
 import {useDrop} from 'react-dnd'
 import {ItemTypes, sampleRate} from 'synth/consts'
 import ErrorBoundary  from 'common/ErrorBoundary'
-import {bypassFunction} from 'synth'
+import {bypassFunction} from 'synth/consts'
 import './Group.scss'
 import DraggableModule from './dnd/DraggableModule'
 

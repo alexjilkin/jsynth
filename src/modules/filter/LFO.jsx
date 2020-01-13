@@ -9,9 +9,9 @@ const LFO = ({updateModulationFunction, removeFunction, sampleRate}) => {
     const [frequency, setFrequency] = useState(1);
 
     useEffect(() => {
-        updateModulationFunction((y, x) => {
+        updateModulationFunction((y, x, frequencyModulation) => {
             const cyclicX = x % (Math.floor(sampleRate / frequency));
-            return y * Math.sin(Math.sin(frequency * twoPiDividedBySampleRate * cyclicX));
+            return [y * Math.sin(Math.sin(frequency * twoPiDividedBySampleRate * cyclicX)), frequencyModulation];
         })
     }, [frequency])
 

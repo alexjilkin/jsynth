@@ -8,11 +8,11 @@ const Lowpass = ({updateModulationFunction, removeFunction}) => {
     const [frequency, setFrequency] = useState(1);
 
     useEffect(() => {
-        updateModulationFunction((y, x) => {
+        updateModulationFunction((y, x, frequencyModulation) => {
             const result = prevY + ((frequency) * (y - prevY))
 
             prevY = result;
-            return result;
+            return [result, frequencyModulation];
         })
     }, [frequency])
 

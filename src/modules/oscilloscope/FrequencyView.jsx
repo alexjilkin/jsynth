@@ -19,9 +19,9 @@ const FrequencyView = ({updateModulationFunction, removeFunction, sampleRate}) =
             const sampleSize = 512;
 
             const context = canvas.getContext('2d');
-            updateModulationFunction((y, x) => {
+            updateModulationFunction((y, x, frequencyModulation) => {
                 if (y === 0) {
-                    return y;
+                    return [y, frequencyModulation];
                 }
 
                 amplitudes.push(y);
@@ -52,7 +52,7 @@ const FrequencyView = ({updateModulationFunction, removeFunction, sampleRate}) =
                     amplitudes = [];
                 }
 
-                return y;
+                return [y, frequencyModulation];
             })
         }
         

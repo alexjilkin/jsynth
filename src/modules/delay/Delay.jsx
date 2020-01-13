@@ -31,21 +31,21 @@ const Delay = ({updateModulationFunction, removeFunction, sampleRate}) => {
         const feedbackSize = sampleRate * 4 * delayDepth;
 
         if(isOn) {
-            updateModulationFunction((y, x) => {
+            updateModulationFunction((y, x, frequencyModulation) => {
                 const cyclicX = x % feedbackSize
                 feedback.current[cyclicX] = y;
                 if (y !== 0) {
                     return y;
                 }
                 
-                return delayFunc(y, cyclicX, feedback.current);
+                return [delayFunc(y, cyclicX, feedback.current), frequencyModulation];
             })
         } else {
-            updateModulationFunction((y, x) => {
+            updateModulationFunction((y, x, frequencyModulation) => {
                 const cyclicX = x % feedbackSize
                 feedback.current[cyclicX] = y;
 
-                return y;
+                return [y, frequencyModulation];
             })
         }
     }, [isOn, delayAmount, delayDepth, gain])
