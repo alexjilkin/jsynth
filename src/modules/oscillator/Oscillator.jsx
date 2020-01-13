@@ -117,7 +117,7 @@ const Oscillator = ({updateModulationFunction, removeFunction, updateState, pers
                 return acc + func(x, frequency * frequencyModulation)
             }, 0)
 
-            return [wave, frequencyModulation];
+            return [wave * y, frequencyModulation];
             
         }
         
