@@ -6,7 +6,7 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import './App.scss'
 export const history = createBrowserHistory();
 import useGroups from './synth/hooks/useGroups'
-import {play, stop, waveGenerator} from 'synth'
+import {play, stop} from 'synth'
 import {bypassFunction} from 'synth/consts';
 import Group from 'synth/Group';
 import {ItemTypes, demoState} from 'synth/consts'
@@ -21,14 +21,8 @@ const App = () => {
     localStorage.setItem('groups', JSON.stringify(groups))
   }, [groups])
 
-  const start = useCallback(() => {
-    const waveGen = waveGenerator()
-
-    play(waveGen);
-  }, [groups])
-
   useEffect(() => {
-    isOn ? start() : stop()
+    isOn ? play() : stop()
   }, [isOn]);
 
   const addOscillatorAndSequencer = () => {
@@ -40,8 +34,7 @@ const App = () => {
       <DndProvider backend={HTML5Backend}>
       <header>
         <div styleName="play-button-container">
-          <div styleName={`play-button ${isOn ? 'playing' : ''}`} onClick={() => setIsOn(!isOn)}></div>
-          Play
+          <div styleName={`play-button ${isOn ? 'playing' : ''}`} onClick={() => setIsOn(!isOn)}>Play</div>
         </div>
         <div styleName="add-group" onClick={addOscillatorAndSequencer}>
               Add Group 

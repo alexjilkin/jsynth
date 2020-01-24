@@ -61,7 +61,7 @@ const Group = ({group, index, updateModuleFunc, addModuleToGroup, removeModuleFr
     });
 
     return (
-      <div ref={drop} style={{width: 20, backgroundColor: isOver ? 'lightgrey' : 'white'}}>
+      <div ref={drop} style={{width: isOver ? 60 : 20, backgroundColor: isOver ? '#e1e8f0' : 'white'}}>
 
       </div>
     )

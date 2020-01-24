@@ -103,9 +103,9 @@ const Sequencer = ({updateModulationFunction, removeFunction, sampleRate, update
               min={0}
               max={7}
               step={1}
-              width={32}
-              height={32}
-              fgColor={currentStep === index ? '#b28ad0' : '#9068be'}
+              width={36}
+              height={36}
+              fgColor={currentStep === index ? 'white' : '#9068be'}
               value={value || 0}
               onChange={(value) => changeMarkerValue(index, value)}
             />

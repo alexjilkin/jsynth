@@ -13,7 +13,7 @@ const play = (waveGenerator) => {
 
   const createBuffer = (output) => {
     for (let i = 0; i < buffer.length; i++) {
-      const value = waveGenerator.next().value
+      const {value} = waveGenerator.next()
   
       output[i] = value
     }
@@ -23,13 +23,15 @@ const play = (waveGenerator) => {
   source.connect(master.destination);
   
   source.addEventListener('audioprocess', (e) => {
-    isPlaying && createBuffer(e.outputBuffer.getChannelData(0));
+    isPlaying ? createBuffer(e.outputBuffer.getChannelData(0)) : master.close();
   })
 
   isPlaying = true;
 }
 
-const stop = () => isPlaying = false;
+const stop = () => {
+  isPlaying = false;
+}
 
 export default {
   play,

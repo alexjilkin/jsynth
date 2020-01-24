@@ -1,7 +1,7 @@
 import BrowserPlayer from 'output/BrowserPlayer'
 
-export const play = (waveGenerator) => {
-  BrowserPlayer.play(waveGenerator)
+export const play = () => {
+  BrowserPlayer.play(waveGenerator())
 }
 
 export const stop = () => {
@@ -12,19 +12,20 @@ let globalGroups = [];
 
 export function* waveGenerator() {
   let x = 0;
-  let frequencyModulation = 1;
-  
 
   while(true) {
+
     const wavesInAColumn = []
     const groups = [...globalGroups]
-    let y = 1;
     const masterGroup = groups.pop()
+
     groups.forEach((modules, index) => {
       if (modules.length === 0) {
         return; 
       }
 
+      let frequencyModulation = 1;
+      let y = 1;
       modules.forEach(({func}) => {
         if(func) {
           const result = func(y, x, frequencyModulation);
@@ -44,7 +45,7 @@ export function* waveGenerator() {
 
     let wavesSum = wavesInAColumn.reduce((acc, value) => acc + value, 0);
     masterGroup.forEach(({func}) => {
-      [wavesSum] = func(wavesSum, x, frequencyModulation)
+      [wavesSum] = func(wavesSum, x, 1)
     })
 
 

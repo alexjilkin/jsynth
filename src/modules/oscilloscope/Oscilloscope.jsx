@@ -1,8 +1,8 @@
 import React, {useEffect, useRef} from 'react';
 
-const width = 300;
+const width = 280;
 const height = 200;
-const xUnit = width / (2000) 
+const xUnit = width / (1500) 
 const yUnit = height;
 let lastX = 0;
 let lastY = 0;

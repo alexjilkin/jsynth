@@ -88,7 +88,7 @@ function Cube({onXChange, onYChange, onZChange}) {
 
     
     return (
-      <div style={{width: 150, height: 150}} ref={ref}>
+      <div style={{width: 150, height: 150, cursor: 'grab'}} ref={ref}>
 
       </div>
     )

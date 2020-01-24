@@ -2,12 +2,19 @@ import React, {useEffect, useRef, useState, useCallback} from 'react'
 import Knob from 'react-canvas-knob';
 import './Delay.scss'
 
-const Delay = ({updateModulationFunction, removeFunction, sampleRate}) => {
+const defaultState = {
+    isOn: false,
+    delayAmount: 0.25,
+    delayDepth: 5,
+    gain: 0.6
+}
+
+const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultState, updateState}) => {
     const feedback = useRef([]);
-    const [isOn, setIsOn] = useState(false);
-    const [delayAmount, setDelayAmount] = useState(0.25);
-    const [delayDepth, setDelayDepth] = useState(5);
-    const [gain, setGain] = useState(0.5);
+    const [isOn, setIsOn] = useState(persistentState.isOn);
+    const [delayAmount, setDelayAmount] = useState(persistentState.delayAmount);
+    const [delayDepth, setDelayDepth] = useState(persistentState.delayDepth);
+    const [gain, setGain] = useState(persistentState.gain);
 
     const delayFunc = useCallback((y, cyclicX, feedback) => {
         const feedbackSize = sampleRate * 4 * delayDepth;
@@ -48,6 +55,8 @@ const Delay = ({updateModulationFunction, removeFunction, sampleRate}) => {
                 return [y, frequencyModulation];
             })
         }
+
+        updateState({isOn, delayAmount, delayDepth, gain})
     }, [isOn, delayAmount, delayDepth, gain])
 
     const toggleDelay = useCallback(() => {

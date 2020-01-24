@@ -18,17 +18,17 @@ const Lowpass = ({updateModulationFunction, removeFunction}) => {
 
     return (
         <div styleName="container">
-            Lowpass.
+            <div styleName="title"> Lowpass. </div>
             <Knob 
-                    min={0.05}
-                    max={1}
-                    width={70}
-                    height={70}
-                    step={0.05}
-                    fgColor="#6ed3cf"
-                    value={frequency}
-                    onChange={setFrequency}
-                />
+                min={0.05}
+                max={1}
+                width={70}
+                height={70}
+                step={0.05}
+                fgColor="#6ed3cf"
+                value={frequency}
+                onChange={setFrequency}
+            />
         </div>
     )
 }
