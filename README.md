@@ -1,9 +1,7 @@
-# Web modular synthesizer
+# Javascript based modular synthesizers
 Waves and music generated in your browser.
 
-![modular synth](https://user-images.githubusercontent.com/16067593/69498908-a9fe1980-0ef5-11ea-90ef-b40e907743d4.png)
-
-https://alexjilkin.github.io/modular-web-synth/
+https://alexjilkin.github.io/jsynth/
 
 Press play to start playing.  
 Rotate the cube to change level of oscillator waves.  
@@ -20,3 +18,4 @@ currently has the following modules:
   Lowpass - Lowpass filter, turn the knob to filter out frequencies.  
   LFO - A low frequency ocillator for that "wha wha" sound.  
   
+![modular synth](https://user-images.githubusercontent.com/16067593/69498908-a9fe1980-0ef5-11ea-90ef-b40e907743d4.png)
