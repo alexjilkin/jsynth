@@ -18,4 +18,4 @@ currently has the following modules:
   Lowpass - Lowpass filter, turn the knob to filter out frequencies.  
   LFO - A low frequency ocillator for that "wha wha" sound.  
   
-![modular synth](https://user-images.githubusercontent.com/16067593/69498908-a9fe1980-0ef5-11ea-90ef-b40e907743d4.png)
+![modular synth](https://miro.medium.com/max/5756/1*YPymhA0HkbZb5BKNVxPuTQ.png)
