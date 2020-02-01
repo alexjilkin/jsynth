@@ -119,11 +119,11 @@ function envelope(y, x, size) {
   const attack =  1 / 3;
   const release = 2 / 3;
   const m1 = 1 / (attack * size)
-  const m2 = -1 / (release * size);
+  const m2 = (0 - 1) / (size * release);
 
   return x < attack * size ? 
     y * (x * m1) : 
-    y * ((x * m2) + (1 / release))
+    y * ((x * m2) + 1)
 }
 
 const intervals =  [1, 1.066, 1.2, 1.333, 1.5, 1.6, 1.75]

@@ -1,7 +1,7 @@
 import {sampleRate} from 'synth/consts'
 
 
-const amplitude = 0.17
+const amplitude = 1
 
 const PiDividedBySampleRate = Math.PI / sampleRate;
 const twoPiDividedBySampleRate = PiDividedBySampleRate * 2;

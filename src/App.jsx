@@ -45,6 +45,7 @@ const App = () => {
           <AddModule name="Delay" />
           <AddModule name="LFO" />
           <AddModule name="Lowpass" />
+          <AddModule name="Distortion" />
         </div>
       </header>
         <div styleName="content">

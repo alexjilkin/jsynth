@@ -5,6 +5,7 @@ import Delay from './delay/Delay'
 import LFO from './filter/LFO'
 import Lowpass from './lowpass/Lowpass'
 import FrequencyView from './oscilloscope/FrequencyView'
+import Distortion from './distortion/Distortion'
 
 export {
     Oscillator,
@@ -13,5 +14,6 @@ export {
     Delay,
     Lowpass,
     LFO,
-    FrequencyView
+    FrequencyView,
+    Distortion
 }
