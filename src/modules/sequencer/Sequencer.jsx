@@ -101,7 +101,7 @@ const Sequencer = ({updateModulationFunction, removeFunction, sampleRate, update
             <Knob 
               key={index}
               min={0}
-              max={7}
+              max={6}
               step={1}
               width={36}
               height={36}
@@ -119,11 +119,11 @@ function envelope(y, x, size) {
   const attack =  1 / 3;
   const release = 2 / 3;
   const m1 = 1 / (attack * size)
-  const m2 = (0 - 1) / (size * release);
+  const m2 = (0 - 1) / (size * (1 - attack));
 
   return x < attack * size ? 
     y * (x * m1) : 
-    y * ((x * m2) + 1)
+    y * ((x * m2) + (1 / (1 - attack)))
 }
 
 const intervals =  [1, 1.066, 1.2, 1.333, 1.5, 1.6, 1.75]
