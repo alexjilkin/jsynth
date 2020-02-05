@@ -43,13 +43,16 @@ export function* waveGenerator() {
 
     x++;
 
-    let wavesSum = wavesInAColumn.reduce((acc, value) => acc + value, 0);
+    const mixVolume = 1 / wavesInAColumn.length;
+
+    let wavesSum = wavesInAColumn.reduce((acc, value) => acc + (value * mixVolume), 0);
     masterGroup.forEach(({func}) => {
       [wavesSum] = func(wavesSum, x, 1)
     })
 
-
-    yield wavesSum
+    
+    // Decrease volume until I will make a master volume component
+    yield wavesSum * 0.5
   }
 }
 
