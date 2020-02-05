@@ -1,15 +1,12 @@
 import {sampleRate} from 'synth/consts'
-let master;
-const bufSize = 4096;
-let buffer;
-let source;
+const bufferSize = 2048;
 
-let isPlaying = false;
+export const play = (waveGenerator) => {
+  let isPlaying = false;
 
-const play = (waveGenerator) => {
-  master = new AudioContext({sampleRate: 44100});
-  buffer = master.createBuffer(1, bufSize, sampleRate)
-  source = master.createScriptProcessor(bufSize, 1, 1);
+  const master = new AudioContext({sampleRate: 44100});
+  const buffer = master.createBuffer(1, bufferSize, sampleRate)
+  const source = master.createScriptProcessor(bufferSize, 1, 1);
 
   const createBuffer = (output) => {
     for (let i = 0; i < buffer.length; i++) {
@@ -27,13 +24,10 @@ const play = (waveGenerator) => {
   })
 
   isPlaying = true;
-}
 
-const stop = () => {
-  isPlaying = false;
+  return () => isPlaying = false
 }
 
 export default {
-  play,
-  stop
+  play
 }

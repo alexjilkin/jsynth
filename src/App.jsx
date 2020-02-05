@@ -10,9 +10,10 @@ import {play, stop} from 'synth'
 import {bypassFunction} from 'synth/consts';
 import Group from 'synth/Group';
 import {ItemTypes, demoState} from 'synth/consts'
+let isPlayingByKey = {};
 
 const App = () => {
-  const [isOn, setIsOn] = useState(false);
+  // const [isOn, setIsOn] = useState(false);
   const {groups, addGroup, masterGroup, removeGroup, updateModuleFunc, updateModulePersistentState, addModuleToGroup, removeModuleFromGroup} = useGroups(
     localStorage.getItem('groups') && JSON.parse(localStorage.getItem('groups')) || 
     demoState);
@@ -21,36 +22,77 @@ const App = () => {
     localStorage.setItem('groups', JSON.stringify(groups))
   }, [groups])
 
-  useEffect(() => {
-    isOn ? play() : stop()
-  }, [isOn]);
+  // useEffect(() => {
+  //   isOn ? play() : stop()
+  // }, [isOn]);
+  
+  window.addEventListener('keydown', (e) => {
+    const key = e.keyCode;
+
+    if (isPlayingByKey[key]) {
+      return;
+    }
+    let frequencyModulation = 1;
+
+    if (e.keyCode === 72) {
+      frequencyModulation = Math.pow(2, 12/12);
+
+    } else if (e.keyCode === 74) {
+      frequencyModulation = Math.pow(2, 14/12);
+    }
+
+    else if (e.keyCode === 71) {
+      frequencyModulation = Math.pow(2, 10/12);
+    } else {
+      return;
+    }
+
+    
+    console.log('playing')
+    isPlayingByKey[key] = play(frequencyModulation);
+  });
+
+  window.addEventListener('keyup', (e) => {
+    const key = e.keyCode;
+
+    if (!isPlayingByKey[key]) {
+      return;
+    }
+    const stopFunc = isPlayingByKey[key];
+    if (typeof stopFunc === 'function') {
+      stopFunc()
+      console.log('stopping')
+      isPlayingByKey[key] = false;
+    }
+    
+  });
 
   const addOscillatorAndSequencer = () => {
     addGroup();
   }
 
-  navigator.requestMIDIAccess()
-    .then(function(access) {
+  // navigator.requestMIDIAccess()
+  //   .then(function(access) {
 
-      // Get lists of available MIDI controllers
-      const inputs = access.inputs.values();
-      const outputs = access.outputs.values();
+  //     // Get lists of available MIDI controllers
+  //     const inputs = access.inputs.values();
+  //     const outputs = access.outputs.values();
 
-      console.log(inputs)
-      console.log(outputs)
-      access.onstatechange = function(e) {
+  //     console.log(inputs)
+  //     console.log(outputs)
+  //     access.onstatechange = function(e) {
 
-        // Print information about the (dis)connected MIDI controller
-        console.log(e.port.name, e.port.manufacturer, e.port.state);
-      };
-    });
+  //       // Print information about the (dis)connected MIDI controller
+  //       console.log(e.port.name, e.port.manufacturer, e.port.state);
+  //     };
+  //   });
 
   return (
     <div styleName="container">
       <DndProvider backend={HTML5Backend}>
       <header>
         <div styleName="play-button-container">
-          <div styleName={`play-button ${isOn ? 'playing' : ''}`} onClick={() => setIsOn(!isOn)}>Play</div>
+          {/* <div styleName={`play-button ${isOn ? 'playing' : ''}`} onClick={() => setIsOn(!isOn)}>Play</div> */}
         </div>
         <div styleName="add-group" onClick={addOscillatorAndSequencer}>
               Add Group 

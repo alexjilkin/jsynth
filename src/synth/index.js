@@ -1,16 +1,12 @@
 import BrowserPlayer from 'output/BrowserPlayer'
 
-export const play = () => {
-  BrowserPlayer.play(waveGenerator())
-}
-
-export const stop = () => {
-  BrowserPlayer.stop();
-}
+// Returns the stop function
+export const play = (frequencyModulation) => 
+  BrowserPlayer.play(waveGenerator(frequencyModulation))
 
 let globalGroups = [];
 
-export function* waveGenerator() {
+export function* waveGenerator(frequencyModulation) {
   let x = 0;
 
   while(true) {
@@ -24,7 +20,6 @@ export function* waveGenerator() {
         return; 
       }
 
-      let frequencyModulation = 1;
       let y = 1;
       modules.forEach(({func}) => {
         if(func) {
