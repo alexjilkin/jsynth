@@ -1,4 +1,4 @@
-# Javascript based modular synthesizers
+# Javascript based modular synthesizer
 Waves and music generated in your browser.
 
 https://alexjilkin.github.io/jsynth/
