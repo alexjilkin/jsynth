@@ -23,8 +23,13 @@ const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultS
 
         for(let i = 1; i < delayDepth; i++) {     
             const currentFeedbackIndex = cyclicX - (i * delayAmountBySamples) < 0 ? feedbackSize - (i * delayAmountBySamples) : cyclicX - (i * delayAmountBySamples)
-
             const currentFeedback = feedback[currentFeedbackIndex]
+
+            // If still no feedback
+            if (currentFeedback === undefined) {
+                return y;
+            }
+            
             y += Math.pow(gain, i) * (y + currentFeedback)
         }
     

@@ -117,7 +117,6 @@ const Sequencer = ({updateModulationFunction, removeFunction, sampleRate, update
 
 function envelope(y, x, size) {
   const attack =  1 / 3;
-  const release = 2 / 3;
   const m1 = 1 / (attack * size)
   const m2 = (0 - 1) / (size * (1 - attack));
 

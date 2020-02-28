@@ -1,8 +1,6 @@
 import {sampleRate} from 'synth/consts'
 const bufferSize = 2048;
 
-
-
 export const play = (waveGenerator) => {
   let isPlaying = false;
 
