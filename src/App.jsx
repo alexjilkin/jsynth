@@ -6,7 +6,7 @@ import HTML5Backend from 'react-dnd-html5-backend'
 import './App.scss'
 export const history = createBrowserHistory();
 import useGroups from './synth/hooks/useGroups'
-import {play, stop} from 'synth'
+import {play, stop, keyUp} from 'synth'
 import {bypassFunction} from 'synth/consts';
 import Group from 'synth/Group';
 import {ItemTypes, demoState} from 'synth/consts'
@@ -55,15 +55,17 @@ const App = () => {
   window.addEventListener('keyup', (e) => {
     const key = e.keyCode;
 
-    if (!isPlayingByKey[key]) {
-      return;
-    }
-    const stopFunc = isPlayingByKey[key];
-    if (typeof stopFunc === 'function') {
-      stopFunc()
-      console.log('stopping')
-      isPlayingByKey[key] = false;
-    }
+    // if (!isPlayingByKey[key]) {
+    //   return;
+    // }
+    // const stopFunc = isPlayingByKey[key];
+    // if (typeof stopFunc === 'function') {
+    //   stopFunc()
+    //   console.log('stopping')
+    //   isPlayingByKey[key] = false;
+    // }
+
+    keyUp()
     
   });
 

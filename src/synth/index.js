@@ -1,12 +1,29 @@
 import BrowserPlayer from 'output/BrowserPlayer'
 
+let _shouldGenerate = false;
+let _frequencyModulation = 1;
+
+const generator = waveGenerator();
+let isFirstTime = true;
+
 // Returns the stop function
-export const play = (frequencyModulation) => 
-  BrowserPlayer.play(waveGenerator(frequencyModulation))
+export const play = (frequencyModulation) => {
+  _shouldGenerate = true;
+  _frequencyModulation = frequencyModulation;
+
+  if (isFirstTime) {
+    BrowserPlayer.play(generator)
+    isFirstTime = false;
+  }
+}
+
+export const keyUp = () => {
+  _shouldGenerate = false;
+}
 
 let globalGroups = [];
 
-export function* waveGenerator(frequencyModulation) {
+export function* waveGenerator() {
   let x = 0;
 
   while(true) {
@@ -21,11 +38,16 @@ export function* waveGenerator(frequencyModulation) {
       }
 
       let y = 1;
-      modules.forEach(({func}) => {
+      modules.forEach((theModule) => {
+        const {func, module:name} = theModule;
+        if (!_shouldGenerate && name === 'Oscillator') {
+          return;
+        }
+
         if(func) {
-          const result = func(y, x, frequencyModulation);
+          const result = func(y, x, _frequencyModulation);
           if (typeof result === 'object') {
-            [y, frequencyModulation] = result
+            [y, _frequencyModulation] = result
           } else {
             y = result
           }
