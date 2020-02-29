@@ -1,8 +1,9 @@
 import {play, stop} from 'synth'
 
 let isPlayingByKey = {};
+let isPlayingByIndex = {}
 
-export const keyCodeToFrequencyModulation = (keyCode) => {
+const keyCodeToFrequencyModulation = (keyCode) => {
     let frequencyModulation = 1;
 
     // Key H My Middle C
@@ -35,6 +36,10 @@ export const keyCodeToFrequencyModulation = (keyCode) => {
     return frequencyModulation
 }
 
+const keyIndexToFrequencyModulation = (index) => {
+    return Math.pow(2, index/12);
+}
+
 export const keyDown = (keyCode) => {
     if (isPlayingByKey[keyCode]) {
         return;
@@ -57,6 +62,32 @@ export const keyUp = (keyCode) => {
         return;
     }
     isPlayingByKey[keyCode] = false;
+    console.log('stopping')
+    stop();
+}
+
+export const mouseDown = (index) => {
+    if (isPlayingByIndex[index]) {
+        return;
+    }
+    
+    const frequencyModulation = keyIndexToFrequencyModulation(index)
+
+    if (!frequencyModulation) {
+        return;
+    }
+
+    console.log('playing')
+    play(frequencyModulation)
+    isPlayingByIndex[index] = true;
+}
+
+export const mouseUp = (index) => {
+
+    if (!isPlayingByIndex[index]) {
+        return;
+    }
+    isPlayingByIndex[index] = false;
     console.log('stopping')
     stop();
 }

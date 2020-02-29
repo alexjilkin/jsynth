@@ -18,7 +18,7 @@ export const play = (frequencyModulation) => {
   _shouldGenerate = true;
   _frequencyModulation = frequencyModulation;
   _xAtStart = x;
-  console.log(_xAtStart, '_xAtStart')
+
   if (isFirstTime) {
     BrowserPlayer.play(generator)
     isFirstTime = false;

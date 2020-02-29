@@ -1,23 +1,16 @@
 .container {
 	font-family: Roboto;
-	height: 100%;
-
 
 	header {
 		background-color:#6ed3cf;
-		display: grid;
-		grid-template-columns: 100px 1fr;
-		grid-template-rows: 30px 30px;
 		padding: 10px;
 
 		.modules {
 			display: flex;
 			align-items: center;
-			grid-row: 2;
-			grid-column: 2;
-
+			flex-wrap: wrap;
 			.module {
-				font-size: 25px;
+				font-size: 1.5em;
 				font-weight: bold;
 				cursor: move;
 				margin-right: 10px;
@@ -62,7 +55,6 @@
 	.content {
 		padding: 10px;
 		display: grid;
-		grid-template-columns: 9fr 1fr;
 
 		.groups {
 			display: flex;
@@ -78,9 +70,13 @@
 }
 
 
+.mobile-keyboard {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background-color: white;
+	display: grid;
 
-.play {
-	width: 40px;
-	height: 20px;
-	background-color: green;
 }

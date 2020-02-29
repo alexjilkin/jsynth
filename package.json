@@ -14,6 +14,7 @@
     "postcss-nested": "^4.1.2",
     "react": "^16.8.6",
     "react-canvas-knob": "^0.5.0",
+    "react-device-detect": "^1.11.14",
     "react-dnd": "^9.4.0",
     "react-dnd-html5-backend": "^9.4.0",
     "react-dom": "^16.2.0",

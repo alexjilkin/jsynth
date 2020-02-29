@@ -1,0 +1,19 @@
+.container {
+    display: grid;
+    grid-auto-columns: 50px;
+    grid-auto-flow: column;
+    position: relative;
+    height: 100px;
+
+    .white-key {
+        background-color: ivory;
+        border: 1px lightgray solid;
+    }
+    .black-key {
+        background-color: black;
+        position: absolute;
+        height: 60px;
+        top: 0;
+        width: 30px;
+    }
+}

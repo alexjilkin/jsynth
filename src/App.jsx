@@ -1,45 +1,41 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, {useEffect, useState} from 'react';
 import {createBrowserHistory} from 'history';
-import { DndProvider, useDrag, useDrop } from 'react-dnd'
+import { DndProvider, useDrag } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
+
+import {
+  BrowserView,
+  MobileView
+} from "react-device-detect";
 
 import './App.scss'
 export const history = createBrowserHistory();
 import useGroups from './synth/hooks/useGroups'
 
-import {initKeyboardInput} from 'input/Keyboard'
+import {Keyboard} from 'input/keyboard'
 
 import {bypassFunction} from 'synth/consts';
 import Group from 'synth/Group';
+import MasterGroup from 'synth/MasterGroup';
 import {ItemTypes, demoState} from 'synth/consts'
 
 
 const App = () => {
   // const [isOn, setIsOn] = useState(false);
-  const {groups, addGroup, masterGroup, removeGroup, updateModuleFunc, updateModulePersistentState, addModuleToGroup, removeModuleFromGroup} = useGroups(
+  const {groups, updateModuleFunc, updateModulePersistentState, addModuleToGroup, removeModuleFromGroup} = useGroups(
     localStorage.getItem('groups') && JSON.parse(localStorage.getItem('groups')) || 
     demoState);
 
   useEffect(() => {
     localStorage.setItem('groups', JSON.stringify(groups))
   }, [groups])
-  
-  useEffect(() => initKeyboardInput(), [])
 
-  const addOscillatorAndSequencer = () => {
-    addGroup();
-  }
-
+  const [showKeyboard, setShowKeyboard] = useState(true)
   return (
     <div styleName="container">
       <DndProvider backend={HTML5Backend}>
       <header>
-        <div styleName="play-button-container">
-          {/* <div styleName={`play-button ${isOn ? 'playing' : ''}`} onClick={() => setIsOn(!isOn)}>Play</div> */}
-        </div>
-        <div styleName="add-group" onClick={addOscillatorAndSequencer}>
-              Add Group 
-        </div>
+        <div onClick={() => setShowKeyboard(true)}>Open keyboard</div>
         <div styleName="modules">
           <AddModule name="Oscillator" />
           <AddModule name="Sequencer" />
@@ -63,8 +59,8 @@ const App = () => {
                 />
               )}
           </div>
+          <BrowserView>
           <div styleName="master">
-                Master channel
                 <Group
                   key={groups.length - 1} 
                   group={groups[groups.length - 1]} 
@@ -77,8 +73,32 @@ const App = () => {
                   
                 </Group>
           </div>
+          </BrowserView>
         </div>
       </DndProvider>
+      <MobileView>
+        {showKeyboard && 
+        <div styleName="mobile-keyboard">
+          <div onClick={() => setShowKeyboard(false)}>Switch view</div>
+          <Keyboard />
+                <MasterGroup
+                  key={groups.length - 1} 
+                  group={groups[groups.length - 1]} 
+                  index={groups.length - 1} 
+                  updateModuleFunc={updateModuleFunc} 
+                  addModuleToGroup={addModuleToGroup}
+                  removeModuleFromGroup={removeModuleFromGroup}
+                  updateState={updateModulePersistentState}
+                >
+                  
+                </MasterGroup>
+
+        </div>}
+      </MobileView>
+      <BrowserView>
+        <Keyboard />
+      </BrowserView>
+      
         
       </div>
   );
