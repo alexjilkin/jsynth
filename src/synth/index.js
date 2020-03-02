@@ -102,7 +102,7 @@ export function* waveGenerator() {
     })
     
 
-    const mixVolume = numOfGeneratingInstances ?  1 / numOfGeneratingInstances : 1
+    const mixVolume =  1
 
     let wavesSum = wavesInAColumn.reduce((acc, value) => acc + (value * mixVolume), 0);
 
