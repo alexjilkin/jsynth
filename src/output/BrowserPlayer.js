@@ -1,4 +1,5 @@
 import {sampleRate} from 'synth/consts'
+import {isMobile} from "react-device-detect";
 const bufferSize = 2048;
 
 export const play = (waveGenerator) => {
@@ -27,7 +28,6 @@ export const play = (waveGenerator) => {
 
   return () => isPlaying = false
 }
-
 
 
 const warmUpAudio = () => {
@@ -62,7 +62,7 @@ const warmUpAudio = () => {
 	document.addEventListener('touchend', fixAudioContext);
 }
 
-warmUpAudio();
+isMobile && warmUpAudio();
 
 export default {
   play

@@ -2,10 +2,12 @@ import React, {useEffect, useState} from 'react';
 import {createBrowserHistory} from 'history';
 import { DndProvider, useDrag } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
+import TouchBackend from 'react-dnd-touch-backend'
 
 import {
   BrowserView,
-  MobileView
+  MobileView,
+  isMobile
 } from "react-device-detect";
 
 import './App.scss'
@@ -19,6 +21,7 @@ import Group from 'synth/Group';
 import MasterGroup from 'synth/MasterGroup';
 import {ItemTypes, demoState} from 'synth/consts'
 
+const dndBackend = isMobile ? TouchBackend : HTML5Backend
 
 const App = () => {
   // const [isOn, setIsOn] = useState(false);
@@ -33,7 +36,7 @@ const App = () => {
   const [showKeyboard, setShowKeyboard] = useState(true)
   return (
     <div styleName="container">
-      <DndProvider backend={HTML5Backend}>
+      <DndProvider backend={dndBackend}>
       <header>
         <div onClick={() => setShowKeyboard(true)}>Open keyboard</div>
         <div styleName="modules">

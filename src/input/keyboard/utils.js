@@ -52,7 +52,7 @@ export const keyDown = (keyCode) => {
     }
 
     console.log('playing')
-    play(frequencyModulation)
+    play(frequencyModulation, index)
     isPlayingByKey[keyCode] = true;
 }
 
@@ -63,10 +63,10 @@ export const keyUp = (keyCode) => {
     }
     isPlayingByKey[keyCode] = false;
     console.log('stopping')
-    stop();
+    stop(keyCode);
 }
 
-export const mouseDown = (index) => {
+export const virtualKeyboardKeyDown = (index) => {
     if (isPlayingByIndex[index]) {
         return;
     }
@@ -77,19 +77,19 @@ export const mouseDown = (index) => {
         return;
     }
 
-    console.log('playing')
-    play(frequencyModulation)
+    console.log('playing', index)
+    play(frequencyModulation, index)
     isPlayingByIndex[index] = true;
 }
 
-export const mouseUp = (index) => {
+export const virtualKeyboardKeyUp = (index) => {
 
     if (!isPlayingByIndex[index]) {
         return;
     }
     isPlayingByIndex[index] = false;
-    console.log('stopping')
-    stop();
+    console.log('stopping', index)
+    stop(index);
 }
 
 export const initKeyboardInput = () => {

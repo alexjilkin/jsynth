@@ -2,22 +2,25 @@ import BrowserPlayer from 'output/BrowserPlayer'
 
 let x = 0; // Master clock
 
-let _shouldGenerate = false;
-let _frequencyModulation = 1;
-let _xAtStart = 0;
-let _xAtStop = 0;
-
 const generator = waveGenerator();
 let isFirstTime = true;
 
 const attackSize = 1000;
 const releaseSize = 20000;
+const instances = {
+
+}
+
+let numOfGeneratingInstances = 0;
 
 // Returns the stop function
-export const play = (frequencyModulation) => {
-  _shouldGenerate = true;
-  _frequencyModulation = frequencyModulation;
-  _xAtStart = x;
+export const play = (frequencyModulation, id) => {
+  instances[id] = {
+    shouldGenerate: true,
+    frequencyModulation: frequencyModulation,
+    xAtStart: x
+  }
+  numOfGeneratingInstances++;
 
   if (isFirstTime) {
     BrowserPlayer.play(generator)
@@ -37,57 +40,69 @@ export const envelopeRelease = (y, x, size) => {
   return y * ((x * m) + (1))
 }
 
-
-
-export const stop = () => {
-  _shouldGenerate = false;
-  _xAtStop = x;
+export const stop = (id) => {
+  instances[id].shouldGenerate = false
+  instances[id].xAtStop = x
+  numOfGeneratingInstances--;
 }
 
 let globalGroups = [];
 
 export function* waveGenerator() {
   while(true) {
-
     const wavesInAColumn = []
     const groups = [...globalGroups]
     const masterGroup = groups.pop()
 
-    groups.forEach((modules, index) => {
-      if (modules.length === 0) {
-        return; 
-      }
+    Object.keys(instances).forEach(id => {
+      if(!instances[id]) 
+        return;
+      const instancesWaves = []
 
-      let y = 1;
-      modules.forEach((theModule) => {
-        const {func, module:name} = theModule;
-
-        if (name === 'Oscillator') {
-          if (!_shouldGenerate && (x - _xAtStop) >= releaseSize ) {
-            y = 0;
-          } else {
-            y = envelope(y)
-          }
+      groups.forEach((modules, index) => {
+        if (modules.length === 0) {
+          return; 
         }
-        
 
-        if(func) {
-          const result = func(y, x, _frequencyModulation);
-          if (typeof result === 'object') {
-            [y, _frequencyModulation] = result
-          } else {
-            y = result
-          }
+        if(!instances[id]) 
+          return;
+
+        let y = 1;
+        modules.forEach((theModule) => {
+          const {func, module:name} = theModule;
+
+          if(!instances[id]) 
+            return;
           
-        }
+          if(func) {
+            const result = func(y, x, instances[id].frequencyModulation);
+            if (typeof result === 'object') {
+              [y, instances[id].frequencyModulation] = result
+            } else {
+              y = result
+            }
+            
+          }
+        })
+
+        instancesWaves.push(y)
       })
+
+      let y = instancesWaves.reduce((acc, value) => acc + value, 0);
+
+      if (!instances[id].shouldGenerate && (x - instances[id].xAtStop) >= releaseSize ) {
+        y = 0;
+        delete instances[id]
+        return;
+      } else {
+        y = envelope(y, id)
+      }
 
       wavesInAColumn.push(y)
     })
-
     
 
-    const mixVolume = 1 / wavesInAColumn.length;
+    const mixVolume = numOfGeneratingInstances ?  1 / numOfGeneratingInstances : 1
 
     let wavesSum = wavesInAColumn.reduce((acc, value) => acc + (value * mixVolume), 0);
 
@@ -101,16 +116,16 @@ export function* waveGenerator() {
   }
 }
 
-const envelope = (y) => {
+const envelope = (y, id) => {
 
-  const xFromStart = x - _xAtStart;
+  const xFromStart = x - instances[id].xAtStart;
   
   if (xFromStart < attackSize) {
     return envelopeAttack(y, xFromStart, attackSize)
   } 
   
-  const xFromStop = x - _xAtStop;
-  if (!_shouldGenerate && xFromStop < releaseSize) {
+  const xFromStop = x - instances[id].xAtStop;
+  if (!instances[id].shouldGenerate && xFromStop < releaseSize) {
     return (envelopeRelease(y, xFromStop, releaseSize))
   }
   
