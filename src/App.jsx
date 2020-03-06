@@ -3,35 +3,25 @@ import {createBrowserHistory} from 'history';
 import { DndProvider, useDrag } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import TouchBackend from 'react-dnd-touch-backend'
+import {BrowserView, MobileView, isMobile} from "react-device-detect";
 
-import {
-  BrowserView,
-  MobileView,
-  isMobile
-} from "react-device-detect";
-
-import './App.scss'
 export const history = createBrowserHistory();
-import useGroups from './synth/hooks/useGroups'
 
+import useModules from './synth/hooks/useModules'
 import {Keyboard} from 'input/keyboard'
-
-import {bypassFunction} from 'synth/consts';
-import Group from 'synth/Group';
-import MasterGroup from 'synth/MasterGroup';
+import ModulesRack from 'synth/ModulesRack';
 import {ItemTypes, demoState} from 'synth/consts'
-
+import './App.scss'
 const dndBackend = isMobile ? TouchBackend : HTML5Backend
 
 const App = () => {
-  // const [isOn, setIsOn] = useState(false);
-  const {groups, updateModuleFunc, updateModulePersistentState, addModuleToGroup, removeModuleFromGroup} = useGroups(
-    localStorage.getItem('groups') && JSON.parse(localStorage.getItem('groups')) || 
-    demoState);
+  const appState = localStorage.getItem('state') && JSON.parse(localStorage.getItem('state')) || demoState
+
+  const {modules, addModule, removeModule, updateModuleFunc, updateModulePersistentState} = useModules(appState.modules);
 
   useEffect(() => {
-    localStorage.setItem('groups', JSON.stringify(groups))
-  }, [groups])
+    localStorage.setItem('state', JSON.stringify(appState))
+  }, [modules])
 
   const [showKeyboard, setShowKeyboard] = useState(true)
   return (
@@ -40,7 +30,7 @@ const App = () => {
       <header>
         <div onClick={() => setShowKeyboard(true)}>Open keyboard</div>
         <div styleName="modules">
-          <AddModule name="Oscillator" />
+          <AddModule name="Oscillator" type="generator"/>
           <AddModule name="Sequencer" />
           <AddModule name="Delay" />
           <AddModule name="LFO" />
@@ -50,33 +40,25 @@ const App = () => {
       </header>
         <div styleName="content">
           <div styleName="groups">
-              {groups.slice(0, groups.length - 1).map((group, groupIndex) => 
-                <Group 
-                  key={groupIndex} 
-                  group={group} 
-                  index={groupIndex} 
-                  updateModuleFunc={updateModuleFunc} 
-                  addModuleToGroup={addModuleToGroup}
-                  removeModuleFromGroup={removeModuleFromGroup}
-                  updateState={updateModulePersistentState}
-                />
-              )}
+              <ModulesRack 
+                modules={modules} 
+                updateModuleFunc={updateModuleFunc} 
+                addModule={addModule}
+                removeModule={removeModule}
+                updateState={updateModulePersistentState}
+              />
           </div>
-          <BrowserView>
+          {/* <BrowserView>
           <div styleName="master">
-                <Group
-                  key={groups.length - 1} 
-                  group={groups[groups.length - 1]} 
-                  index={groups.length - 1} 
-                  updateModuleFunc={updateModuleFunc} 
-                  addModuleToGroup={addModuleToGroup}
-                  removeModuleFromGroup={removeModuleFromGroup}
-                  updateState={updateModulePersistentState}
-                >
-                  
-                </Group>
+              <ModulesRack 
+                modules={appState.masterModules} 
+                updateModuleFunc={updateModuleFunc} 
+                addModule={addModule}
+                removeModule={removeModule}
+                updateState={updateModulePersistentState}
+              />
           </div>
-          </BrowserView>
+          </BrowserView> */}
         </div>
       </DndProvider>
       <MobileView>
@@ -84,17 +66,16 @@ const App = () => {
         <div styleName="mobile-keyboard">
           <div onClick={() => setShowKeyboard(false)}>Switch view</div>
           <Keyboard />
-                <MasterGroup
-                  key={groups.length - 1} 
-                  group={groups[groups.length - 1]} 
+                {/* <ModulesRack
+                  modules={} 
                   index={groups.length - 1} 
                   updateModuleFunc={updateModuleFunc} 
-                  addModuleToGroup={addModuleToGroup}
-                  removeModuleFromGroup={removeModuleFromGroup}
+                  addModule={addModule}
+                  removeModule={removeModule}
                   updateState={updateModulePersistentState}
                 >
                   
-                </MasterGroup>
+                </ModulesRack> */}
 
         </div>}
       </MobileView>
@@ -108,7 +89,7 @@ const App = () => {
 }
 
 
-const AddModule = ({name}) => {
+const AddModule = ({name, type}) => {
   const [{isDragging}, drag] = useDrag({
     item: { type: ItemTypes.MODULE, name },
 		collect: monitor => ({
@@ -120,7 +101,6 @@ const AddModule = ({name}) => {
     <div
       style={{opacity: isDragging ? 0.5 : 1}}
       ref={drag}
-      onClick={() => addModuleToGroup({module: name, func: bypassFunction}, 0)}
       styleName="module"
     >{name}</div>
   )

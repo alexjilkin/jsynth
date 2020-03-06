@@ -52,7 +52,7 @@ export const keyDown = (keyCode) => {
     }
 
     console.log('playing')
-    play(frequencyModulation, index)
+    play(frequencyModulation, keyCode)
     isPlayingByKey[keyCode] = true;
 }
 

@@ -10,6 +10,7 @@ const releaseSize = 20000;
 const instances = {
 
 }
+let postFrequencyModulation = 1;
 
 let numOfGeneratingInstances = 0;
 
@@ -46,49 +47,33 @@ export const stop = (id) => {
   numOfGeneratingInstances--;
 }
 
-let globalGroups = [];
+let _modules = [];
 
 export function* waveGenerator() {
   while(true) {
-    const wavesInAColumn = []
-    const groups = [...globalGroups]
-    const masterGroup = groups.pop()
+    const wave = 0;
+    const modules = [..._modules]
+    //const masterGroup = groups.pop()
+
+    const generatingModules = modules.filter(({type}) => type === 'generator')
+    const restModules = modules.filter(({type}) => type !== 'generator')
 
     Object.keys(instances).forEach(id => {
       if(!instances[id]) 
         return;
-      const instancesWaves = []
 
-      groups.forEach((modules, index) => {
-        if (modules.length === 0) {
-          return; 
-        }
+      let y = 1;
+      generatingModules.forEach(({func, module:name}) => {
+        if(func) {
+          const result = func(y, x, instances[id].frequencyModulation);
 
-        if(!instances[id]) 
-          return;
-
-        let y = 1;
-        modules.forEach((theModule) => {
-          const {func, module:name} = theModule;
-
-          if(!instances[id]) 
-            return;
-          
-          if(func) {
-            const result = func(y, x, instances[id].frequencyModulation);
-            if (typeof result === 'object') {
-              [y, instances[id].frequencyModulation] = result
-            } else {
-              y = result
-            }
-            
+          if (typeof result === 'object') {
+            [y, instances[id].frequencyModulation] = result
+          } else {
+            y = result
           }
-        })
-
-        instancesWaves.push(y)
+        }
       })
-
-      let y = instancesWaves.reduce((acc, value) => acc + value, 0);
 
       if (!instances[id].shouldGenerate && (x - instances[id].xAtStop) >= releaseSize ) {
         y = 0;
@@ -97,22 +82,29 @@ export function* waveGenerator() {
       } else {
         y = envelope(y, id)
       }
-
-      wavesInAColumn.push(y)
+      
+      // Provide headroom for instance
+      wave += (y * 0.4)
     })
-    
 
-    const mixVolume =  1
 
-    let wavesSum = wavesInAColumn.reduce((acc, value) => acc + (value * mixVolume), 0);
+    restModules.forEach(({func, module:name}) => {
+      if(func) {
+        const result = func(wave, x, postFrequencyModulation);
 
-    masterGroup.forEach(({func}) => {
-      [wavesSum] = func(wavesSum, x, 1)
+        if (typeof result === 'object') {
+          [wave, postFrequencyModulation] = result
+        } else {
+          wave = result
+        }
+      }
     })
 
     x++;
+
     // Decrease volume until I will make a master volume component
-    yield wavesSum * 0.5
+    const mixVolume =  1
+    yield wave * mixVolume
   }
 }
 
@@ -132,6 +124,6 @@ const envelope = (y, id) => {
   return y;
 }
 
-export const setGlobalGroups = (groups) => {
-    globalGroups = groups;
+export const setGlobalModules = (modules) => {
+  _modules = modules;
 }

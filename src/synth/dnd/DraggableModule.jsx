@@ -4,11 +4,11 @@ import {ItemTypes} from 'synth/consts'
 import * as Modules from 'modules'
 import './DraggableModule.scss'
 
-const DraggableModule = ({moduleName, groupIndex, moduleIndex, theModule, ...props}) => {
-  const {removeModuleFromGroup} = props;
+const DraggableModule = ({moduleName, index, theModule, ...props}) => {
+  const {removeModule} = props;
 
   const [{isDragging}, drag] = useDrag({
-    item: { type: ItemTypes.MODULE, groupIndex, moduleIndex, theModule },
+    item: { type: ItemTypes.MODULE, index, theModule },
     collect: monitor => ({
       isDragging: !!monitor.isDragging()
     }),
@@ -22,7 +22,7 @@ const DraggableModule = ({moduleName, groupIndex, moduleIndex, theModule, ...pro
         <div styleName="drag">
 
         </div>
-        <div styleName="remove" onClick={() => removeModuleFromGroup(groupIndex, moduleIndex)}>
+        <div styleName="remove" onClick={() => removeModule(index)}>
           x
         </div>
       </div>
