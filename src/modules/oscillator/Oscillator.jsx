@@ -127,7 +127,7 @@ const Oscillator = ({updateModulationFunction, removeFunction, updateState, pers
     
     return(
         <div styleName="container">
-            <div styleName="title">An osciallator.</div>
+            <div styleName="title">Cube of waves</div>
 
             <div styleName="frequency">
                 <Knob 

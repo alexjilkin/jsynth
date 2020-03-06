@@ -4,9 +4,9 @@ import './Delay.scss'
 
 const defaultState = {
     isOn: false,
-    delayAmount: 0.25,
-    delayDepth: 5,
-    gain: 0.6
+    delayAmount: 0.8,
+    delayDepth: 6,
+    gain: 0.3
 }
 
 const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultState, updateState}) => {
@@ -46,9 +46,6 @@ const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultS
             updateModulationFunction((y, x, frequencyModulation) => {
                 const cyclicX = x % feedbackSize
                 feedback.current[cyclicX] = y;
-                if (y !== 0) {
-                    return y;
-                }
                 
                 return [delayFunc(y, cyclicX, feedback.current), frequencyModulation];
             })
@@ -104,8 +101,8 @@ const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultS
                     Gain
                     <Knob 
                         min={0}
-                        max={1}
-                        step={0.1}
+                        max={0.5}
+                        step={0.05}
                         width={70}
                         height={70}
                         fgColor="#9068be"

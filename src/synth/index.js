@@ -84,9 +84,8 @@ export function* waveGenerator() {
       }
       
       // Provide headroom for instance
-      wave += (y * 0.4)
+      wave += y * 0.8
     })
-
 
     restModules.forEach(({func, module:name}) => {
       if(func) {
@@ -103,7 +102,7 @@ export function* waveGenerator() {
     x++;
 
     // Decrease volume until I will make a master volume component
-    const mixVolume =  1
+    const mixVolume =  0.1;
     yield wave * mixVolume
   }
 }
