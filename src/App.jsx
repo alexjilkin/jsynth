@@ -13,14 +13,15 @@ import ModulesRack from 'synth/ModulesRack';
 import {ItemTypes, demoState} from 'synth/consts'
 import './App.scss'
 const dndBackend = isMobile ? TouchBackend : HTML5Backend
+const initialModules = localStorage.getItem('modules') && JSON.parse(localStorage.getItem('modules')) || demoState
 
 const App = () => {
-  const appState = localStorage.getItem('state') && JSON.parse(localStorage.getItem('state')) || demoState
+  
 
-  const {modules, addModule, removeModule, updateModuleFunc, updateModulePersistentState} = useModules(appState.modules);
+  const {modules, addModule, removeModule, updateModuleFunc, updateModulePersistentState} = useModules(initialModules);
 
   useEffect(() => {
-    localStorage.setItem('state', JSON.stringify(appState))
+    localStorage.setItem('modules', JSON.stringify(modules))
   }, [modules])
 
   const [showKeyboard, setShowKeyboard] = useState(true)
@@ -31,7 +32,7 @@ const App = () => {
         <div onClick={() => setShowKeyboard(true)}>Open keyboard</div>
         <div styleName="modules">
           <AddModule name="Oscillator" type="generator"/>
-          <AddModule name="Sequencer" />
+          <AddModule name="Sequencer" type="generator"/>
           <AddModule name="Delay" />
           <AddModule name="LFO" />
           <AddModule name="Lowpass" />
@@ -48,17 +49,6 @@ const App = () => {
                 updateState={updateModulePersistentState}
               />
           </div>
-          {/* <BrowserView>
-          <div styleName="master">
-              <ModulesRack 
-                modules={appState.masterModules} 
-                updateModuleFunc={updateModuleFunc} 
-                addModule={addModule}
-                removeModule={removeModule}
-                updateState={updateModulePersistentState}
-              />
-          </div>
-          </BrowserView> */}
         </div>
       </DndProvider>
       <MobileView>
@@ -66,17 +56,6 @@ const App = () => {
         <div styleName="mobile-keyboard">
           <div onClick={() => setShowKeyboard(false)}>Switch view</div>
           <Keyboard />
-                {/* <ModulesRack
-                  modules={} 
-                  index={groups.length - 1} 
-                  updateModuleFunc={updateModuleFunc} 
-                  addModule={addModule}
-                  removeModule={removeModule}
-                  updateState={updateModulePersistentState}
-                >
-                  
-                </ModulesRack> */}
-
         </div>}
       </MobileView>
       <BrowserView>
@@ -88,10 +67,9 @@ const App = () => {
   );
 }
 
-
 const AddModule = ({name, type}) => {
   const [{isDragging}, drag] = useDrag({
-    item: { type: ItemTypes.MODULE, name },
+    item: { type: ItemTypes.MODULE, name, moduleType: type },
 		collect: monitor => ({
       isDragging: !!monitor.isDragging()
 		}),

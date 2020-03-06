@@ -9,7 +9,7 @@ import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
 const defaultState = {
-    frequency: 440,
+    frequency: 220,
     sineAmount: 1,
     sawAmount: 1.1,
     squareAmount: 0

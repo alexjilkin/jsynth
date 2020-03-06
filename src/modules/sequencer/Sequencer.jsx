@@ -49,14 +49,14 @@ const Sequencer = ({updateModulationFunction, removeFunction, sampleRate, update
         const currentStepInPlaying = ~~(x / sectionSizeInSampleRate) % sequenceSize
         
         if (xRelativeToSection === 0 && currentStepInPlaying === 0) {
-          sequenceAnimation()
+          //sequenceAnimation ()
         }
 
         const interval = sequence[currentStepInPlaying]
         if (interval) {
           const intervalRatio = intervals[sequence[currentStepInPlaying]];
           const result = isEnvelopeOn ? envelope(y, xRelativeToSection, sectionSizeInSampleRate) : y;
-          return [result, intervalRatio];
+          return [result, frequencyModulation * intervalRatio];
         } else {
           return [0, frequencyModulation];
         }

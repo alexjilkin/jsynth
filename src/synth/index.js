@@ -29,18 +29,6 @@ export const play = (frequencyModulation, id) => {
   }
 }
 
-
-export const envelopeAttack = (y, x, size) => {
-  const m = 1 / (size)
-  return y * (x * m)
-}
-
-export const envelopeRelease = (y, x, size) => {
-  const m = -1 / (size);
-
-  return y * ((x * m) + (1))
-}
-
 export const stop = (id) => {
   instances[id].shouldGenerate = false
   instances[id].xAtStop = x
@@ -53,7 +41,6 @@ export function* waveGenerator() {
   while(true) {
     const wave = 0;
     const modules = [..._modules]
-    //const masterGroup = groups.pop()
 
     const generatingModules = modules.filter(({type}) => type === 'generator')
     const restModules = modules.filter(({type}) => type !== 'generator')
@@ -63,12 +50,15 @@ export function* waveGenerator() {
         return;
 
       let y = 1;
+      let frequencyModulation = instances[id].frequencyModulation;
+
       generatingModules.forEach(({func, module:name}) => {
         if(func) {
-          const result = func(y, x, instances[id].frequencyModulation);
+          const xFromStart = x - instances[id].xAtStart;
+          const result = func(y, xFromStart, frequencyModulation);
 
           if (typeof result === 'object') {
-            [y, instances[id].frequencyModulation] = result
+            [y, frequencyModulation] = result
           } else {
             y = result
           }
@@ -121,6 +111,17 @@ const envelope = (y, id) => {
   }
   
   return y;
+}
+
+export const envelopeAttack = (y, x, size) => {
+  const m = 1 / (size)
+  return y * (x * m)
+}
+
+export const envelopeRelease = (y, x, size) => {
+  const m = -1 / (size);
+
+  return y * ((x * m) + (1))
 }
 
 export const setGlobalModules = (modules) => {

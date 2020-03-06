@@ -40,14 +40,14 @@ const ModulesRack = ({modules, updateModuleFunc, addModule, removeModule, update
         isOver: monitor.isOver()
       }),
       drop: (item, monitor) => {
-        const {index: sourceIndex, name, theModule = {module: name, func: bypassFunction}} = item;
+        const {index: sourceIndex, name, moduleType, theModule = {module: name, func: bypassFunction, type: moduleType}} = item;
 
         if (sourceIndex + 1 === index || sourceIndex === index) {
           return;
         }
 
         if (typeof sourceIndex !== "undefined") {
-          removeModule(sourceGIndex, sourceIndex)
+          removeModule(sourceIndex)
         }     
 
         if (sourceIndex < index) {
