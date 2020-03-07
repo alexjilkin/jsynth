@@ -50,7 +50,7 @@ export function* waveGenerator() {
       if(!instances[id]) 
         return;
 
-      let y = 1;
+      let y = 0;
       let baseFrequencyModulation = instances[id].frequencyModulation;
 
       generatingModules.forEach(({func, module:name}) => {
