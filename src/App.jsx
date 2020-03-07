@@ -12,11 +12,12 @@ import {Keyboard} from 'input/keyboard'
 import ModulesRack from 'synth/ModulesRack';
 import {ItemTypes, demoState} from 'synth/consts'
 import './App.scss'
+import Oscilloscope from 'modules/oscilloscope/Oscilloscope'
+
 const dndBackend = isMobile ? TouchBackend : HTML5Backend
 const initialModules = localStorage.getItem('modules') && JSON.parse(localStorage.getItem('modules')) || demoState
 
 const App = () => {
-  
 
   const {modules, addModule, removeModule, updateModuleFunc, updateModulePersistentState} = useModules(initialModules);
 
@@ -55,6 +56,7 @@ const App = () => {
         {showKeyboard && 
         <div styleName="mobile-keyboard">
           <div onClick={() => setShowKeyboard(false)}>Switch view</div>
+          <Oscilloscope addModule={addModule} updateModulationFunction={(func, type) => updateModuleFunc(func, type, modules.length - 1)}/>
           <Keyboard />
         </div>}
       </MobileView>

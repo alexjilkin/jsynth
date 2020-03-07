@@ -19,7 +19,7 @@ const ModulesRack = ({modules, updateModuleFunc, addModule, removeModule, update
                       index={index}
                       sampleRate={sampleRate}
                       removeModule={removeModule}
-                      updateModulationFunction={(func) => updateModuleFunc(func, index)}
+                      updateModulationFunction={(func, type) => updateModuleFunc(func, type, index)}
                       updateState={(nextState) => updateState(nextState, index)}
                       persistentState={persistentState}
                       moduleName={moduleName}

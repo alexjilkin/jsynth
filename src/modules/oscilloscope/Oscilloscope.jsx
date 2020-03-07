@@ -8,7 +8,7 @@ const yUnit = height / 4;
 let lastX = 0;
 let lastY = 0;
 
-const Oscilloscope = ({updateModulationFunction, removeFunction}) => {
+const Oscilloscope = ({updateModulationFunction}) => {
     const canvasRef = useRef(null)
 
     useEffect(() => {

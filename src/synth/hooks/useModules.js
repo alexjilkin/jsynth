@@ -1,20 +1,17 @@
 import {useState, useCallback, useEffect} from 'react';
 import {setGlobalModules} from 'synth'
 
+export let _modulesFuncs = []
+
 function useModules(initialModules = []) {
     const [modules, setModules] = useState(initialModules)
-    
-    useEffect(() => {
-        setGlobalModules(modules)
-    }, [modules])
 
-    const updateModuleFunc = useCallback((func, funcIndex) => {
-        setModules((prevModules) => {
-          const theModule = prevModules[funcIndex]
-          return [...prevModules.slice(0, funcIndex), {...theModule, func}, ...prevModules.slice(funcIndex + 1)]
+    const updateModuleFunc = useCallback((func, type, index) => {
+        const prevFunc = _modulesFuncs[index]
+        const newModules = [..._modulesFuncs.slice(0, index), {...prevFunc, func, type}, ..._modulesFuncs.slice(index + 1)];
+        _modulesFuncs = newModules
+        setGlobalModules(newModules)
     })
-    }, [modules])
-
 
     const updateModulePersistentState = useCallback((persistentState, funcIndex) => {
         setModules((prevModules) => {

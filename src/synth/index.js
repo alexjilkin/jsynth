@@ -1,5 +1,6 @@
 import BrowserPlayer from 'output/BrowserPlayer'
 
+
 let x = 0; // Master clock
 
 const generator = waveGenerator();
@@ -35,12 +36,12 @@ export const stop = (id) => {
   numOfGeneratingInstances--;
 }
 
-let _modules = [];
+let _moduleFunc = [];
 
 export function* waveGenerator() {
   while(true) {
     const wave = 0;
-    const modules = [..._modules]
+    const modules = [..._moduleFunc]
 
     const generatingModules = modules.filter(({type}) => type === 'generator')
     const restModules = modules.filter(({type}) => type !== 'generator')
@@ -50,15 +51,15 @@ export function* waveGenerator() {
         return;
 
       let y = 1;
-      let frequencyModulation = instances[id].frequencyModulation;
+      let baseFrequencyModulation = instances[id].frequencyModulation;
 
       generatingModules.forEach(({func, module:name}) => {
         if(func) {
           const xFromStart = x - instances[id].xAtStart;
-          const result = func(y, xFromStart, frequencyModulation);
+          const result = func(y, xFromStart, baseFrequencyModulation);
 
           if (typeof result === 'object') {
-            [y, frequencyModulation] = result
+            [y, baseFrequencyModulation] = result
           } else {
             y = result
           }
@@ -125,5 +126,5 @@ export const envelopeRelease = (y, x, size) => {
 }
 
 export const setGlobalModules = (modules) => {
-  _modules = modules;
+  _moduleFunc = modules;
 }
