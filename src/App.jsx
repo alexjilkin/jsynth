@@ -56,8 +56,8 @@ const App = () => {
         {showKeyboard && 
         <div styleName="mobile-keyboard">
           <div onClick={() => setShowKeyboard(false)}>Switch view</div>
-          <Oscilloscope addModule={addModule} updateModulationFunction={(func, type) => updateModuleFunc(func, type, modules.length - 1)}/>
           <Keyboard />
+          <Oscilloscope addModule={addModule} updateModulationFunction={(func, type) => updateModuleFunc(func, type, modules.length)}/>
         </div>}
       </MobileView>
       <BrowserView>
