@@ -36,7 +36,7 @@ const warmUpAudio = () => {
 		window.audioContext = new window.AudioContext();
 	}
 	var fixAudioContext = function (e) {
-		e.stopPropagation();
+		
 
 		if (window.audioContext) {
 			// Create empty buffer
@@ -55,13 +55,14 @@ const warmUpAudio = () => {
 			}
 		}
 		// Remove events
-		document.removeEventListener('touchstart', fixAudioContext);
-		document.removeEventListener('touchend', fixAudioContext);
+		document.removeEventListener('touchstart', fixAudioContext, true);
+		document.removeEventListener('touchend', fixAudioContext, true);
+		e.stopImmediatePropagation();
 	};
 	// iOS 6-8
-	document.addEventListener('touchstart', fixAudioContext);
+	document.addEventListener('touchstart', fixAudioContext, true);
 	// iOS 9
-	document.addEventListener('touchend', fixAudioContext);
+	document.addEventListener('touchend', fixAudioContext, true);
 }
 
 isMobile && warmUpAudio();
