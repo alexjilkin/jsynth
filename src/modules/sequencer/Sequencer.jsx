@@ -8,6 +8,9 @@ const defaultState = {
   bpm: 120,
   isEnvelopeOn: false
 }
+
+const type = 'generator'
+
 const Sequencer = ({updateModulationFunction, removeFunction, sampleRate, updateState, persistentState = defaultState}) => {
   const [sequenceSize, setSequenceSize] = useState(persistentState.sequenceSize)
   const [sequence, setSequence] = useState(persistentState.sequence)
@@ -22,13 +25,13 @@ const Sequencer = ({updateModulationFunction, removeFunction, sampleRate, update
     setSequence([...sequence.slice(0, index), value, ...sequence.slice(index + 1)])
   }, [sequence, sequenceSize])
 
-  const sequenceAnimation = () => {
-    for (let i = 0; i < sequenceSize; i++) {
-      setTimeout(() => {
-        setCurrentStep(i)
-      }, noteLength * 1000 * i)
-     }
-  }
+  // const sequenceAnimation = () => {
+  //   for (let i = 0; i < sequenceSize; i++) {
+  //     setTimeout(() => {
+  //       setCurrentStep(i)
+  //     }, noteLength * 1000 * i)
+  //    }
+  // }
 
   useEffect(() => {
     if (sequence.length !== sequenceSize) {
@@ -48,19 +51,19 @@ const Sequencer = ({updateModulationFunction, removeFunction, sampleRate, update
 
         const currentStepInPlaying = ~~(x / sectionSizeInSampleRate) % sequenceSize
         
-        if (xRelativeToSection === 0 && currentStepInPlaying === 0) {
-          sequenceAnimation()
-        }
+        // if (xRelativeToSection === 0 && currentStepInPlaying === 0) {
+        //   sequenceAnimation ()
+        // }
 
         const interval = sequence[currentStepInPlaying]
         if (interval) {
           const intervalRatio = intervals[sequence[currentStepInPlaying]];
           const result = isEnvelopeOn ? envelope(y, xRelativeToSection, sectionSizeInSampleRate) : y;
-          return [result, intervalRatio];
+          return [result, frequencyModulation * intervalRatio];
         } else {
           return [0, frequencyModulation];
         }
-      })
+      }, type)
       
 
   }, [sequence, bpm, sequenceSize, isEnvelopeOn])
@@ -126,8 +129,5 @@ function envelope(y, x, size) {
 }
 
 const intervals =  [1, 1.066, 1.2, 1.333, 1.5, 1.6, 1.75]
-function intervalToFrequency(interval, frequency) {
-  return frequency * (intervals[interval] || 1)
-}
 
 export default Sequencer;

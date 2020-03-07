@@ -21,8 +21,8 @@ const Keyboard = ({numberOfOctaves = 2}) => {
         <div styleName="container" style={{gridAutoColumns: whiteKeyWidth}}>
             {keyboardLayout.map((value, index) =>
                 value ? 
-                    <WhiteKey index={index}/> :
-                    <BlackKey index={index} keyboardLayout={keyboardLayout} />
+                    <WhiteKey key={index} index={index}/> :
+                    <BlackKey key={index} index={index} keyboardLayout={keyboardLayout} />
             )}
         </div>
     )

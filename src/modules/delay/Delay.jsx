@@ -3,10 +3,16 @@ import Knob from 'react-canvas-knob';
 import './Delay.scss'
 
 const defaultState = {
-    isOn: false,
-    delayAmount: 0.25,
-    delayDepth: 5,
-    gain: 0.6
+    isOn: true,
+    delayAmount: 0.8,
+    delayDepth: 6,
+    gain: 0.3
+}
+
+const knobSize = 80;
+
+const getDelayAmountFromFeedback = feedback => {
+
 }
 
 const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultState, updateState}) => {
@@ -30,7 +36,7 @@ const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultS
                 return y;
             }
             
-            y += Math.pow(gain, i) * (y + currentFeedback)
+            y = (y * 0.9) +  Math.pow(gain, i) * (y + currentFeedback)
         }
     
         return y;
@@ -46,9 +52,6 @@ const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultS
             updateModulationFunction((y, x, frequencyModulation) => {
                 const cyclicX = x % feedbackSize
                 feedback.current[cyclicX] = y;
-                if (y !== 0) {
-                    return y;
-                }
                 
                 return [delayFunc(y, cyclicX, feedback.current), frequencyModulation];
             })
@@ -78,11 +81,12 @@ const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultS
                         min={0}
                         max={3}
                         step={0.1}
-                        width={70}
-                        height={70}
+                        width={knobSize}
+                        height={knobSize}
                         fgColor="#9068be"
                         value={delayAmount}
                         onChange={setDelayAmount}
+                        thickness={0.6}
                     />
                 </div>
 
@@ -92,11 +96,12 @@ const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultS
                         min={0}
                         max={15}
                         step={1}
-                        width={70}
-                        height={70}
+                        width={knobSize}
+                        height={knobSize}
                         fgColor="#9068be"
                         value={delayDepth}
                         onChange={setDelayDepth}
+                        thickness={0.6}
                     />
                 </div>
 
@@ -104,13 +109,14 @@ const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultS
                     Gain
                     <Knob 
                         min={0}
-                        max={1}
-                        step={0.1}
-                        width={70}
-                        height={70}
+                        max={0.5}
+                        step={0.05}
+                        width={knobSize}
+                        height={knobSize}
                         fgColor="#9068be"
                         value={gain}
                         onChange={setGain}
+                        thickness={0.6}
                     />
                 </div>
             

@@ -8,27 +8,27 @@ const keyCodeToFrequencyModulation = (keyCode) => {
 
     // Key H My Middle C
     if (keyCode === 72) {
-        frequencyModulation = Math.pow(2, 0/12);
+        frequencyModulation = Math.pow(2, -12/12);
     }
     // Key U
     else if (keyCode === 85) {
-        frequencyModulation = Math.pow(2, 1/12);
+        frequencyModulation = Math.pow(2, -11/12);
     // Key J
     } else if (keyCode === 74) {
-        frequencyModulation = Math.pow(2, 2/12);
+        frequencyModulation = Math.pow(2, -10/12);
     } 
     // Key I
     else if (keyCode === 73) {
-        frequencyModulation = Math.pow(2, 3/12);
+        frequencyModulation = Math.pow(2, -9/12);
     }
     // Key K
     else if (keyCode === 75) {
-        frequencyModulation = Math.pow(2, 4/12);
+        frequencyModulation = Math.pow(2, -8/12);
     }
 
 
     else if (keyCode === 71) {
-        frequencyModulation = Math.pow(2, -1/12);
+        frequencyModulation = Math.pow(2, -13/12);
     } else {
         return;
     }
@@ -37,7 +37,7 @@ const keyCodeToFrequencyModulation = (keyCode) => {
 }
 
 const keyIndexToFrequencyModulation = (index) => {
-    return Math.pow(2, index/12);
+    return Math.pow(2, -1 + index/12);
 }
 
 export const keyDown = (keyCode) => {
@@ -52,7 +52,7 @@ export const keyDown = (keyCode) => {
     }
 
     console.log('playing')
-    play(frequencyModulation, index)
+    play(frequencyModulation, keyCode)
     isPlayingByKey[keyCode] = true;
 }
 

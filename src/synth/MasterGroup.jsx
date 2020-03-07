@@ -3,10 +3,10 @@ import {sampleRate} from 'synth/consts'
 import ErrorBoundary  from 'common/ErrorBoundary'
 import * as Modules from 'modules'
 
-import './Group.scss'
+import './ModulesRack.scss'
 import DraggableModule from './dnd/DraggableModule'
 
-const MasterGroup = ({group, index, updateModuleFunc, addModuleToGroup, removeModuleFromGroup, updateState}) => {
+const MasterGroup = ({group, index, updateModuleFunc, addModule, removeModule, updateState}) => {
   return (
     <div styleName="group" key={index}>
         {group.map(({module: moduleName, func, persistentState}, moduleIndex) => {
@@ -16,10 +16,10 @@ const MasterGroup = ({group, index, updateModuleFunc, addModuleToGroup, removeMo
           return (<span key={`${index}-${moduleIndex}`} styleName="module-and-inbetween">
             <div styleName="module">
               <ErrorBoundary >
-                    <Module
+                    <DraggableModule
                       key={`${index}-${moduleIndex}`}
                       sampleRate={sampleRate}
-                      removeModuleFromGroup={removeModuleFromGroup}
+                      removeModule={removeModule}
                       updateModulationFunction={(func) => updateModuleFunc(func, index, moduleIndex)}
                       updateState={(nextState) => updateState(nextState, index, moduleIndex)}
                       persistentState={persistentState}

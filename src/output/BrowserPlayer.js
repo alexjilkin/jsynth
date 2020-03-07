@@ -36,6 +36,8 @@ const warmUpAudio = () => {
 		window.audioContext = new window.AudioContext();
 	}
 	var fixAudioContext = function (e) {
+		e.stopPropagation();
+
 		if (window.audioContext) {
 			// Create empty buffer
 			var buffer = window.audioContext.createBuffer(1, 1, 22050);
