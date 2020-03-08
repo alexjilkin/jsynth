@@ -6,8 +6,8 @@ let x = 0; // Master clock
 const generator = waveGenerator();
 let isFirstTime = true;
 
-const attackSize = 1000;
-const releaseSize = 20000;
+const attackSize = 500;
+const releaseSize = 10000;
 const instances = {
 
 }
