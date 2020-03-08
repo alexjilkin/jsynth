@@ -2,8 +2,8 @@ import React, {useEffect, useRef} from 'react';
 
 const width = 280;
 const height = 200;
-const xUnit = width / (1500) 
-const yUnit = height / 4;
+const xUnit = width / (500) 
+const yUnit = height / 8;
 
 let lastX = 0;
 let lastY = 0;
@@ -26,16 +26,14 @@ const Oscilloscope = ({updateModulationFunction}) => {
                 const canvasWorldY = (height * (3/5)) + (y * yUnit)
                 context.fillRect(canvasWorldX, canvasWorldY , 1, 1);
 
-                if (canvasWorldX % (width) === 0) {
+                if (canvasWorldX % (width) < 5) {
                     context.clearRect(0, 0, width, height)
-                }
-
-                if (Math.abs(canvasWorldY - lastY) > 5 && canvasWorldX !== 0) {
                     context.beginPath();
-                    context.moveTo(lastX, lastY);
-                    context.lineTo(canvasWorldX, canvasWorldY);
-                    context.stroke();
                 }
+                context.moveTo(lastX, lastY);
+                context.lineTo(canvasWorldX, canvasWorldY);
+                context.stroke();
+
 
                 lastX = canvasWorldX;
                 lastY = canvasWorldY;

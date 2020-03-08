@@ -3,37 +3,29 @@ import {play, stop} from 'synth'
 let isPlayingByKey = {};
 let isPlayingByIndex = {}
 
-const keyCodeToFrequencyModulation = (keyCode) => {
-    let frequencyModulation = 1;
-
-    // Key H My Middle C
-    if (keyCode === 72) {
-        frequencyModulation = Math.pow(2, -12/12);
-    }
-    // Key U
-    else if (keyCode === 85) {
-        frequencyModulation = Math.pow(2, -11/12);
-    // Key J
-    } else if (keyCode === 74) {
-        frequencyModulation = Math.pow(2, -10/12);
-    } 
-    // Key I
-    else if (keyCode === 73) {
-        frequencyModulation = Math.pow(2, -9/12);
-    }
-    // Key K
-    else if (keyCode === 75) {
-        frequencyModulation = Math.pow(2, -8/12);
-    }
-
-
-    else if (keyCode === 71) {
-        frequencyModulation = Math.pow(2, -13/12);
-    } else {
-        return;
-    }
-
-    return frequencyModulation
+const keyCodeToFrequencyModulation = {
+    //A
+    65: Math.pow(2, -12/12),
+    //W
+    87:  Math.pow(2, -11/12),
+    //S
+    83: Math.pow(2, -10/12),
+    //E
+    69: Math.pow(2, -9/12),
+    //D
+    68: Math.pow(2, -8/12),
+    //F
+    70: Math.pow(2, -7/12),
+    //T
+    84: Math.pow(2, -6/12),
+    //G
+    71: Math.pow(2, -5/12),
+    //Y
+    89: Math.pow(2, -4/12),
+    //H
+    72: Math.pow(2, -3/12),
+    //U
+    85: Math.pow(2, -2/12)
 }
 
 const keyIndexToFrequencyModulation = (index) => {
@@ -45,13 +37,12 @@ export const keyDown = (keyCode) => {
         return;
     }
     
-    const frequencyModulation = keyCodeToFrequencyModulation(keyCode)
+    const frequencyModulation = keyCodeToFrequencyModulation[keyCode]
 
     if (!frequencyModulation) {
         return;
     }
 
-    console.log('playing')
     play(frequencyModulation, keyCode)
     isPlayingByKey[keyCode] = true;
 }
@@ -62,7 +53,6 @@ export const keyUp = (keyCode) => {
         return;
     }
     isPlayingByKey[keyCode] = false;
-    console.log('stopping')
     stop(keyCode);
 }
 
