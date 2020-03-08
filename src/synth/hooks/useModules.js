@@ -8,10 +8,14 @@ function useModules(initialModules = []) {
 
     const updateModuleFunc = useCallback((func, type, index) => {
         const prevFunc = _modulesFuncs[index]
-        const newModules = [..._modulesFuncs.slice(0, index), {...prevFunc, func, type}, ..._modulesFuncs.slice(index + 1)];
-        _modulesFuncs = newModules
-        setGlobalModules(newModules)
+        _modulesFuncs = [..._modulesFuncs.slice(0, index), {...prevFunc, func, type}, ..._modulesFuncs.slice(index + 1)];
+        setGlobalModules(_modulesFuncs)
     })
+
+    const removeModuleFunc = useCallback((index) => {
+        _modulesFuncs = [..._modulesFuncs.slice(0, index),  ..._modulesFuncs.slice(index + 1)]
+        setGlobalModules(_modulesFuncs)
+    }, [modules])
 
     const updateModulePersistentState = useCallback((persistentState, funcIndex) => {
         setModules((prevModules) => {
@@ -26,11 +30,13 @@ function useModules(initialModules = []) {
                 [...prevModules.slice(0, moduleIndex), {...theModule}, ...prevModules.slice(moduleIndex)]
         ))
     }, [modules])
-    const removeModule = useCallback((moduleIndex) => {
+    const removeModule = useCallback((index) => {
         setModules((prevModules) => (
-                [...prevModules.slice(0, moduleIndex),  ...prevModules.slice(moduleIndex + 1)]
+                [...prevModules.slice(0, index),  ...prevModules.slice(index + 1)]
         ))
-    }, modules)
+
+        removeModuleFunc(index)
+    }, [modules])
     
     return {modules, addModule, removeModule, updateModuleFunc, updateModulePersistentState};
 }

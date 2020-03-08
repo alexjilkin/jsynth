@@ -22,7 +22,7 @@ const Oscillator = ({updateModulationFunction, updateState, persistentState = de
 
     useEffect((() => {
         const oscillatorFunc = (y, x, frequencyModulation) => {
-            if (y === 0) {
+            if (y === null) {
                 return [0, frequencyModulation]
             }
 
@@ -36,7 +36,7 @@ const Oscillator = ({updateModulationFunction, updateState, persistentState = de
                 return acc + func(x, frequency * frequencyModulation)
             }, 0)
 
-            return [wave * y, frequencyModulation];
+            return [wave, frequencyModulation];
             
         }
         

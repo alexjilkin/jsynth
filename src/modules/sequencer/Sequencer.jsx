@@ -61,7 +61,7 @@ const Sequencer = ({updateModulationFunction, removeFunction, sampleRate, update
           const result = isEnvelopeOn ? envelope(y, xRelativeToSection, sectionSizeInSampleRate) : y;
           return [result, frequencyModulation * intervalRatio];
         } else {
-          return [0, frequencyModulation];
+          return [null, frequencyModulation];
         }
       }, type)
       
