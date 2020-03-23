@@ -46,37 +46,40 @@ export function* waveGenerator() {
     const generatingModules = modules.filter(({type}) => type === 'generator')
     const restModules = modules.filter(({type}) => type !== 'generator')
 
+    const inputs = []
+
     Object.keys(instances).forEach(id => {
       if(!instances[id]) 
         return;
 
-      let y = 0;
-      let baseFrequencyModulation = instances[id].frequencyModulation;
+      let frequencyModulation = instances[id].frequencyModulation;
+      let y = 1;
 
+      if (!instances[id].shouldGenerate) {
+        y = 0;
+        
+        if ((x - instances[id].xAtStop) >= releaseSize) {
+          delete instances[id]
+          return 
+        }
+      } 
+
+      inputs.push({y, xAtStart: instances[id].xAtStart, frequencyModulation})
+    });
+
+    inputs = inputs.map(({y, frequencyModulation, xAtStart}) => {
       generatingModules.forEach(({func, module:name}) => {
         if(func) {
-          const xFromStart = x - instances[id].xAtStart;
-          const result = func(y, xFromStart, baseFrequencyModulation);
-
-          if (typeof result === 'object') {
-            [y, baseFrequencyModulation] = result
-          } else {
-            y = result
-          }
+          [y, frequencyModulation] = func(y, x - xAtStart, frequencyModulation);
         }
       })
 
-      if (!instances[id].shouldGenerate && (x - instances[id].xAtStop) >= releaseSize ) {
-        y = 0;
-        delete instances[id]
-        return;
-      } else {
-        y = envelope(y, id)
-      }
-      
-      // Provide headroom for instance
-      wave += y * 0.8
+      return {y, frequencyModulation, xAtStart}
     })
+
+    // Provide headroom for instance
+    wave += inputs.reduce((acc, {y}) => acc + y, 0) * 0.8
+    
 
     restModules.forEach(({func, module:name}) => {
       if(func) {
@@ -93,37 +96,11 @@ export function* waveGenerator() {
     x++;
 
     // Decrease volume until I will make a master volume component
-    const mixVolume =  0.1;
+    const mixVolume =  0.3;
     yield wave * mixVolume
   }
 }
 
-const envelope = (y, id) => {
-
-  const xFromStart = x - instances[id].xAtStart;
-  
-  if (xFromStart < attackSize) {
-    return envelopeAttack(y, xFromStart, attackSize)
-  } 
-  
-  const xFromStop = x - instances[id].xAtStop;
-  if (!instances[id].shouldGenerate && xFromStop < releaseSize) {
-    return (envelopeRelease(y, xFromStop, releaseSize))
-  }
-  
-  return y;
-}
-
-export const envelopeAttack = (y, x, size) => {
-  const m = 1 / (size)
-  return y * (x * m)
-}
-
-export const envelopeRelease = (y, x, size) => {
-  const m = -1 / (size);
-
-  return y * ((x * m) + (1))
-}
 
 export const setGlobalModules = (modules) => {
   _moduleFunc = modules;

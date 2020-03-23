@@ -38,6 +38,7 @@ const App = () => {
           <AddModule name="LFO" />
           <AddModule name="Lowpass" />
           <AddModule name="Distortion" />
+          <AddModule name="Envelope" />
         </div>
       </header>
         <div styleName="content">

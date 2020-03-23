@@ -1,7 +1,7 @@
 import React from 'react';
 import {useDrag} from 'react-dnd'
 import {ItemTypes} from 'synth/consts'
-import * as Modules from 'modules'
+import Modules from 'modules'
 import './DraggableModule.scss'
 
 const DraggableModule = ({moduleName, index, theModule, ...props}) => {

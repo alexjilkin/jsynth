@@ -6,8 +6,9 @@ import LFO from './filter/LFO'
 import Lowpass from './lowpass/Lowpass'
 import FrequencyView from './oscilloscope/FrequencyView'
 import Distortion from './distortion/Distortion'
+import Envelope from './envelope/Envelope'
 
-export {
+export default {
     Oscillator,
     Sequencer,
     Oscilloscope,
@@ -15,5 +16,6 @@ export {
     Lowpass,
     LFO,
     FrequencyView,
-    Distortion
+    Distortion,
+    Envelope
 }
