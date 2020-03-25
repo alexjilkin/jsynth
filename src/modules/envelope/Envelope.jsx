@@ -7,30 +7,13 @@ import './Envelope.scss'
 const type = "generator"
 
 const Envelope = ({updateModulationFunction, sampleRate}) => { 
-    const [attack, setAttack] = useState(1);
-    const [xAtStart, setXAtStart] = useState(-1)
     
     useEffect(() => {
-        updateModulationFunction((y, x, frequencyModulation) => {
-            if (xAtStart === -1) {
-                if (y !== 0) {
-                    setXAtStart(x)
-                }
-                
-            } else {
-                const res = envelope(y, x - xAtStart);
-
-                if (res === 0) {
-                    setXAtStart(-1)
-                } else {
-                    return [envelope(y, x - xAtStart), frequencyModulation]
-                }
-            }
-
-            return [y, frequencyModulation]
-
+        updateModulationFunction((y, x, frequencyModulation, xFromStop) => {
+ 
+            return [envelope(y, x, xFromStop), frequencyModulation]
         }, type)
-    }, [xAtStart])
+    }, [])
 
     return (
         <div styleName="container">
@@ -42,14 +25,14 @@ const Envelope = ({updateModulationFunction, sampleRate}) => {
 const attackSize = 500;
 const releaseSize = 10000;
 
-const envelope = (y, xFromStart) => {
+const envelope = (y, xFromStart, xFromStop) => {
 
     if (xFromStart < attackSize) {
       return envelopeAttack(y, xFromStart, attackSize)
     } 
     
-    if (y === 0) {
-      return envelopeRelease(1, xFromStart, releaseSize)
+    if (xFromStop) {
+      return envelopeRelease(1, xFromStop, releaseSize)
     }
     
     return y;

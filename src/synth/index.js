@@ -64,20 +64,20 @@ export function* waveGenerator() {
         }
       } 
 
-      inputs.push({y, xAtStart: instances[id].xAtStart, frequencyModulation})
+      inputs.push({y, xAtStart: instances[id].xAtStart, xAtStop: instances[id].xAtStop, frequencyModulation})
     });
 
-    inputs = inputs.map(({y, frequencyModulation, xAtStart}) => {
+    inputs = inputs.map(({y, frequencyModulation, xAtStart, xAtStop}) => {
       generatingModules.forEach(({func, module:name}) => {
         if(func) {
-          [y, frequencyModulation] = func(y, x - xAtStart, frequencyModulation);
+          [y, frequencyModulation] = func(y, x - xAtStart, frequencyModulation, xAtStop ? x - xAtStop : 0);
         }
       })
 
       return {y, frequencyModulation, xAtStart}
     })
 
-    // Provide headroom for instance
+    // Provide headroom
     wave += inputs.reduce((acc, {y}) => acc + y, 0) * 0.8
     
 
