@@ -36,7 +36,7 @@ const Oscillator = ({updateModulationFunction, updateState, persistentState = de
                 return acc + func(x, frequency * frequencyModulation)
             }, 0)
 
-            return [wave, frequencyModulation];
+            return [y * wave, frequencyModulation];
             
         }
         
