@@ -11,10 +11,6 @@ const defaultState = {
 
 const knobSize = 80;
 
-const getDelayAmountFromFeedback = feedback => {
-
-}
-
 const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultState, updateState}) => {
     const feedback = useRef([]);
     const [isOn, setIsOn] = useState(persistentState.isOn);
