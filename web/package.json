@@ -8,6 +8,7 @@
     "build": "webpack --mode=production --config ./webpack.config.js"
   },
   "dependencies": {
+    "@jsynth/core": "*",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-stage-0": "^6.24.1",

@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState, useCallback} from 'react'
 import Knob from 'react-canvas-knob';
 import './Delay.scss'
+import useDelayCore from './useDelayCore'
 
 const defaultState = {
     isOn: true,
@@ -12,56 +13,25 @@ const defaultState = {
 const knobSize = 80;
 
 const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultState, updateState}) => {
-    const feedback = useRef([]);
-    const [isOn, setIsOn] = useState(persistentState.isOn);
-    const [delayAmount, setDelayAmount] = useState(persistentState.delayAmount);
-    const [delayDepth, setDelayDepth] = useState(persistentState.delayDepth);
-    const [gain, setGain] = useState(persistentState.gain);
-
-    const delayFunc = useCallback((y, cyclicX, feedback) => {
-        const feedbackSize = sampleRate * 4 * delayDepth;
-        
-        const delayAmountBySamples = delayAmount * sampleRate;
-
-        for(let i = 1; i < delayDepth; i++) {     
-            const currentFeedbackIndex = cyclicX - (i * delayAmountBySamples) < 0 ? feedbackSize - (i * delayAmountBySamples) : cyclicX - (i * delayAmountBySamples)
-            const currentFeedback = feedback[currentFeedbackIndex]
-
-            // If still no feedback
-            if (currentFeedback === undefined) {
-                return y;
-            }
-            
-            y = (y * 0.9) +  Math.pow(gain, i) * (y + currentFeedback)
-        }
     
-        return y;
-    }, [delayAmount, feedback, delayDepth, gain])
-
-
+    const [isOn, setIsOn] = useState(persistentState.isOn);
+    const [transformFunc, amount, setAmount, depth, setDepth, gain, setGain] = useDelayCore(persistentState)
+    
     useEffect(() => {
         // TODO: dont save feedback forever.
 
         const feedbackSize = sampleRate * 4 * delayDepth;
 
         if(isOn) {
-            updateModulationFunction((y, x, frequencyModulation) => {
-                const cyclicX = x % feedbackSize
-                feedback.current[cyclicX] = y;
-                
-                return [delayFunc(y, cyclicX, feedback.current), frequencyModulation];
-            })
+            updateModulationFunction(transformFunc)
         } else {
             updateModulationFunction((y, x, frequencyModulation) => {
-                const cyclicX = x % feedbackSize
-                feedback.current[cyclicX] = y;
-
                 return [y, frequencyModulation];
             })
         }
 
         updateState({isOn, delayAmount, delayDepth, gain})
-    }, [isOn, delayAmount, delayDepth, gain])
+    }, [isOn, amount, depth, gain])
 
     const toggleDelay = useCallback(() => {
         setIsOn(!isOn)
@@ -80,8 +50,8 @@ const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultS
                         width={knobSize}
                         height={knobSize}
                         fgColor="#9068be"
-                        value={delayAmount}
-                        onChange={setDelayAmount}
+                        value={amount}
+                        onChange={setAmount}
                         thickness={0.6}
                     />
                 </div>
@@ -95,8 +65,8 @@ const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultS
                         width={knobSize}
                         height={knobSize}
                         fgColor="#9068be"
-                        value={delayDepth}
-                        onChange={setDelayDepth}
+                        value={depth}
+                        onChange={setDepth}
                         thickness={0.6}
                     />
                 </div>
