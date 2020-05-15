@@ -5,20 +5,27 @@ export default class Delay {
         this.depth$ = new BehaviorSubject(depth)
         this.time$ = new BehaviorSubject(time)
         this.gain$ = new BehaviorSubject(gain)
+        this.sampleRate = sampleRate
         this.feedbackSize = this.sampleRate * 4 * depth;
+        this.feedback = []
         this.depth$.subscribe(this.setFeedbackSize)
+
+        this.setTime = this.setTime.bind(this)
+        this.setDepth = this.setDepth.bind(this)
+        this.setGain = this.setGain.bind(this)
+        this.transform = this.transform.bind(this)
     }
 
     transform(y, x) {
-        const amount = this.amount$.value, depth = this.depth$.value, gain = this.gain$.value
+        const time = this.time$.value, depth = this.depth$.value, gain = this.gain$.value
 
-        const delayAmountBySamples = amount * sampleRate;
+        const delayAmountBySamples = time * this.sampleRate;
         const cyclicX = x % this.feedbackSize
-        feedback[cyclicX] = y;
+        this.feedback[cyclicX] = y;
         
         for(let i = 1; i < depth; i++) {     
             const currentFeedbackIndex = cyclicX - (i * delayAmountBySamples) < 0 ? this.feedbackSize - (i * delayAmountBySamples) : cyclicX - (i * delayAmountBySamples)
-            const currentFeedback = feedback[currentFeedbackIndex]
+            const currentFeedback = this.feedback[currentFeedbackIndex]
 
             // If still no feedback
             if (currentFeedback === undefined) {
@@ -44,15 +51,15 @@ export default class Delay {
     }
 
     getTime() {
-        this.time$.asObservable()
+       return this.time$.asObservable()
     }
 
     getGain() {
-        this.gain$.asObservable()
+       return this.gain$.asObservable()
     }
 
     getDepth() {
-        this.depth$.asObservable()
+       return this.depth$.asObservable()
     }
     
     setFeedbackSize(depth) {

@@ -5,8 +5,8 @@ import useDelayCore from './useDelayCore'
 
 const defaultState = {
     isOn: true,
-    delayAmount: 0.8,
-    delayDepth: 6,
+    time: 0.8,
+    depth: 6,
     gain: 0.3
 }
 
@@ -15,13 +15,9 @@ const knobSize = 80;
 const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultState, updateState}) => {
     
     const [isOn, setIsOn] = useState(persistentState.isOn);
-    const [transformFunc, amount, setAmount, depth, setDepth, gain, setGain] = useDelayCore(persistentState)
+    const [transformFunc, time, setTime, depth, setDepth, gain, setGain] = useDelayCore(persistentState, sampleRate)
     
     useEffect(() => {
-        // TODO: dont save feedback forever.
-
-        const feedbackSize = sampleRate * 4 * delayDepth;
-
         if(isOn) {
             updateModulationFunction(transformFunc)
         } else {
@@ -30,8 +26,8 @@ const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultS
             })
         }
 
-        updateState({isOn, delayAmount, delayDepth, gain})
-    }, [isOn, amount, depth, gain])
+        updateState({isOn, time, depth, gain})
+    }, [isOn, time, depth, gain])
 
     const toggleDelay = useCallback(() => {
         setIsOn(!isOn)
@@ -50,8 +46,8 @@ const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultS
                         width={knobSize}
                         height={knobSize}
                         fgColor="#9068be"
-                        value={amount}
-                        onChange={setAmount}
+                        value={time}
+                        onChange={setTime}
                         thickness={0.6}
                     />
                 </div>
