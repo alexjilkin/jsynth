@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState, useCallback} from 'react'
 import Knob from 'react-canvas-knob';
 import './Delay.scss'
-import useDelayCore from './useDelayCore'
+import {useDelay} from '@jsynth/core/modules/delay'
 
 const defaultState = {
     isOn: true,
@@ -15,7 +15,7 @@ const knobSize = 80;
 const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultState, updateState}) => {
     
     const [isOn, setIsOn] = useState(persistentState.isOn);
-    const [transformFunc, time, setTime, depth, setDepth, gain, setGain] = useDelayCore(persistentState, sampleRate)
+    const [transformFunc, time, setTime, depth, setDepth, gain, setGain] = useDelay(persistentState, sampleRate)
     
     useEffect(() => {
         if(isOn) {
