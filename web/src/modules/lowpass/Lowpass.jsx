@@ -1,19 +1,16 @@
 import React, {useState, useEffect} from 'react' 
 import Knob from 'react-canvas-knob';
+import {useLowpass} from '@jsynth/core/modules'
+
 import './Lowpass.scss';
 
 let prevY = 0;
 
 const Lowpass = ({updateModulationFunction, removeFunction}) => { 
-    const [frequency, setFrequency] = useState(1);
+    const [transform, frequency, setFrequency] = useLowpass()
 
     useEffect(() => {
-        updateModulationFunction((y, x, frequencyModulation) => {
-            const result = prevY + ((frequency) * (y - prevY))
-
-            prevY = result;
-            return [result, frequencyModulation];
-        })
+        updateModulationFunction(transform)
     }, [frequency])
 
     return (
