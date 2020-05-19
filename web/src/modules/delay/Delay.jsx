@@ -48,7 +48,7 @@ const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultS
                         fgColor="#9068be"
                         value={time}
                         onChange={setTime}
-                        thickness={0.6}
+                        thickness={0.5}
                     />
                 </div>
 
@@ -63,7 +63,7 @@ const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultS
                         fgColor="#9068be"
                         value={depth}
                         onChange={setDepth}
-                        thickness={0.6}
+                        thickness={0.5}
                     />
                 </div>
 
@@ -71,14 +71,14 @@ const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultS
                     Gain
                     <Knob 
                         min={0}
-                        max={0.5}
-                        step={0.05}
+                        max={0.6}
+                        step={0.1}
                         width={knobSize}
                         height={knobSize}
                         fgColor="#9068be"
                         value={gain}
                         onChange={setGain}
-                        thickness={0.6}
+                        thickness={0.5}
                     />
                 </div>
             

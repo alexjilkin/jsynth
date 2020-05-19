@@ -7,6 +7,7 @@ import {initKeyboardInput, virtualKeyboardKeyDown, virtualKeyboardKeyUp} from '.
 
 // 1 for white, 0 for black
 const octaveLayout = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]
+const indexToKey = ['A', 'W', 'S', 'E', 'D', 'F', 'T', 'G', 'Y', 'H', 'U']
 const whiteKeyWidth = 50;
 const blackKeyWidth = 30;
 
@@ -38,6 +39,7 @@ const BlackKey = ({index, keyboardLayout}) => {
             styleName="black-key" 
             style={{left: `${(numberOfWhiteKeysBefore * whiteKeyWidth) - blackKeyWidth / 2}px`, width: blackKeyWidth}}
         >
+            <span styleName="key-notation">{indexToKey[index] || ''}</span>
             <div styleName="white-line"></div>
         </div>
     )
@@ -48,8 +50,9 @@ const WhiteKey = ({index}) => {
 
     const getEventHandlers = useCallback(() => isMobile ? getTouchEvents(index) : getMouseEvents(index), [index])
     return (
-        <div {...(getEventHandlers())}
-                    styleName="white-key"> </div>
+        <div {...(getEventHandlers())} styleName="white-key">
+            <span styleName="key-notation">{indexToKey[index] || ''}</span>
+        </div>
     )
 }
 

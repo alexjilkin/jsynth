@@ -1,17 +1,25 @@
 .container {
     display: grid;
-    
     grid-auto-flow: column;
     position: relative;
     height: 120px;
 
+    .key-notation {
+        margin: 8px;
+    }
+    
     .white-key {
         background-color: ivory;
         box-sizing: border-box;
         border: 4px black solid;
         border-radius: 10px;
-
-
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        align-items: center;
+        .key-notation {
+            color: black;
+        }
     }
     .black-key {
         background-color: black;
@@ -20,7 +28,14 @@
         top: 0;
         width: 30px;
         border-radius: 3px;
-        
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+
+        .key-notation {
+            color: white;
+        }
         .white-line {
             background-color: white;
             width: 11px;
