@@ -35,7 +35,7 @@ function Cube({onXChange, onYChange, onZChange}) {
 
     useEffect(() => {
         const scene = new THREE.Scene();
-        scene.background = new THREE.Color( 0x6ed3cf );
+        scene.background = new THREE.Color( 0xe1e8f0 );
         const camera = new THREE.PerspectiveCamera( 75, 1, 0.1, 20);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize( 150,150 );

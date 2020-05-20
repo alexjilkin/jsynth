@@ -47,18 +47,6 @@ const Oscillator = ({updateModulationFunction, updateState, persistentState = de
     return(
         <div styleName="container">
             <div styleName="title">Cube of waves</div>
-
-            {/* <div styleName="frequency">
-                <Knob 
-                    min={0}
-                    max={880}
-                    width={70}
-                    height={70}
-                    fgColor="#6ed3cf"
-                    value={frequency}
-                    onChange={setFrequency}
-                />
-            </div> */}
             <div style={{display: 'flex', justifyContent: 'center'}}>
             <Cube onXChange={debounce(setSineAmount, 100)} onYChange={debounce(setSquareAmount, 100)} onZChange={debounce(setSawAmount, 100)}/>
             </div>   

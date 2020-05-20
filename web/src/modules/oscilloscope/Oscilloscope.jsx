@@ -1,15 +1,16 @@
 import React, {useEffect, useRef} from 'react';
+import {sampleRate} from 'synth/consts'
 
-const width = 280;
+const width = 300;
 const height = 200;
-const xUnit = width / (500) 
 const yUnit = height / 8;
-
+const xUnit = 1
 let lastX = 0;
 let lastY = 0;
 
 const Oscilloscope = ({updateModulationFunction}) => {
     const canvasRef = useRef(null)
+    let x = useRef(0)
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -17,25 +18,24 @@ const Oscilloscope = ({updateModulationFunction}) => {
         if (canvas.getContext) {
 
             const context = canvas.getContext('2d');
-            updateModulationFunction((y, x, frequencyModulation) => {
-                if (y === 0) {
+            updateModulationFunction((y, _x, frequencyModulation) => {
+                if (Math.random() > 0.5) {
                     return [y, frequencyModulation];
                 }
 
-                const canvasWorldX = (x * xUnit) % width;
+                const canvasWorldX = x.current % width;
                 const canvasWorldY = (height * (3/5)) + (y * yUnit)
-                context.fillRect(canvasWorldX, canvasWorldY , 1, 1);
 
-                if (canvasWorldX % (width) < 5) {
-                    context.clearRect(0, 0, width, height)
+                if (canvasWorldX === 0) {
                     context.beginPath();
+                    lastY = 0;
                 }
-                context.moveTo(lastX, lastY);
-                context.lineTo(canvasWorldX, canvasWorldY);
+               
+                context.clearRect(canvasWorldX, 0, xUnit, height)
+                context.lineTo(canvasWorldX + xUnit, canvasWorldY);
                 context.stroke();
 
-
-                lastX = canvasWorldX;
+                x.current = x.current + xUnit;
                 lastY = canvasWorldY;
             
                 return [y, frequencyModulation];

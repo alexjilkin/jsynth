@@ -3,12 +3,11 @@ Waves and music generated in your browser.
 
 https://alexjilkin.github.io/jsynth/
 
-Press play to start playing.  
+Click the virtual key board press a - l on the keyboard to play
 Rotate the cube to change level of oscillator waves.  
 Turn on the delay for delay effect.  
 
-To add another parallel group of modules, click on add group and drag new modules from the menu to it.  
-drag and drop modules.  
+Drag and drop effects to change the sound.
 
 currently has the following modules:   
   Oscillator - Create waves (Sine, Saw, Square), manage their level with the cube, and add major 3rd and 5th overtones.  
