@@ -13,10 +13,11 @@ const {
     LFO,
     FrequencyView,
     Distortion,
-    Envelope
+    Envelope,
+    Granular
 } = modules
 
-const simpleMoodules = [Envelope, Oscillator, Delay, Distortion, Oscilloscope]
+const simpleMoodules = [Envelope, Sequencer,Oscillator, Delay, Oscilloscope, FrequencyView]
 
 const SimpleModulesRack = () => {
     const {updateModuleFunc, updateModulePersistentState} = useModules([]);
