@@ -18,7 +18,7 @@ const Granular = ({updateModulationFunction, removeFunction}) => {
 
             if (cyclicX === 0) {
                 currentGrain.map((y, n) => {
-                    Math.sin((Math.PI * n) / )
+                    Math.sin((Math.PI * n) / N)
                 })
                 grains.push(currentGrain)
                 currentGrain = []

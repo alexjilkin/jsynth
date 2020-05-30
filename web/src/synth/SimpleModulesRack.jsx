@@ -17,7 +17,7 @@ const {
     Granular
 } = modules
 
-const simpleMoodules = [Envelope, Sequencer,Oscillator, Delay, Oscilloscope, FrequencyView]
+const simpleMoodules = [Envelope, Sequencer,Oscillator, Delay, Oscilloscope]
 
 const SimpleModulesRack = () => {
     const {updateModuleFunc, updateModulePersistentState} = useModules([]);
