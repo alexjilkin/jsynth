@@ -6,31 +6,28 @@ import useModules from 'synth/modular/useModules'
 
 const {
     Oscillator,
-    Sequencer,
     Oscilloscope,
     Delay,
     Lowpass,
-    LFO,
-    FrequencyView,
     Distortion,
     Envelope,
-    Granular
+
 } = modules
 
-const simpleMoodules = [Envelope, Sequencer,Oscillator, Delay, Oscilloscope]
+const simpleMoodules = [Envelope, Oscillator, Delay, Distortion, Lowpass, Oscilloscope]
 
 const SimpleModulesRack = () => {
-    const {updateModuleFunc, updateModulePersistentState} = useModules([]);
+    const {setModuleFunc, setModulePersistentState} = useModules([]);
 
   return (
     <div styleName="group">
         {simpleMoodules.map((Module, index) => 
             <div styleName="module" key={index}>
                 <Module
+                    key={index}
                     sampleRate={sampleRate}
-
-                    updateModulationFunction={(func, type) => updateModuleFunc(func, type, index)}
-                    updateState={(nextState) => updateModulePersistentState(nextState, index)}
+                    updateModulationFunction={(func, type) => setModuleFunc(func, type, index)}
+                    updateState={(nextState) => setModulePersistentState(nextState, index)}
                 />
             </div>
         )}
