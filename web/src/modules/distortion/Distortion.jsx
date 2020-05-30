@@ -3,13 +3,16 @@ import Knob from 'react-canvas-knob';
 import './Distortion.scss';
 
 const Distortion = ({updateModulationFunction, removeFunction}) => { 
-    const [gain, setGain] = useState(1);
+    const [gain, setGain] = useState(0);
 
     useEffect(() => {
         updateModulationFunction((y, x, frequencyModulation) => {
-        const q = y * gain;
-
+            if (gain === 0) {
+                return  [y, frequencyModulation]
+            }
+            const q = y * gain;
             const result = Math.sign(q) * (1 - Math.exp((-1) * Math.abs(q)))
+
             return [result, frequencyModulation];
         })
     }, [gain])

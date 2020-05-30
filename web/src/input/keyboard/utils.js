@@ -25,7 +25,15 @@ const keyCodeToFrequencyModulation = {
     //H
     72: Math.pow(2, -3/12),
     //U
-    85: Math.pow(2, -2/12)
+    85: Math.pow(2, -2/12),
+    //J
+    74: Math.pow(2, -1/12),
+    //K
+    75: Math.pow(2, 0/12),
+    //O
+    79: Math.pow(2, 1/12),
+    //L
+    76: Math.pow(2, 2/12)
 }
 
 const keyIndexToFrequencyModulation = (index) => {
@@ -67,7 +75,6 @@ export const virtualKeyboardKeyDown = (index) => {
         return;
     }
 
-    console.log('playing', index)
     play(frequencyModulation, index)
     isPlayingByIndex[index] = true;
 }
@@ -78,7 +85,7 @@ export const virtualKeyboardKeyUp = (index) => {
         return;
     }
     isPlayingByIndex[index] = false;
-    console.log('stopping', index)
+
     stop(index);
 }
 

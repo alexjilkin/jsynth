@@ -7,9 +7,9 @@ import {initKeyboardInput, virtualKeyboardKeyDown, virtualKeyboardKeyUp} from '.
 
 // 1 for white, 0 for black
 const octaveLayout = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]
-const indexToKey = ['A', 'W', 'S', 'E', 'D', 'F', 'T', 'G', 'Y', 'H', 'U']
-const whiteKeyWidth = 50;
-const blackKeyWidth = 30;
+const indexToKey = ['A', 'W', 'S', 'E', 'D', 'F', 'T', 'G', 'Y', 'H', 'U', 'J', 'K', 'O', 'L']
+const whiteKeyWidth = 40;
+const blackKeyWidth = 25;
 
 const Keyboard = ({numberOfOctaves = 2}) => {
     useEffect(() => {

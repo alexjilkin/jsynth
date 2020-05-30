@@ -2,10 +2,11 @@
     display: grid;
     grid-auto-flow: column;
     position: relative;
-    height: 120px;
+    height: 100px;
 
     .key-notation {
         margin: 8px;
+        font-size: 14px;
     }
     
     .white-key {
@@ -24,7 +25,7 @@
     .black-key {
         background-color: black;
         position: absolute;
-        height: 70px;
+        height: 60px;
         top: 0;
         width: 30px;
         border-radius: 3px;

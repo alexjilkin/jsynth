@@ -1,44 +1,47 @@
 import {useState, useCallback, useEffect} from 'react';
-import {setGlobalModules} from 'synth'
-
-export let _modulesFuncs = []
+import {getModules, setModules} from 'synth'
 
 function useModules(initialModules = []) {
-    const [modules, setModules] = useState(initialModules)
+    const [modules, setModulesState] = useState(initialModules)
 
-    const updateModuleFunc = useCallback((func, type, index) => {
-        const prevFunc = _modulesFuncs[index]
-        _modulesFuncs = [..._modulesFuncs.slice(0, index), {...prevFunc, func, type}, ..._modulesFuncs.slice(index + 1)];
-        setGlobalModules(_modulesFuncs)
-    })
+    useEffect(() => {
+        getModules().subscribe((newModules) => setModulesState(newModules))
+    }, [])
 
-    const removeModuleFunc = useCallback((index) => {
-        _modulesFuncs = [..._modulesFuncs.slice(0, index),  ..._modulesFuncs.slice(index + 1)]
-        setGlobalModules(_modulesFuncs)
+    const setModuleFunc = useCallback((func, type, index) => {
+        setModulesState(preModules => {
+            const prevModule = preModules[index] || {}
+            const nextModules = [...preModules.slice(0, index), {...prevModule, func, type}, ...preModules.slice(index + 1)];
+            setModules(nextModules)
+            return nextModules
+        })
     }, [modules])
 
-    const updateModulePersistentState = useCallback((persistentState, funcIndex) => {
-        setModules((prevModules) => {
-          const theModule = prevModules[funcIndex]
-          return [...prevModules.slice(0, funcIndex), {...theModule, persistentState}, ...prevModules.slice(funcIndex + 1)]
-    })
-
+    const setModulePersistentState = useCallback((persistentState, funcIndex) => {
+        setModulesState(preModules => {
+            const prevModule = preModules[funcIndex] || {}
+            const nextModules = [...preModules.slice(0, funcIndex), {...prevModule, persistentState}, ...preModules.slice(funcIndex + 1)]
+            setModules(nextModules)
+            return nextModules
+        })
+       
     }, [modules])
 
     const addModule = useCallback((theModule, moduleIndex) => {
-        setModules((prevModules) => (
+        setModulesState((prevModules) => (
                 [...prevModules.slice(0, moduleIndex), {...theModule}, ...prevModules.slice(moduleIndex)]
         ))
     }, [modules])
+    
     const removeModule = useCallback((index) => {
-        setModules((prevModules) => (
+        setModulesState((prevModules) => (
                 [...prevModules.slice(0, index),  ...prevModules.slice(index + 1)]
         ))
 
         removeModuleFunc(index)
     }, [modules])
     
-    return {modules, addModule, removeModule, updateModuleFunc, updateModulePersistentState};
+    return {modules, setModuleFunc, setModulePersistentState, addModule, removeModule};
 }
 
 export default useModules

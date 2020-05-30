@@ -7,7 +7,7 @@ import Lowpass from './lowpass/Lowpass'
 import FrequencyView from './oscilloscope/FrequencyView'
 import Distortion from './distortion/Distortion'
 import Envelope from './envelope/Envelope'
-
+import Granular from './granular/Granular'
 export default {
     Oscillator,
     Sequencer,
@@ -17,5 +17,6 @@ export default {
     LFO,
     FrequencyView,
     Distortion,
-    Envelope
+    Envelope,
+    Granular
 }

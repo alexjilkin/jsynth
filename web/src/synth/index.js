@@ -1,5 +1,15 @@
 import BrowserPlayer from 'output/BrowserPlayer'
+import {BehaviorSubject} from 'rxjs'
 
+const modules$ = new BehaviorSubject([])
+
+export const getModules = () => {
+  return modules$.asObservable()
+}
+
+export const setModules = (modules) => {
+  return modules$.next(modules)
+}
 
 let x = 0; // Master clock
 
@@ -41,7 +51,7 @@ let _moduleFunc = [];
 export function* waveGenerator() {
   while(true) {
     const wave = 0;
-    const modules = [..._moduleFunc]
+    const modules = [...modules$.value]
 
     const generatingModules = modules.filter(({type}) => type === 'generator')
     const restModules = modules.filter(({type}) => type !== 'generator')
