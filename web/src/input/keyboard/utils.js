@@ -1,7 +1,9 @@
 import {play, stop} from 'synth'
+import {useState, useEffect} from 'react'
 
 let isPlayingByKey = {};
 let isPlayingByIndex = {}
+
 
 const keyCodeToFrequencyModulation = {
     //A
@@ -40,30 +42,6 @@ const keyIndexToFrequencyModulation = (index) => {
     return Math.pow(2, -1 + index/12);
 }
 
-export const keyDown = (keyCode) => {
-    if (isPlayingByKey[keyCode]) {
-        return;
-    }
-    
-    const frequencyModulation = keyCodeToFrequencyModulation[keyCode]
-
-    if (!frequencyModulation) {
-        return;
-    }
-
-    play(frequencyModulation, keyCode)
-    isPlayingByKey[keyCode] = true;
-}
-
-export const keyUp = (keyCode) => {
-
-    if (!isPlayingByKey[keyCode]) {
-        return;
-    }
-    isPlayingByKey[keyCode] = false;
-    stop(keyCode);
-}
-
 export const virtualKeyboardKeyDown = (index) => {
     if (isPlayingByIndex[index]) {
         return;
@@ -89,28 +67,68 @@ export const virtualKeyboardKeyUp = (index) => {
     stop(index);
 }
 
-export const initKeyboardInput = () => {
-    window.addEventListener('keydown', (e) => {
-        keyDown(e.keyCode)
-    });
 
-    window.addEventListener('keyup', (e) => {
-        keyUp(e.keyCode)
-    });
+export const useKeyboardInput = () => {
+    const [playingKeyCodes, setPlayingKeyCodes] = useState({})
+
+    const initKeyboardInput = () => {
+        window.addEventListener('keydown', (e) => {
+            keyDown(e.keyCode)
+        });
+    
+        window.addEventListener('keyup', (e) => {
+            keyUp(e.keyCode)
+        });
+    }
+
+    const keyDown = (keyCode) => {
+        if (isPlayingByKey[keyCode]) {
+            return;
+        }
+        
+        const frequencyModulation = keyCodeToFrequencyModulation[keyCode]
+    
+        if (!frequencyModulation) {
+            return;
+        }
+    
+        play(frequencyModulation, keyCode)
+        isPlayingByKey[keyCode] = true;
+
+        setPlayingKeyCodes({...isPlayingByKey})
+    }
+    
+    const keyUp = (keyCode) => {
+    
+        if (!isPlayingByKey[keyCode]) {
+            return;
+        }
+        isPlayingByKey[keyCode] = false;
+        stop(keyCode);
+
+        setPlayingKeyCodes({...isPlayingByKey})
+    }
+
+    useEffect(() => {
+        initKeyboardInput()
+    }, [])
+
+    return [playingKeyCodes]
 }
 
-  // navigator.requestMIDIAccess()
-  //   .then(function(access) {
+// Use for midi input later.
+// navigator.requestMIDIAccess()
+//   .then(function(access) {
 
-  //     // Get lists of available MIDI controllers
-  //     const inputs = access.inputs.values();
-  //     const outputs = access.outputs.values();
+//     // Get lists of available MIDI controllers
+//     const inputs = access.inputs.values();
+//     const outputs = access.outputs.values();
 
-  //     console.log(inputs)
-  //     console.log(outputs)
-  //     access.onstatechange = function(e) {
+//     console.log(inputs)
+//     console.log(outputs)
+//     access.onstatechange = function(e) {
 
-  //       // Print information about the (dis)connected MIDI controller
-  //       console.log(e.port.name, e.port.manufacturer, e.port.state);
-  //     };
-  //   });
+//       // Print information about the (dis)connected MIDI controller
+//       console.log(e.port.name, e.port.manufacturer, e.port.state);
+//     };
+//   });
