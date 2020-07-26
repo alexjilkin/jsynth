@@ -3,7 +3,7 @@ import {BehaviorSubject} from 'rxjs'
 const modules$ = new BehaviorSubject([])
 const attackSize = 500;
 const releaseSize = 10000;
-const instances = {
+const triggers = {
 
 }
 const generator = waveGenerator();
@@ -23,7 +23,7 @@ export const setModules = (modules) => {
 }
 
 export const play = (player, frequencyModulation, id) => {
-  instances[id] = {
+  triggers[id] = {
     shouldGenerate: true,
     frequencyModulation: frequencyModulation,
     xAtStart: x
@@ -37,9 +37,35 @@ export const play = (player, frequencyModulation, id) => {
 }
 
 export const stop = (id) => {
-  instances[id].shouldGenerate = false
-  instances[id].xAtStop = x
+  triggers[id].shouldGenerate = false
+  triggers[id].xAtStop = x
   numOfGeneratingInstances--;
+}
+
+const createInputsFromTriggers = () => {
+  let inputs = []
+
+    Object.keys(triggers).forEach(id => {
+      const trigger = triggers[id];
+
+      if(!triggers[id]) return;
+
+      const {frequencyModulation, shouldGenerate, xAtStart, xAtStop} = trigger;
+      let y = 1;
+
+      if (!shouldGenerate) {
+        y = 0;
+        if ((x - xAtStop) >= releaseSize) {
+          
+          delete triggers[id];
+          return 
+        }
+      } 
+
+      inputs.push({y, xAtStart, xAtStop, frequencyModulation})
+    });
+
+    return inputs
 }
 
 export function* waveGenerator() {
@@ -49,39 +75,18 @@ export function* waveGenerator() {
     const postModules = modules.filter(({type}) => type !== 'generator')
 
     let wave = 0;
-    let inputs = []
 
-    Object.keys(instances).forEach(id => {
-      if(!instances[id]) 
-        return;
+    wave = createInputsFromTriggers()
+      .map(({y, frequencyModulation, xAtStart, xAtStop}) => {
+        generatingModules.forEach(({func, module:name}) => {
+          if(func) {
+            [y, frequencyModulation] = func(y, x - xAtStart, frequencyModulation, xAtStop ? x - xAtStop : 0);
+          }
+        })
 
-      let frequencyModulation = instances[id].frequencyModulation;
-      let y = 1;
-
-      if (!instances[id].shouldGenerate) {
-        y = 0;
-        
-        if ((x - instances[id].xAtStop) >= releaseSize) {
-          delete instances[id]
-          return 
-        }
-      } 
-
-      inputs.push({y, xAtStart: instances[id].xAtStart, xAtStop: instances[id].xAtStop, frequencyModulation})
-    });
-
-    inputs = inputs.map(({y, frequencyModulation, xAtStart, xAtStop}) => {
-      generatingModules.forEach(({func, module:name}) => {
-        if(func) {
-          [y, frequencyModulation] = func(y, x - xAtStart, frequencyModulation, xAtStop ? x - xAtStop : 0);
-        }
+        return y;
       })
-
-      return {y, frequencyModulation, xAtStart}
-    })
-
-    // Provide headroom
-    wave += inputs.reduce((acc, {y}) => acc + y, 0) * 0.6
+      .reduce((acc, y) => acc + y, 0) * 0.6
 
     postModules.forEach(({func, module:name}) => {
       if(func) {
