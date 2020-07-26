@@ -1,6 +1,6 @@
-import {sampleRate} from 'synth/consts'
+import {sampleRate} from '@jsynth/core/synth/consts'
 import {isMobile} from "react-device-detect";
-const bufferSize = 1024;
+const bufferSize = 512;
 
 export const play = (waveGenerator) => {
   let isPlaying = false;
@@ -35,17 +35,17 @@ const warmUpAudio = () => {
 	if (window.AudioContext) {
 		window.audioContext = new window.AudioContext();
 	}
+
 	var fixAudioContext = function (e) {
-		
 
 		if (window.audioContext) {
-			// Create empty buffer
+
 			var buffer = window.audioContext.createBuffer(1, 1, 22050);
 			var source = window.audioContext.createBufferSource();
 			source.buffer = buffer;
-			// Connect to output (speakers)
+
 			source.connect(window.audioContext.destination);
-			// Play sound
+
 			if (source.start) {
 				source.start(0);
 			} else if (source.play) {
@@ -54,7 +54,7 @@ const warmUpAudio = () => {
 				source.noteOn(0);
 			}
 		}
-		// Remove events
+
 		document.removeEventListener('touchstart', fixAudioContext, true);
 		document.removeEventListener('touchend', fixAudioContext, true);
 		e.stopImmediatePropagation();

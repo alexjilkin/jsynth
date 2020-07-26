@@ -1,11 +1,10 @@
 import React from 'react';
 import {useDrop} from 'react-dnd'
-import {ItemTypes, sampleRate} from 'synth/consts'
+import {ItemTypes, sampleRate, bypassFunction} from '@jsynth/core/synth/consts'
 import ErrorBoundary  from 'common/ErrorBoundary'
 import { DndProvider, useDrag } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 import TouchBackend from 'react-dnd-touch-backend'
-import {bypassFunction} from 'synth/consts'
 import './ModularModulesRack.scss'
 import DraggableModule from './dnd/DraggableModule'
 import useModules from 'synth/modular/hooks/useModules'

@@ -1,16 +1,16 @@
 import React, {useEffect, useRef} from 'react';
-import {sampleRate} from 'synth/consts'
 
 const width = 300;
 const height = 200;
-const yUnit = height / 8;
-const xUnit = 1
+const yUnit = height / 4;
+const xUnit = 2
 let lastX = 0;
 let lastY = 0;
 
+let sample = []
+
 const Oscilloscope = ({updateModulationFunction}) => {
     const canvasRef = useRef(null)
-    let x = useRef(0)
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -19,24 +19,28 @@ const Oscilloscope = ({updateModulationFunction}) => {
 
             const context = canvas.getContext('2d');
             updateModulationFunction((y, _x, frequencyModulation) => {
-                if (Math.random() > 0.5) {
-                    return [y, frequencyModulation];
-                }
 
-                const canvasWorldX = x.current % width;
-                const canvasWorldY = (height * (3/5)) + (y * yUnit)
+                sample.push(y)
 
-                if (canvasWorldX === 0) {
-                    context.beginPath();
+                if (sample.length > 1000) {
+                    
                     lastY = 0;
-                }
-               
-                context.clearRect(canvasWorldX, 0, xUnit, height)
-                context.lineTo(canvasWorldX + xUnit, canvasWorldY);
-                context.stroke();
+                    context.clearRect(0, 0, width, height)
+                    context.beginPath();
+                    for (let x = 0; x < width; x++) {
+                        const canvasWorldX = x
+                        const canvasWorldY = (height * (3/5)) + (sample[x * 3] * yUnit)
+                    
+                        context.lineTo(canvasWorldX + xUnit, canvasWorldY);
+                        
 
-                x.current = x.current + xUnit;
-                lastY = canvasWorldY;
+                        lastY = canvasWorldY;
+                    }
+                    context.stroke();
+                    sample = [];
+                }
+
+                
             
                 return [y, frequencyModulation];
             })

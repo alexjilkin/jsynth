@@ -1,5 +1,5 @@
 import {useState, useCallback, useEffect} from 'react';
-import {getModules, setModules} from 'synth'
+import {getModules, setModules} from '@jsynth/core/synth'
 
 function useModules(initialModules = []) {
     const [modules, setModulesState] = useState(initialModules)
