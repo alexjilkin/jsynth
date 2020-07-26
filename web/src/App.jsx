@@ -4,7 +4,7 @@ import {BrowserView, MobileView, isMobile} from "react-device-detect";
 export const history = createBrowserHistory();
 import {Keyboard} from 'input/keyboard'
 import SimpleModulesRack from 'synth/SimpleModulesRack';
-import {ItemTypes} from 'synth/consts'
+import {ItemTypes} from '@jsynth/core/synth/consts'
 import './App.scss'
 import Oscilloscope from 'modules/oscilloscope/Oscilloscope'
 

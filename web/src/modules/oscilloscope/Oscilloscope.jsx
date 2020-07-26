@@ -1,5 +1,4 @@
 import React, {useEffect, useRef} from 'react';
-import {sampleRate} from 'synth/consts'
 
 const width = 300;
 const height = 200;

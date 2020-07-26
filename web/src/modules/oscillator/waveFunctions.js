@@ -1,4 +1,4 @@
-import {sampleRate} from 'synth/consts'
+import {sampleRate} from '@jsynth/core/synth/consts'
 
 
 const amplitude = 1

@@ -1,5 +1,5 @@
 import React from 'react';
-import {sampleRate} from 'synth/consts'
+import {sampleRate} from '@jsynth/core/synth/consts'
 import './SimpleModulesRack.scss'
 import modules from 'modules'
 import useModules from 'synth/modular/useModules'

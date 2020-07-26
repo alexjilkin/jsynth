@@ -1,4 +1,4 @@
-import {sampleRate} from 'synth/consts'
+import {sampleRate} from '@jsynth/core/synth/consts'
 import {isMobile} from "react-device-detect";
 const bufferSize = 1024;
 

@@ -1,9 +1,9 @@
-import {play, stop} from 'synth'
+import {play, stop} from '@jsynth/core/synth'
+import BrowserPlayer from '../../output/BrowserPlayer'
 import {useState, useEffect} from 'react'
 
 let isPlayingByKey = {};
 let isPlayingByIndex = {}
-
 
 const keyCodeToFrequencyModulation = {
     //A
@@ -53,7 +53,7 @@ export const virtualKeyboardKeyDown = (index) => {
         return;
     }
 
-    play(frequencyModulation, index)
+    play(BrowserPlayer, frequencyModulation, index)
     isPlayingByIndex[index] = true;
 }
 
@@ -92,7 +92,7 @@ export const useKeyboardInput = () => {
             return;
         }
     
-        play(frequencyModulation, keyCode)
+        play(BrowserPlayer, frequencyModulation, keyCode)
         isPlayingByKey[keyCode] = true;
 
         setPlayingKeyCodes({...isPlayingByKey})
@@ -115,20 +115,3 @@ export const useKeyboardInput = () => {
 
     return [playingKeyCodes]
 }
-
-// Use for midi input later.
-// navigator.requestMIDIAccess()
-//   .then(function(access) {
-
-//     // Get lists of available MIDI controllers
-//     const inputs = access.inputs.values();
-//     const outputs = access.outputs.values();
-
-//     console.log(inputs)
-//     console.log(outputs)
-//     access.onstatechange = function(e) {
-
-//       // Print information about the (dis)connected MIDI controller
-//       console.log(e.port.name, e.port.manufacturer, e.port.state);
-//     };
-//   });

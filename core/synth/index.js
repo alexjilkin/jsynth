@@ -1,7 +1,18 @@
-import BrowserPlayer from 'output/BrowserPlayer'
 import {BehaviorSubject} from 'rxjs'
 
 const modules$ = new BehaviorSubject([])
+const attackSize = 500;
+const releaseSize = 10000;
+const instances = {
+
+}
+const generator = waveGenerator();
+let isFirstTime = true;
+
+
+let postFrequencyModulation = 1;
+let numOfGeneratingInstances = 0;
+let x = 0; // Master clock
 
 export const getModules = () => {
   return modules$.asObservable()
@@ -11,22 +22,7 @@ export const setModules = (modules) => {
   return modules$.next(modules)
 }
 
-let x = 0; // Master clock
-
-const generator = waveGenerator();
-let isFirstTime = true;
-
-const attackSize = 500;
-const releaseSize = 10000;
-const instances = {
-
-}
-let postFrequencyModulation = 1;
-
-let numOfGeneratingInstances = 0;
-
-// Returns the stop function
-export const play = (frequencyModulation, id) => {
+export const play = (player, frequencyModulation, id) => {
   instances[id] = {
     shouldGenerate: true,
     frequencyModulation: frequencyModulation,
@@ -35,7 +31,7 @@ export const play = (frequencyModulation, id) => {
   numOfGeneratingInstances++;
 
   if (isFirstTime) {
-    BrowserPlayer.play(generator)
+    player.play(generator)
     isFirstTime = false;
   }
 }
@@ -46,17 +42,14 @@ export const stop = (id) => {
   numOfGeneratingInstances--;
 }
 
-let _moduleFunc = [];
-
 export function* waveGenerator() {
   while(true) {
-    const wave = 0;
     const modules = [...modules$.value]
-
     const generatingModules = modules.filter(({type}) => type === 'generator')
-    const restModules = modules.filter(({type}) => type !== 'generator')
+    const postModules = modules.filter(({type}) => type !== 'generator')
 
-    const inputs = []
+    let wave = 0;
+    let inputs = []
 
     Object.keys(instances).forEach(id => {
       if(!instances[id]) 
@@ -88,10 +81,9 @@ export function* waveGenerator() {
     })
 
     // Provide headroom
-    wave += inputs.reduce((acc, {y}) => acc + y, 0) * 0.8
-    
+    wave += inputs.reduce((acc, {y}) => acc + y, 0) * 0.6
 
-    restModules.forEach(({func, module:name}) => {
+    postModules.forEach(({func, module:name}) => {
       if(func) {
         const result = func(wave, x, postFrequencyModulation);
 
@@ -109,9 +101,4 @@ export function* waveGenerator() {
     const mixVolume =  0.3;
     yield wave * mixVolume
   }
-}
-
-
-export const setGlobalModules = (modules) => {
-  _moduleFunc = modules;
 }

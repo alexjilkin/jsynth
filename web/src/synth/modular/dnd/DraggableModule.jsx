@@ -1,6 +1,6 @@
 import React from 'react';
 import {useDrag} from 'react-dnd'
-import {ItemTypes} from 'synth/consts'
+import {ItemTypes} from '@jsynth/core/synth/consts'
 import Modules from 'modules'
 import './DraggableModule.scss'
 
