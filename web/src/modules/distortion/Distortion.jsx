@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react' 
 import Knob from 'react-canvas-knob';
 import './Distortion.scss';
+import {forwardEulerDistortion} from './distortions'
 
 const Distortion = ({updateModulationFunction, removeFunction}) => { 
     const [gain, setGain] = useState(0);
@@ -10,8 +11,10 @@ const Distortion = ({updateModulationFunction, removeFunction}) => {
             if (gain === 0) {
                 return  [y, frequencyModulation]
             }
-            const q = y * gain;
-            const result = Math.sign(q) * (1 - Math.exp((-1) * Math.abs(q)))
+            // const q = y * gain;
+            // const result = Math.sign(q) * (1 - Math.exp((-1) * Math.abs(q)))
+
+            const result = forwardEulerDistortion(y * 9, x, frequencyModulation) / 9
 
             return [result, frequencyModulation];
         })

@@ -4,7 +4,7 @@
     "start": "cd web && yarn start"
   },
   "private": "true",
-  "workspaces": ["core", "web"],
+  "workspaces": ["core", "web", "cli"],
   "dependencies": {
   },
   "devDependencies": {
