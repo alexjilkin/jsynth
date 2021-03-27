@@ -2,27 +2,34 @@ import {sampleRate} from '@jsynth/core/synth/consts'
 import {isMobile} from "react-device-detect";
 const bufferSize = 512;
 
-export const play = (waveGenerator) => {
+export const play = async (waveGenerator) => {
   let isPlaying = false;
 
-  const master = new AudioContext({sampleRate});
-  const buffer = master.createBuffer(1, bufferSize, sampleRate)
-  const source = master.createScriptProcessor(bufferSize, 1, 1);
+  const context = new AudioContext({sampleRate});
+  await context.audioWorklet.addModule('crap.js'); 
+  let osc = new AudioWorkletNode(context, 'osc');
 
-  const createBuffer = (output) => {
-    for (let i = 0; i < buffer.length; i++) {
-      const {value} = waveGenerator.next()
-  
-      output[i] = value
-    }
-  }
+  osc.connect(context.destination);
 
-  source.buffer = buffer;
-  source.connect(master.destination);
+//   const buffer = master.createBuffer(1, bufferSize, sampleRate)
+//   const source = master.createScriptProcessor(bufferSize, 1, 1);
+
+//   const createBuffer = (output) => {
+//     for (let i = 0; i < buffer.length; i++) {
+//       const {value} = waveGenerator.next()
   
-  source.addEventListener('audioprocess', (e) => {
-    isPlaying ? createBuffer(e.outputBuffer.getChannelData(0)) : master.close();
-  })
+//       output[i] = value
+//     }
+//   }
+
+//   source.buffer = buffer;
+//   source.connect(master.destination);
+  
+//   source.addEventListener('audioprocess', (e) => {
+//     isPlaying ? createBuffer(e.outputBuffer.getChannelData(0)) : master.close();
+//   })
+
+
 
   isPlaying = true;
 

@@ -3,16 +3,16 @@ let prevValue = 0;
 export const forwardEulerDistortion = (y, x, frequencyModulation) => {
 
     let value = (y * 9)
-    if (y > 4.5) {
+    if (value > 4.5) {
         value = 4.5
-    } else if (y < -4.5){
+    } else if (value < -4.5){
         value = -4.5
     }
-
+    
     value = prevValue + (circuit(prevValue, value) * (1))
     prevValue = value;
 
-    return value / 4.5
+    return value 
 }
 
 const R = 1.2
