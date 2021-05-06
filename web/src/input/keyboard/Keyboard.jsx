@@ -3,14 +3,9 @@ import {
     isMobile
   } from "react-device-detect";
 import './Keyboard.scss';
-import {useKeyboardInput, virtualKeyboardKeyDown, virtualKeyboardKeyUp} from './utils'
-
-// 1 for white, 0 for black
-const octaveLayout = [1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1]
-const indexToKey = ['A', 'W', 'S', 'E', 'D', 'F', 'T', 'G', 'Y', 'H', 'U', 'J', 'K', 'O', 'L']
-const keyCodeToIndex = [65, 87, 83, 69, 68, 70, 84, 71, 89, 72, 85, 74, 75, 79, 76]
-const whiteKeyWidth = 40;
-const blackKeyWidth = 25;
+import {virtualKeyboardKeyDown, virtualKeyboardKeyUp} from './KeyboardManager'
+import useKeyboardInput from './useKeyboardInput'
+import {octaveLayout, indexToKey, keyCodeToIndex, whiteKeyWidth, blackKeyWidth} from './consts'
 
 const Keyboard = ({numberOfOctaves = 2}) => {
     const keyboardLayout = useMemo(() => getKeyboardLayout(numberOfOctaves), [numberOfOctaves])

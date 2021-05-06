@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {createBrowserHistory} from 'history';
 import {BrowserView, MobileView, isMobile} from "react-device-detect";
 export const history = createBrowserHistory();
-import {Keyboard} from 'input/keyboard'
+import Keyboard from 'input/keyboard/Keyboard'
 import SimpleModulesRack from 'synth/SimpleModulesRack';
 import {ItemTypes} from '@jsynth/core/synth/consts'
 import './App.scss'
