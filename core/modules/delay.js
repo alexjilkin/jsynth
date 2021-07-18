@@ -1,9 +1,9 @@
 import {sampleRate} from '@jsynth/core/consts'
 import createModule from './createModule'
 
-const time = 0.4;
-const depth = 6;
-const gain = 0.6;
+let time = 0.4;
+let depth = 6;
+let gain = 0.6;
 const feedbackSize = sampleRate * 4 * depth;
 const feedback = new Array(feedbackSize).fill(0)
 
@@ -21,5 +21,14 @@ function delay(u, n) {
 
     return u;
 }
+
+// export const setValues = (time, depth, gain) => (
+//     time = time
+//     depth = depth
+
+// )
+
+export const setTime = v => time = v;
+export const setDepth = v => depth = v;
 
 export default createModule(delay, 'transform')

@@ -8,7 +8,10 @@ export const getMasterClock = () => masterClock
 let modules = []
 let generatingModules = []
 
-export const subscribeModule = (module) => {
+export const subscribeModule = (type, module) => 
+  type === 'generating' ? subscribeGeneratingModule(module) : subscribeTransformingModule(module)
+
+const subscribeTransformingModule = (module) => {
   modules.push(module)
 
   return () => {
@@ -17,7 +20,7 @@ export const subscribeModule = (module) => {
   }
 }
 
-export const subscribeGeneratingModule = (module) => {
+const subscribeGeneratingModule = (module) => {
   generatingModules.push(module)
 
   return () => {
@@ -25,9 +28,9 @@ export const subscribeGeneratingModule = (module) => {
     generatingModules = [...generatingModules.slice(0, index), ...generatingModules.slice(index + 1)]
   }
 }
+export const clearModules = () => modules = []
 
 subscribeGeneratingModule(oscillator)
-subscribeModule(delay)
 
 export function waveGenerator(triggers) {
   let wave = 0;

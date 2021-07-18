@@ -1,7 +1,13 @@
 import {sampleRate} from '@jsynth/core/consts'
 import {getTriggers} from '../input/KeyboardManager'
 
-export const play = async (waveGenerator) => {
+export const modules = []
+
+export const addModule = (name, type, values) => {
+  modules.push({name, type, values})
+}
+
+export const play = async () => {
   let isPlaying = false
 
   const context = new AudioContext({sampleRate})
@@ -11,7 +17,7 @@ export const play = async (waveGenerator) => {
   synth.connect(context.destination)
 
   setInterval(() => {
-    synth.port.postMessage(JSON.stringify(getTriggers()))
+    synth.port.postMessage(JSON.stringify({modules, triggers: getTriggers()}))
   }, 10)
 
   isPlaying = true

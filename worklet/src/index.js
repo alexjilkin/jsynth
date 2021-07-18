@@ -1,12 +1,24 @@
-import {waveGenerator} from '@jsynth/core/synth';
+import {waveGenerator, subscribeModule, clearModules} from '@jsynth/core/synth';
+import delay from '@jsynth/core/modules/delay'
+
 let triggers = {}
+let receivedModules = []
 
 class SynthWorklet extends AudioWorkletProcessor {
     constructor(...args) {
       super(...args);
 
       this.port.onmessage = e => {
-        triggers = JSON.parse(e.data);
+        const data = JSON.parse(e.data)
+        triggers = data.triggers
+        
+        if (data.modules.length !== receivedModules.length ) {
+          receivedModules = data.modules
+          console.log(receivedModules)
+          receivedModules.forEach(module => {
+            subscribeModule(module.type, delay)
+          })
+        }
       }
     }
   

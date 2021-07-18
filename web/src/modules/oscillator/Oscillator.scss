@@ -1,0 +1,56 @@
+.container {
+    border-radius: 3px;
+    width: 160x;
+    padding: 10px;
+    border-radius: 10px;
+    padding-top: 5px;
+    background-color: #e1e8f0;
+    display: grid;
+    grid-template-rows: auto;
+    grid-row-gap: 16px;
+    
+    .title {
+        font-size: 18px;
+        font-weight: 900;
+    }
+    .wave-types {
+        display: grid;
+        grid-template-rows: 1fr 1fr 1fr;
+        grid-gap: 6px;
+        
+        .wave-type {
+            display: grid;
+            height: 20px;
+            grid-template-columns: 1fr 1fr;
+        }
+    }
+
+    .harmonics {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        margin: 10px;
+    }
+
+    .frequency {
+        display: grid;
+        justify-content: center;
+    }
+
+    @mixin power-indicator {
+        padding: 5;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        cursor: pointer;
+    }
+    .on {
+        @include power-indicator;
+        background-color: red;
+    }
+    
+    .off {
+        @include power-indicator;
+        background-color: black;
+    }
+}
+

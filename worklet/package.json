@@ -3,7 +3,7 @@
     "main": "src/index.js",
     "version": "1.0.0",
     "scripts": {
-      "build": "webpack --mode=development --config ./webpack.worklet.config.js"
+      "build": "webpack --mode=development --watch --config ./webpack.worklet.config.js"
     },
     "dependencies": {
       "@jsynth/core": "*"
