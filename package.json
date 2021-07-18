@@ -1,11 +1,15 @@
 {
   "name": "jsynth",
+  "main": "src/index.js",
+  "version": "1.0.1",
   "scripts": {
-    "start": "cd web && yarn start"
+    "build": "(cd worklet && yarn build)",
+    "start": "yarn build & yarn workspace @jsynth/web run start"
   },
   "private": "true",
-  "workspaces": ["core", "web", "cli"],
+  "workspaces": ["core", "web", "worklet"],
   "dependencies": {
+
   },
   "devDependencies": {
   }

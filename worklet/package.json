@@ -1,0 +1,14 @@
+{
+    "name": "@jsynth/worklet",
+    "main": "src/index.js",
+    "version": "1.0.0",
+    "scripts": {
+      "build": "webpack --mode=development --config ./webpack.worklet.config.js"
+    },
+    "dependencies": {
+      "@jsynth/core": "*"
+    },
+    "devDependencies": {
+    }
+  }
+  
