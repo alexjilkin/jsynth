@@ -6,17 +6,18 @@ import {addModule} from '../../output/browserPlayer'
 
 const knobSize = 80;
 
-const useDelay = (initialValue = {time: 1, depth: 5, gain: 0.5}) => {
+const useDelay = (initialValue = {time: 0.5, depth: 3, gain: 0.6}) => {
     const [time, setTime] = useState(initialValue.time);
     const [depth, setDepth] = useState(initialValue.depth);
     const [gain, setGain] = useState(initialValue.gain); 
 
+    useEffect(() => {
+        addModule('delay', 'transforming', {time, depth, gain})
+    }, [])
 
-    // useEffect(() => {
-    //     delay.current.getDepth().subscribe(setDepth)
-    //     delay.current.getTime().subscribe(setTime)
-    //     delay.current.getGain().subscribe(setGain)
-    // }, [])
+    useEffect(() => {
+        //addModule('delay', 'transforming', {time, depth, gain})
+    }, [time, depth, gain])
     
 
     return [time, setTime,
@@ -27,13 +28,8 @@ const useDelay = (initialValue = {time: 1, depth: 5, gain: 0.5}) => {
 
 
 const Delay = ({}) => {
-    
     const [isOn, setIsOn] = useState(true);
     const [time, setTime, depth, setDepth, gain, setGain] = useDelay()
-    
-    useEffect(() => {
-        addModule('delay', 'transforming', {time, depth, gain})
-    }, [])
 
     const toggleDelay = useCallback(() => {
         setIsOn(!isOn)

@@ -1,5 +1,4 @@
 import oscillator from './modules/oscillator'
-import delay from './modules/delay'
 
 let masterClock = 0;
 
@@ -45,14 +44,12 @@ export function waveGenerator(triggers) {
     }, wave)
   })
 
-  wave = modules.reduce((acc, {func}) => {
-    return func(acc, masterClock)
+  wave = modules.reduce((acc, {func, args}) => {
+    return func(acc, masterClock, args)
   }, wave)
   masterClock++
   
   // Decrease volume 
   const mixVolume =  0.2
   return wave * mixVolume
-
-   
 }

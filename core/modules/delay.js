@@ -1,13 +1,12 @@
 import {sampleRate} from '@jsynth/core/consts'
 import createModule from './createModule'
 
-let time = 0.4;
-let depth = 6;
-let gain = 0.6;
-const feedbackSize = sampleRate * 4 * depth;
-const feedback = new Array(feedbackSize).fill(0)
+let feedbackSize = sampleRate * 4 * 5;
+let feedback = new Array(feedbackSize).fill(0)
 
-function delay(u, n) {
+function delay(u, n, args) {
+    const {time, depth, gain} = args;
+
     const delayAmountBySamples = time * sampleRate;
     const cyclicN = n % feedbackSize
     feedback[cyclicN] = u;

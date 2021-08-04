@@ -1,10 +1,14 @@
 import {sampleRate} from '@jsynth/core/consts'
 import {getTriggers} from '../input/KeyboardManager'
+import { v4 as uuidv4 } from 'uuid';
 
-export const modules = []
+export const modules = {}
 
-export const addModule = (name, type, values) => {
-  modules.push({name, type, values})
+export const addModule = (name, type, args) => {
+  const uuid = uuidv4()
+  modules[uuid] = {name, type, args}
+
+  return uuid;
 }
 
 export const play = async () => {
@@ -17,7 +21,7 @@ export const play = async () => {
   synth.connect(context.destination)
 
   setInterval(() => {
-    synth.port.postMessage(JSON.stringify({modules, triggers: getTriggers()}))
+    synth.port.postMessage(JSON.stringify({modules: Object.keys(modules).map(key => modules[key]), triggers: getTriggers()}))
   }, 10)
 
   isPlaying = true
