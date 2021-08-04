@@ -1,35 +1,34 @@
-import React, {useEffect, useState, useCallback} from 'react'
+import React, {useEffect, useState, useCallback, useRef} from 'react'
 import Knob from 'react-canvas-knob';
 import './Delay.scss'
-import delay from '@jsynth/core/modules/delay'
-import {addModule} from '../../output/browserPlayer'
+import {addModule, updateArgs} from '../../output/browserPlayer'
 
 const knobSize = 80;
 
 const useDelay = (initialValue = {time: 0.5, depth: 3, gain: 0.6}) => {
-    const [time, setTime] = useState(initialValue.time);
-    const [depth, setDepth] = useState(initialValue.depth);
-    const [gain, setGain] = useState(initialValue.gain); 
+    const [time, setTime] = useState(initialValue.time)
+    const [depth, setDepth] = useState(initialValue.depth)
+    const [gain, setGain] = useState(initialValue.gain)
+    const id = useRef()
 
     useEffect(() => {
-        addModule('delay', 'transforming', {time, depth, gain})
+        id.current = addModule('delay', 'transforming', {time, depth, gain})
     }, [])
-
-    useEffect(() => {
-        //addModule('delay', 'transforming', {time, depth, gain})
-    }, [time, depth, gain])
     
+    useEffect(() => {
+       updateArgs(id.current, {time, depth, gain})
+    }, [time, depth, gain])
 
-    return [time, setTime,
+    return {time, setTime,
         depth, setDepth,
         gain, setGain
-    ]
+    }
 }
 
 
 const Delay = ({}) => {
     const [isOn, setIsOn] = useState(true);
-    const [time, setTime, depth, setDepth, gain, setGain] = useDelay()
+    const {time, setTime, depth, setDepth, gain, setGain} = useDelay()
 
     const toggleDelay = useCallback(() => {
         setIsOn(!isOn)
@@ -73,7 +72,7 @@ const Delay = ({}) => {
                     Gain
                     <Knob 
                         min={0}
-                        max={0.6}
+                        max={0.8}
                         step={0.1}
                         width={knobSize}
                         height={knobSize}

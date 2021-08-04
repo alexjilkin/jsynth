@@ -5,30 +5,37 @@ import { v4 as uuidv4 } from 'uuid';
 export const modules = {}
 
 export const addModule = (name, type, args) => {
-  const uuid = uuidv4()
-  modules[uuid] = {name, type, args}
+    const id = uuidv4()
+    modules[id] = {name, type, args}
 
-  return uuid;
+    return id;
+}
+
+export const updateArgs = (id, args) => {
+    modules[id] = {
+        ...modules[id],
+        args
+    }
 }
 
 export const play = async () => {
-  let isPlaying = false
+    let isPlaying = false
 
-  const context = new AudioContext({sampleRate})
-  await context.audioWorklet.addModule('worklet.js')
-  let synth = new AudioWorkletNode(context, 'synth')
-  
-  synth.connect(context.destination)
+    const context = new AudioContext({sampleRate})
+    await context.audioWorklet.addModule('worklet.js')
+    let synth = new AudioWorkletNode(context, 'synth')
+    
+    synth.connect(context.destination)
 
-  setInterval(() => {
-    synth.port.postMessage(JSON.stringify({modules: Object.keys(modules).map(key => modules[key]), triggers: getTriggers()}))
-  }, 10)
+    setInterval(() => {
+        synth.port.postMessage(JSON.stringify({modules: Object.keys(modules).map(key => modules[key]), triggers: getTriggers()}))
+    }, 10)
 
-  isPlaying = true
+    isPlaying = true
 
-  return () => isPlaying = false
+    return () => isPlaying = false
 }
 
 export default {
-  play
+    play
 }

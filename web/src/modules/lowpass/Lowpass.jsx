@@ -1,17 +1,19 @@
 import React, {useState, useEffect} from 'react' 
 import Knob from 'react-canvas-knob';
-import {useLowpass} from '@jsynth/core/modules'
-
+import {addModule} from '../../output/browserPlayer'
 import './Lowpass.scss';
 
-let prevY = 0;
-
-const Lowpass = ({updateModulationFunction, removeFunction}) => { 
-    const [transform, frequency, setFrequency] = useLowpass()
-
+const useLowpass = () => {
+    const [frequency, setFrequency] = useState(200)
+    
     useEffect(() => {
-        updateModulationFunction(transform)
-    }, [frequency])
+        //addModule('lowpass', 'transforming', {frequency})
+    }, [])
+
+    return {frequency, setFrequency}
+}
+const Lowpass = ({updateModulationFunction, removeFunction}) => { 
+    const {frequency, setFrequency} = useLowpass()
 
     return (
         <div styleName="container">

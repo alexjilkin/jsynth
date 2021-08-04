@@ -1,11 +1,12 @@
 import createModule from '../createModule'
 
 let previousResult = 0;
-let frequency = 100;
 
-function lowpass(u, n) {
+function lowpass(u, n, args) {
+    const {frequency} = args
+
     const result = previousResult + ((frequency) * (u - previousResult))
-    this.previousResult = result
+    previousResult = result
 
     return result
 }
