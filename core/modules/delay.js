@@ -1,7 +1,7 @@
 import {sampleRate} from '@jsynth/core/consts'
 import createModule from './createModule'
 
-let feedbackSize = sampleRate * 4 * 5;
+let feedbackSize = sampleRate * 4 * 3;
 let feedback = new Array(feedbackSize).fill(0)
 
 function delay(u, n, args) {

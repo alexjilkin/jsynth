@@ -1,14 +1,19 @@
-import React, {useState, useEffect} from 'react' 
+import React, {useState, useEffect, useRef} from 'react' 
 import Knob from 'react-canvas-knob';
-import {addModule} from '../../output/browserPlayer'
+import {addModule, updateArgs} from '../../output/browserPlayer'
 import './Lowpass.scss';
 
 const useLowpass = () => {
-    const [frequency, setFrequency] = useState(200)
-    
+    const [frequency, setFrequency] = useState(0.05)
+    const id = useRef()
+
     useEffect(() => {
-        //addModule('lowpass', 'transforming', {frequency})
+        id.current = addModule('lowpass', 'transforming', {frequency})
     }, [])
+
+    useEffect(() => {
+        updateArgs(id.current, {frequency})
+    }, [frequency])
 
     return {frequency, setFrequency}
 }

@@ -5,7 +5,7 @@ import {addModule, updateArgs} from '../../output/browserPlayer'
 
 const knobSize = 80;
 
-const useDelay = (initialValue = {time: 0.5, depth: 3, gain: 0.6}) => {
+const useDelay = (initialValue = {time: 0.5, depth: 3, gain: 0.4}) => {
     const [time, setTime] = useState(initialValue.time)
     const [depth, setDepth] = useState(initialValue.depth)
     const [gain, setGain] = useState(initialValue.gain)
@@ -72,7 +72,7 @@ const Delay = ({}) => {
                     Gain
                     <Knob 
                         min={0}
-                        max={0.8}
+                        max={0.5}
                         step={0.1}
                         width={knobSize}
                         height={knobSize}

@@ -2,9 +2,8 @@ import {waveGenerator, subscribeModule, clearModules} from '@jsynth/core/synth';
 import delay from '@jsynth/core/modules/delay'
 import lowpass from '@jsynth/core/modules/lowpass'
 
-const modules = {delay, lowpass}
+const availableModules = {delay, lowpass}
 let triggers = {}
-let receivedModules = []
 
 class SynthWorklet extends AudioWorkletProcessor {
     constructor(...args) {
@@ -14,12 +13,9 @@ class SynthWorklet extends AudioWorkletProcessor {
         const data = JSON.parse(e.data)
         triggers = data.triggers
         
-        if (data.modules.length !== receivedModules.length ) {
-          console.log('not equal', data.modules)
-          receivedModules = data.modules
-
-          receivedModules.forEach(({name, args}) => {
-            subscribeModule(module.type, {...modules[name], args})
+        if (data.isUpdated) {
+          data.modules.forEach(({name, args}) => {
+            subscribeModule(module.type, {...availableModules[name], args})
           })
         }
       }

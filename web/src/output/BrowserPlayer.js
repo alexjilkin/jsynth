@@ -3,10 +3,12 @@ import {getTriggers} from '../input/KeyboardManager'
 import { v4 as uuidv4 } from 'uuid';
 
 export const modules = {}
+let isUpdated = false;
 
 export const addModule = (name, type, args) => {
     const id = uuidv4()
     modules[id] = {name, type, args}
+    isUpdated = true;
 
     return id;
 }
@@ -16,6 +18,8 @@ export const updateArgs = (id, args) => {
         ...modules[id],
         args
     }
+
+    isUpdated = true;
 }
 
 export const play = async () => {
@@ -28,7 +32,13 @@ export const play = async () => {
     synth.connect(context.destination)
 
     setInterval(() => {
-        synth.port.postMessage(JSON.stringify({modules: Object.keys(modules).map(key => modules[key]), triggers: getTriggers()}))
+        synth.port.postMessage(JSON.stringify({
+            modules: Object.keys(modules).map(key => modules[key]), 
+            triggers: getTriggers(),
+            isUpdated
+        }))
+
+        isUpdated && (isUpdated = false)
     }, 10)
 
     isPlaying = true
