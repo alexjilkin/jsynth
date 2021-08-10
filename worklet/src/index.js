@@ -14,6 +14,7 @@ class SynthWorklet extends AudioWorkletProcessor {
         triggers = data.triggers
         
         if (data.isUpdated) {
+          clearModules()
           data.modules.forEach(({name, args}) => {
             subscribeModule(module.type, {...availableModules[name], args})
           })

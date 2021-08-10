@@ -39,7 +39,7 @@ export const play = async () => {
         }))
 
         isUpdated && (isUpdated = false)
-    }, 10)
+    }, 15)
 
     isPlaying = true
 
