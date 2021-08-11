@@ -1,8 +1,9 @@
 import {waveGenerator, subscribeModule, clearModules} from '@jsynth/core/synth';
 import delay from '@jsynth/core/modules/delay'
 import lowpass from '@jsynth/core/modules/lowpass'
+import oscillator from '@jsynth/core/modules/oscillator'
 
-const availableModules = {delay, lowpass}
+const availableModules = {delay, lowpass, oscillator}
 let triggers = {}
 
 class SynthWorklet extends AudioWorkletProcessor {
@@ -15,8 +16,8 @@ class SynthWorklet extends AudioWorkletProcessor {
         
         if (data.isUpdated) {
           clearModules()
-          data.modules.forEach(({name, args}) => {
-            subscribeModule(module.type, {...availableModules[name], args})
+          data.modules.forEach(({name, args, type}) => {
+            subscribeModule(type, {...availableModules[name], args})
           })
         }
       }

@@ -17,7 +17,7 @@ const useLowpass = () => {
 
     return {frequency, setFrequency}
 }
-const Lowpass = ({updateModulationFunction, removeFunction}) => { 
+const Lowpass = () => { 
     const {frequency, setFrequency} = useLowpass()
 
     return (

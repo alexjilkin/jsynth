@@ -1,5 +1,3 @@
-import oscillator from './modules/oscillator'
-
 let masterClock = 0;
 
 export const getMasterClock = () => masterClock
@@ -7,8 +5,10 @@ export const getMasterClock = () => masterClock
 let modules = []
 let generatingModules = []
 
-export const subscribeModule = (type, module) => 
-  type === 'generating' ? subscribeGeneratingModule(module) : subscribeTransformingModule(module)
+export const subscribeModule = (type, module) => {
+  type === 'generator' ? subscribeGeneratingModule(module) : subscribeTransformingModule(module)
+}
+  
 
 const subscribeTransformingModule = (module) => {
   modules.push(module)
@@ -27,9 +27,10 @@ const subscribeGeneratingModule = (module) => {
     generatingModules = [...generatingModules.slice(0, index), ...generatingModules.slice(index + 1)]
   }
 }
-export const clearModules = () => modules = []
-
-subscribeGeneratingModule(oscillator)
+export const clearModules = () => {
+  modules = []
+  generatingModules = []
+}
 
 export function waveGenerator(triggers) {
   let wave = 0;
@@ -39,8 +40,8 @@ export function waveGenerator(triggers) {
 
     if (!shouldGenerate) return;
 
-    wave = generatingModules.reduce((acc, {func}) => {
-      return acc + func(acc, masterClock, frequencyModulation)
+    wave = generatingModules.reduce((acc, {func, args}) => {
+      return acc + func(acc, masterClock, frequencyModulation, args)
     }, wave)
   })
 
@@ -50,6 +51,6 @@ export function waveGenerator(triggers) {
   masterClock++
   
   // Decrease volume 
-  const mixVolume =  0.2
+  const mixVolume =  0.3
   return wave * mixVolume
 }
