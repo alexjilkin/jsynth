@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react' 
-import Knob from 'react-canvas-knob';
+import { Donut } from 'react-dial-knob'
 import {addModule, updateArgs} from '../../output/browserPlayer'
 import './Lowpass.scss';
 
@@ -23,15 +23,11 @@ const Lowpass = () => {
     return (
         <div styleName="container">
             <div styleName="title"> Lowpass. </div>
-            <Knob 
+            <Donut 
                 min={0.05}
                 max={1}
-                width={70}
-                height={70}
-                step={0.05}
-                fgColor="#6ed3cf"
                 value={frequency}
-                onChange={setFrequency}
+                onValueChange={setFrequency}
             />
         </div>
     )

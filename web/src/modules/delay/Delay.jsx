@@ -1,5 +1,5 @@
 import React, {useEffect, useState, useCallback, useRef} from 'react'
-import Knob from 'react-canvas-knob';
+import { Donut } from 'react-dial-knob'
 import './Delay.scss'
 import {addModule, updateArgs} from '../../output/browserPlayer'
 
@@ -40,46 +40,34 @@ const Delay = ({}) => {
             <div styleName="knobs">
                 <div styleName="knob">
                     Time
-                    <Knob 
+                    <Donut 
                         min={0}
                         max={3}
                         step={0.1}
-                        width={knobSize}
-                        height={knobSize}
-                        fgColor="#9068be"
                         value={time}
-                        onChange={setTime}
-                        thickness={0.5}
+                        onValueChang={setTime}
                     />
                 </div>
 
                 <div styleName="knob">
                     Depth
-                    <Knob 
+                    <Donut 
                         min={0}
                         max={15}
                         step={1}
-                        width={knobSize}
-                        height={knobSize}
-                        fgColor="#9068be"
                         value={depth}
-                        onChange={setDepth}
-                        thickness={0.5}
+                        onValueChange={setDepth}
                     />
                 </div>
 
                 <div styleName="knob">
                     Gain
-                    <Knob 
+                    <Donut 
                         min={0}
                         max={0.5}
                         step={0.1}
-                        width={knobSize}
-                        height={knobSize}
-                        fgColor="#9068be"
                         value={gain}
-                        onChange={setGain}
-                        thickness={0.5}
+                        onValueChange={setGain}
                     />
                 </div>
             

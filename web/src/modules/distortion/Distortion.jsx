@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react' 
-import Knob from 'react-canvas-knob';
+import { Donut } from 'react-dial-knob'
 import './Distortion.scss';
 import {forwardEulerDistortion} from './distortions'
 
@@ -26,12 +26,8 @@ const Distortion = ({updateModulationFunction, removeFunction}) => {
             <Knob 
                 min={0}
                 max={10}
-                width={70}
-                height={70}
-                step={0.5}
-                fgColor="#6ed3cf"
                 value={gain}
-                onChange={setGain}
+                onValueChange={setGain}
             />
         </div>
     )
