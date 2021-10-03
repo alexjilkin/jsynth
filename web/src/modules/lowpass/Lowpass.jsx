@@ -26,7 +26,11 @@ const Lowpass = () => {
             <Donut 
                 min={0.05}
                 max={1}
+                step={0.05}
                 value={frequency}
+                theme={{
+                    donutColor: 'blue'
+                }}
                 onValueChange={setFrequency}
             />
         </div>

@@ -33,7 +33,7 @@ module.exports = {
                   }
                 },
                 "exclude": "node_modules",
-                generateScopedName: '[path]___[name]__[local]___[hash:base64:5]',
+                generateScopedName: '[path]___[name]__[local]',
                 "webpackHotModuleReloading": true
               }],
             ],
@@ -50,7 +50,7 @@ module.exports = {
             options: {
               importLoaders: 1,
               modules: {
-                localIdentName: '[path]___[name]__[local]___[hash:base64:5]'
+                localIdentName: '[path]___[name]__[local]]'
               }
             }
           }
@@ -66,7 +66,7 @@ module.exports = {
             options: {
               importLoaders: 1,
               modules: {
-                localIdentName: '[path]___[name]__[local]___[hash:base64:5]'
+                localIdentName: '[path]___[name]__[local]'
               }
             }
           },

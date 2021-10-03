@@ -23,7 +23,7 @@ const Distortion = ({updateModulationFunction, removeFunction}) => {
     return (
         <div styleName="container">
             <div styleName="title"> Distortion </div>
-            <Knob 
+            <Donut 
                 min={0}
                 max={10}
                 value={gain}
