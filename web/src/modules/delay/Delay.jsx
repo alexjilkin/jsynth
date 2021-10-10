@@ -1,5 +1,4 @@
 import React, {useEffect, useState, useCallback, useRef} from 'react'
-import { Donut } from 'react-dial-knob'
 import './Delay.scss'
 import {addModule, updateArgs} from '../../output/browserPlayer'
 
@@ -40,34 +39,25 @@ const Delay = ({}) => {
             <div styleName="knobs">
                 <div styleName="knob">
                     Time
-                    <Donut 
-                        min={0}
-                        max={3}
-                        step={0.1}
+                    <input 
                         value={time}
-                        onValueChang={setTime}
+                        onChange={({value}) => setTime(value)}
                     />
                 </div>
 
                 <div styleName="knob">
                     Depth
-                    <Donut 
-                        min={0}
-                        max={15}
-                        step={1}
+                    <input
                         value={depth}
-                        onValueChange={setDepth}
+                        onChange={({value}) => setDepth(value)}
                     />
                 </div>
 
                 <div styleName="knob">
                     Gain
-                    <Donut 
-                        min={0}
-                        max={0.5}
-                        step={0.1}
+                    <input
                         value={gain}
-                        onValueChange={setGain}
+                        onChange={({value}) => setDepth(value)}
                     />
                 </div>
             

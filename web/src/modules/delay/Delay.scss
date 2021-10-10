@@ -15,9 +15,6 @@
         grid-template-columns: 1fr 1fr 1fr;
         column-gap: 10px;
         .knob {
-            display: grid;
-            grid-template-rows: 0.5fr 1fr;
-            
             text-align: center;
         }
     }

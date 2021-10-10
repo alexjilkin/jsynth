@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react' 
-import { Donut } from 'react-dial-knob'
+import Cone from './ConeKnob';
 import {addModule, updateArgs} from '../../output/browserPlayer'
 import './Lowpass.scss';
 
@@ -23,16 +23,7 @@ const Lowpass = () => {
     return (
         <div styleName="container">
             <div styleName="title"> Lowpass. </div>
-            <Donut 
-                min={0.05}
-                max={1}
-                step={0.05}
-                value={frequency}
-                theme={{
-                    donutColor: 'blue'
-                }}
-                onValueChange={setFrequency}
-            />
+            <Cone />
         </div>
     )
 }
