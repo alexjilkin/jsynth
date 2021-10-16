@@ -1,9 +1,7 @@
 import React, {useEffect, useState, useCallback, useRef} from 'react'
 import './Delay.scss'
 import {addModule, updateArgs} from '../../output/browserPlayer'
-
-const knobSize = 80;
-
+import ConeKnob from '../lowpass/ConeKnob'
 const useDelay = (initialValue = {time: 0.5, depth: 3, gain: 0.4}) => {
     const [time, setTime] = useState(initialValue.time)
     const [depth, setDepth] = useState(initialValue.depth)
@@ -33,32 +31,24 @@ const Delay = ({}) => {
         setIsOn(!isOn)
     }, [isOn])
 
+    //console.log(time, depth, gain)
     return (
         <div styleName="container">
             <div styleName="title">Delay.</div>
             <div styleName="knobs">
                 <div styleName="knob">
                     Time
-                    <input 
-                        value={time}
-                        onChange={({value}) => setTime(value)}
-                    />
+                    <ConeKnob initialValue={time} onChange={setTime} max={2} min={0.1} />
                 </div>
 
                 <div styleName="knob">
                     Depth
-                    <input
-                        value={depth}
-                        onChange={({value}) => setDepth(value)}
-                    />
+                    <ConeKnob initialValue={depth} onChange={(v) => setDepth(Math.round(v))} max={6} min={1}/>
                 </div>
 
                 <div styleName="knob">
                     Gain
-                    <input
-                        value={gain}
-                        onChange={({value}) => setDepth(value)}
-                    />
+                    <ConeKnob initialValue={gain} onChange={setGain} max={0.8} min={0.1} />
                 </div>
             
             </div>

@@ -8,7 +8,7 @@
     display: grid;
     grid-template-rows: auto;
     grid-row-gap: 16px;
-    
+    max-width: 200px;
     .title {
         font-size: 18px;
         font-weight: 900;

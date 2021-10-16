@@ -38,7 +38,7 @@ function Cube({onXChange, onYChange, onZChange}) {
         scene.background = new THREE.Color( 0xe1e8f0 );
         const camera = new THREE.PerspectiveCamera( 75, 1, 0.1, 20);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize( 300,300 );
+        renderer.setSize(200, 200);
 
         addLights(scene);
         addCube(scene)
@@ -77,7 +77,7 @@ function Cube({onXChange, onYChange, onZChange}) {
 
     
     return (
-      <div style={{width: 300, height: 300, cursor: 'grab'}} ref={ref}>
+      <div style={{width: 200, height: 200, cursor: 'grab'}} ref={ref}>
 
       </div>
     )

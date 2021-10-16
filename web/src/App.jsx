@@ -6,12 +6,22 @@ import Oscillator from './modules/oscillator/Oscillator'
 
 const App = () => {
     return (
-        <div>
-            <Delay />
-            <Lowpass />
-            <Oscillator />
-            <Keyboard  />
+        <>
+        <div style={{display: 'flex', width: '80%', flexWrap: 'wrap'}}>
+            <span style={{margin: 20}}>
+                <Oscillator />
+            </span>
+            <span style={{margin: 20}}>
+                <Delay />
+            </span>
+            <span style={{margin: 20}}>
+                <Lowpass />
+            </span>
         </div>
+        <span style={{margin: 20}}>
+                <Keyboard  />
+            </span>
+        </>
     )
 }
 

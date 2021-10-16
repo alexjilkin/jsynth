@@ -1,21 +1,21 @@
 .container {
     background-color: #e1e8f0;
-    padding: 16px;
+    padding: 10px;
     display: grid;
     column-gap: 10px;
     row-gap: 10px;
     border-radius: 10px;
-    width: 400px;
+    max-width: 600px;
+
     .title {
         font-size: 24px;
     }
 
     .knobs {
-        display: grid;
-        grid-template-columns: 1fr 1fr 1fr;
-        column-gap: 10px;
+        display: flex;
         .knob {
             text-align: center;
+            margin: 20px;
         }
     }
 }

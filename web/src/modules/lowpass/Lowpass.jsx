@@ -23,7 +23,7 @@ const Lowpass = () => {
     return (
         <div styleName="container">
             <div styleName="title"> Lowpass. </div>
-            <Cone />
+            <Cone onChange={setFrequency} color="orange" />
         </div>
     )
 }
