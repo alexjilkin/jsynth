@@ -4,7 +4,7 @@ import {addModule, updateArgs} from '../../output/browserPlayer'
 import './Lowpass.scss';
 
 const useLowpass = () => {
-    const [frequency, setFrequency] = useState(0.05)
+    const [frequency, setFrequency] = useState(0.2)
     const id = useRef()
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const Lowpass = () => {
     return (
         <div styleName="container">
             <div styleName="title">  </div>
-            <Cone title="Lowpass" onChange={setFrequency} value={frequency} color="orange" />
+            <Cone title="Lowpass" onChange={setFrequency} min={0} max={1} value={frequency} color="orange" />
         </div>
     )
 }
