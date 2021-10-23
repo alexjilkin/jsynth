@@ -4,9 +4,8 @@ import React, {useEffect, useRef, useState} from 'react';
 import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 import {FontLoader} from 'three/examples/jsm/loaders/FontLoader.js'
-import {TextGeometry} from 'three/examples/jsm/geometries/TextGeometry.js'
 
-const orbitRadius = 20;
+const orbitRadius = 19;
 
 const width = 150;
 const height = 150;
@@ -22,11 +21,9 @@ const addLights = (scene) => {
 
 const addFloor = (scene) => {
     const geometry = new THREE.PlaneGeometry(100, 100);
-    // geometry.
     const material = new THREE.MeshBasicMaterial({color: 0x0000ff, side: THREE.DoubleSide});
     const plane = new THREE.Mesh( geometry, material );
     plane.rotateX(Math.PI / 4)
-    //scene.add( plane );
 }
 
 const setControls = (camera, element) => {
@@ -48,37 +45,8 @@ const addCone = (scene, color = 'yellow') => {
     scene.add(cone);
 }
 
-const addText = (scene) => {
-    const loader = new FontLoader();
-    loader.load('https://threejs.org/examples/fonts/droid/droid_serif_bold.typeface.json', (font) => {
-        const textGeometry = new TextGeometry( "TEEEEXT!", {
-            font,
-            size: 50,
-            height: 10,
-            curveSegments: 12,
-        
-            bevelThickness: 1,
-            bevelSize: 1,
-            bevelEnabled: true
-            });
-        
-            var textMaterial = new THREE.MeshPhongMaterial( 
-            { color: 0xff0000, specular: 0xffffff }
-            );
-        
-            var mesh = new THREE.Mesh( textGeometry, textMaterial );
-        
-            //scene.add( mesh );
-        });
-}
-
-function Cone({onChange, min = 0, max = 1, step = 0.1, initalValue = 1, color}) {
+function Cone({onChange, min = 0, max = 1, step = 0.1, value = 1, color, title = ''}) {
     const ref = useRef()
-    const [value, setValue] = useState(initalValue);
-
-    useEffect(() => {
-        onChange(value)
-    }, [value])
 
     useEffect(() => {
         const scene = new THREE.Scene();
@@ -92,7 +60,6 @@ function Cone({onChange, min = 0, max = 1, step = 0.1, initalValue = 1, color}) 
         addLights(scene);
         addFloor(scene)
         addCone(scene, color)
-        addText(scene)
 
         let lastX;
         let lastY;
@@ -101,7 +68,12 @@ function Cone({onChange, min = 0, max = 1, step = 0.1, initalValue = 1, color}) 
         camera.position.x = orbitRadius;
         camera.position.y = orbitRadius;
         camera.position.z = orbitRadius;
+
         
+        const norm = Math.sqrt(Math.pow(camera.position.x, 2) + Math.pow(camera.position.z, 2));
+        camera.position.y = norm
+        camera.position.z = (((value - min) / max) - 0.5) * norm * 2 
+        console.log(camera.position.z)
         ref.current.appendChild( renderer.domElement );
         
         setControls(camera, renderer.domElement);
@@ -116,7 +88,6 @@ function Cone({onChange, min = 0, max = 1, step = 0.1, initalValue = 1, color}) 
 
             if (camera.position.y !== lastY) {
                 lastY = camera.position.y;
-               
             }
 
             if (camera.position.z !== lastZ) {
@@ -124,7 +95,7 @@ function Cone({onChange, min = 0, max = 1, step = 0.1, initalValue = 1, color}) 
                 const val = min + (0.5 + camera.position.z / (norm * 2)) * max
                 const rVal = Math.round(val * 10) / 10
 
-                setValue(rVal)
+                onChange(rVal)
             }
 
             renderer.render(scene, camera);
@@ -135,11 +106,11 @@ function Cone({onChange, min = 0, max = 1, step = 0.1, initalValue = 1, color}) 
     
     return (
         <div>
-            <div>
-                {value}
-            </div>
             <div style={{width, height, cursor: 'grab'}} ref={ref}>
 
+            </div>
+            <div style={{fontFamily: 'Roboto', fontWeight: 500}}>
+                {title}: {value}
             </div>
         </div>
         

@@ -37,18 +37,15 @@ const Delay = ({}) => {
             <div styleName="title">Delay.</div>
             <div styleName="knobs">
                 <div styleName="knob">
-                    Time
-                    <ConeKnob initialValue={time} onChange={setTime} max={2} min={0.1} />
+                    <ConeKnob title="Time" value={time} onChange={setTime} max={2} min={0.1} />
                 </div>
 
                 <div styleName="knob">
-                    Depth
-                    <ConeKnob initialValue={depth} onChange={(v) => setDepth(Math.round(v))} max={6} min={1}/>
+                    <ConeKnob title="Depth" value={depth} onChange={(v) => setDepth(Math.round(v))} max={6} min={1}/>
                 </div>
 
                 <div styleName="knob">
-                    Gain
-                    <ConeKnob initialValue={gain} onChange={setGain} max={0.8} min={0.1} />
+                    <ConeKnob title="Gain" value={gain} onChange={setGain} max={0.8} min={0.1} />
                 </div>
             
             </div>
