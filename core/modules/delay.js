@@ -8,12 +8,12 @@ let k = 0;
 function delay(u, n, args) {
     const {time, depth, gain} = args;
 
-    const delayAmountBySamples = Math.round(time * sampleRate);
+    const delayAmountBySamples = time * sampleRate;
     const cyclicN = n % feedbackSize
     feedback[cyclicN] = u;
     
     for(let i = 1; i < depth; i++) {     
-        const feedbackIndex = Math.abs(cyclicN - (i * delayAmountBySamples))
+        const feedbackIndex = Math.round(Math.abs(cyclicN - (i * delayAmountBySamples)))
         const feedbackValue = feedback[feedbackIndex]
 
         u += (Math.pow(gain, i) * feedbackValue)
