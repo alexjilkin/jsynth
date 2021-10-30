@@ -29,7 +29,12 @@ class SynthWorklet extends AudioWorkletProcessor {
 
       for (let channel = 0; channel < output.length; ++channel) {
           for (let i = 0; i < output[channel].length; ++i) {
-            output[channel][i] = waveGenerator(triggers)
+            try {
+              output[channel][i] = waveGenerator(triggers)
+            } catch (err) {
+              console.log(err)
+            }
+            
           }
       }
   

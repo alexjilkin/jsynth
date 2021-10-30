@@ -39,7 +39,7 @@ const addCone = (scene, color = 'yellow') => {
     scene.add(cone);
 }
 
-function Cone({onChange, min = 0, max = 1, step = 0.1, value = 1, color, title = ''}) {
+function Cone({onChange, min = 0, max = 1, value = 1, color, title = ''}) {
     const ref = useRef()
 
     useEffect(() => {
@@ -63,10 +63,14 @@ function Cone({onChange, min = 0, max = 1, step = 0.1, value = 1, color, title =
         camera.position.y = orbitRadius;
         camera.position.z = orbitRadius;
 
-        
         const norm = Math.sqrt(2) * orbitRadius;
-        camera.position.y = norm 
-        camera.position.z = (((value - min) / max) - 0.5)  * 2 
+        camera.position.y = norm
+        camera.position.z = (((value - min) / max) - 0.5)  * 2
+
+
+        // const norm = 
+        // camera.position.y = norm 
+        // camera.position.z = (((value - min) / max) - 0.5)  * 2 
         //console.log(camera.position.z)
         ref.current.appendChild( renderer.domElement );
         
