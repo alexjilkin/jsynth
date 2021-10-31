@@ -34,7 +34,11 @@ const Delay = ({}) => {
     //console.log(time, depth, gain)
     return (
         <div styleName="container">
-            <div styleName="title">Delay.</div>
+            <div styleName="header">
+                <div styleName="title">Delay.</div>
+                <div onClick={toggleDelay} styleName={isOn ? 'on' : 'off'}></div>
+            </div>
+           
             <div styleName="knobs">
                 <div styleName="knob">
                     <ConeKnob title="Time" value={time} onChange={setTime} max={3} min={0.1} />
@@ -49,7 +53,6 @@ const Delay = ({}) => {
                 </div>
             
             </div>
-            <div onClick={toggleDelay} styleName={isOn ? 'on' : 'off'}></div>
 
         </div>
     )

@@ -7,6 +7,10 @@
     border-radius: 10px;
     max-width: 600px;
 
+    .header {
+        display: flex;
+        justify-content: space-between;
+    }
     .title {
         font-size: 24px;
     }
@@ -15,7 +19,7 @@
         display: flex;
         .knob {
             text-align: center;
-            margin: 20px;
+            
         }
     }
 }
