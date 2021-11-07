@@ -2,14 +2,14 @@ import React, {useEffect, useState, useCallback, useRef} from 'react'
 import './Delay.scss'
 import {addModule, updateArgs} from '../../output/browserPlayer'
 import ConeKnob from '../lowpass/ConeKnob'
-const useDelay = (initialValue = {time: 0.2, depth: 4, gain: 0.2}) => {
+const useDelay = (initialValue = {time: 0.1, depth: 4, gain: 0.2}) => {
     const [time, setTime] = useState(initialValue.time)
     const [depth, setDepth] = useState(initialValue.depth)
     const [gain, setGain] = useState(initialValue.gain)
     const id = useRef()
 
     useEffect(() => {
-        id.current = addModule('delay', 'transforming', {time, depth, gain})
+        id.current = addModule('delay', 'transform', {time, depth, gain})
     }, [])
     
     useEffect(() => {

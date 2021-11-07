@@ -8,7 +8,7 @@ const useLowpass = () => {
     const id = useRef()
 
     useEffect(() => {
-        id.current = addModule('lowpass', 'transforming', {frequency})
+        id.current = addModule('lowpass', 'transform', {frequency})
     }, [])
 
     useEffect(() => {

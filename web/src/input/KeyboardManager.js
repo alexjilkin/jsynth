@@ -1,5 +1,4 @@
 import * as browserPlayer from '../output/browserPlayer'
-import {getMasterClock} from '@jsynth/core/synth'
 
 const triggers = {}
 
@@ -12,7 +11,6 @@ export const press = (frequencyModulation, id) => {
     triggers[id] = {
         shouldGenerate: true,
         frequencyModulation: frequencyModulation,
-        xAtStart: getMasterClock()
     }
     numOfGeneratingInstances++;
 
@@ -24,7 +22,6 @@ export const press = (frequencyModulation, id) => {
 
 export const release = (id) => {
     triggers[id].shouldGenerate = false
-    triggers[id].xAtStop = getMasterClock()
     numOfGeneratingInstances--;
 }
 
