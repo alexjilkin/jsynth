@@ -1,31 +1,29 @@
-import React, {useState, useEffect} from 'react' 
-import Knob from 'react-canvas-knob';
-import {useLowpass} from '@jsynth/core/modules'
-
+import React, {useState, useEffect, useRef} from 'react' 
+import Cone from './ConeKnob';
+import {addModule, updateArgs} from '../../output/browserPlayer'
 import './Lowpass.scss';
 
-let prevY = 0;
-
-const Lowpass = ({updateModulationFunction, removeFunction}) => { 
-    const [transform, frequency, setFrequency] = useLowpass()
+const useLowpass = () => {
+    const [frequency, setFrequency] = useState(0.2)
+    const id = useRef()
 
     useEffect(() => {
-        updateModulationFunction(transform)
+        id.current = addModule('lowpass', 'transforming', {frequency})
+    }, [])
+
+    useEffect(() => {
+        updateArgs(id.current, {frequency})
     }, [frequency])
+
+    return {frequency, setFrequency}
+}
+const Lowpass = () => { 
+    const {frequency, setFrequency} = useLowpass()
 
     return (
         <div styleName="container">
-            <div styleName="title"> Lowpass. </div>
-            <Knob 
-                min={0.05}
-                max={1}
-                width={70}
-                height={70}
-                step={0.05}
-                fgColor="#6ed3cf"
-                value={frequency}
-                onChange={setFrequency}
-            />
+            <div styleName="title"> Lowpass  </div>
+            <Cone title="Lowpass" onChange={setFrequency} min={0} max={1} value={frequency} color="orange" />
         </div>
     )
 }

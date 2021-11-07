@@ -1,89 +1,58 @@
-import React, {useEffect, useRef, useState, useCallback} from 'react'
-import Knob from 'react-canvas-knob';
+import React, {useEffect, useState, useCallback, useRef} from 'react'
 import './Delay.scss'
-import {useDelay} from '@jsynth/core/modules/delay'
+import {addModule, updateArgs} from '../../output/browserPlayer'
+import ConeKnob from '../lowpass/ConeKnob'
+const useDelay = (initialValue = {time: 0.2, depth: 4, gain: 0.2}) => {
+    const [time, setTime] = useState(initialValue.time)
+    const [depth, setDepth] = useState(initialValue.depth)
+    const [gain, setGain] = useState(initialValue.gain)
+    const id = useRef()
 
-const defaultState = {
-    isOn: true,
-    time: 0.8,
-    depth: 6,
-    gain: 0.3
-}
-
-const knobSize = 80;
-
-const Delay = ({updateModulationFunction, sampleRate, persistentState = defaultState, updateState}) => {
-    
-    const [isOn, setIsOn] = useState(persistentState.isOn);
-    const [transformFunc, time, setTime, depth, setDepth, gain, setGain] = useDelay(persistentState, sampleRate)
+    useEffect(() => {
+        id.current = addModule('delay', 'transforming', {time, depth, gain})
+    }, [])
     
     useEffect(() => {
-        if(isOn) {
-            updateModulationFunction(transformFunc)
-        } else {
-            updateModulationFunction((y, x, frequencyModulation) => {
-                return [y, frequencyModulation];
-            })
-        }
+       updateArgs(id.current, {time, depth, gain})
+    }, [time, depth, gain])
 
-        updateState({isOn, time, depth, gain})
-    }, [isOn, time, depth, gain])
+    return {time, setTime,
+        depth, setDepth,
+        gain, setGain
+    }
+}
+
+
+const Delay = ({}) => {
+    const [isOn, setIsOn] = useState(true);
+    const {time, setTime, depth, setDepth, gain, setGain} = useDelay()
 
     const toggleDelay = useCallback(() => {
         setIsOn(!isOn)
     }, [isOn])
 
+    //console.log(time, depth, gain)
     return (
         <div styleName="container">
-            <div styleName="title">Delay.</div>
+            <div styleName="header">
+                <div styleName="title">Delay.</div>
+                <div onClick={toggleDelay} styleName={isOn ? 'on' : 'off'}></div>
+            </div>
+           
             <div styleName="knobs">
                 <div styleName="knob">
-                    Time
-                    <Knob 
-                        min={0}
-                        max={3}
-                        step={0.1}
-                        width={knobSize}
-                        height={knobSize}
-                        fgColor="#9068be"
-                        value={time}
-                        onChange={setTime}
-                        thickness={0.5}
-                    />
+                    <ConeKnob title="Time" value={time} onChange={setTime} max={3} min={0.1} />
                 </div>
 
                 <div styleName="knob">
-                    Depth
-                    <Knob 
-                        min={0}
-                        max={15}
-                        step={1}
-                        width={knobSize}
-                        height={knobSize}
-                        fgColor="#9068be"
-                        value={depth}
-                        onChange={setDepth}
-                        thickness={0.5}
-                    />
+                    <ConeKnob title="Depth" value={depth} onChange={(v) => setDepth(Math.round(v))} max={6} min={1}/>
                 </div>
 
                 <div styleName="knob">
-                    Gain
-                    <Knob 
-                        min={0}
-                        max={0.6}
-                        step={0.1}
-                        width={knobSize}
-                        height={knobSize}
-                        fgColor="#9068be"
-                        value={gain}
-                        onChange={setGain}
-                        thickness={0.5}
-                    />
+                    <ConeKnob title="Gain" value={gain} onChange={setGain} max={0.8} min={0.2} />
                 </div>
             
             </div>
-            <div onClick={toggleDelay} styleName={isOn ? 'on' : 'off'}></div>
 
         </div>
     )

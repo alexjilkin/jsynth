@@ -1,72 +1,51 @@
-import {sampleRate} from '@jsynth/core/synth/consts'
-import {isMobile} from "react-device-detect";
-const bufferSize = 512;
+import {sampleRate} from '@jsynth/core/consts'
+import {getTriggers} from '../input/KeyboardManager'
+import { v4 as uuidv4 } from 'uuid';
 
-export const play = (waveGenerator) => {
-  let isPlaying = false;
+export const modules = {}
+let isUpdated = false;
 
-  const master = new AudioContext({sampleRate});
-  const buffer = master.createBuffer(1, bufferSize, sampleRate)
-  const source = master.createScriptProcessor(bufferSize, 1, 1);
+export const addModule = (name, type, args) => {
+    const id = uuidv4()
+    modules[id] = {name, type, args}
+    isUpdated = true;
 
-  const createBuffer = (output) => {
-    for (let i = 0; i < buffer.length; i++) {
-      const {value} = waveGenerator.next()
-  
-      output[i] = value
+    return id;
+}
+
+export const updateArgs = (id, args) => {
+    modules[id] = {
+        ...modules[id],
+        args
     }
-  }
 
-  source.buffer = buffer;
-  source.connect(master.destination);
-  
-  source.addEventListener('audioprocess', (e) => {
-    isPlaying ? createBuffer(e.outputBuffer.getChannelData(0)) : master.close();
-  })
-
-  isPlaying = true;
-
-  return () => isPlaying = false
+    isUpdated = true;
 }
 
+export const play = async () => {
+    let isPlaying = false
 
-const warmUpAudio = () => {
-	window.AudioContext = window.AudioContext || window.webkitAudioContext;
-	if (window.AudioContext) {
-		window.audioContext = new window.AudioContext();
-	}
+    const context = new AudioContext({sampleRate})
+    await context.audioWorklet.addModule('worklet.js')
+    let synth = new AudioWorkletNode(context, 'synth')
+    
+    synth.connect(context.destination)
 
-	var fixAudioContext = function (e) {
+    setInterval(() => {
+        synth.port.postMessage(JSON.stringify({
+            modules: Object.keys(modules).map(key => modules[key]), 
+            triggers: getTriggers(),
+            isUpdated
+        }))
 
-		if (window.audioContext) {
+        isUpdated && (isUpdated = false)
+    }, 15)
 
-			var buffer = window.audioContext.createBuffer(1, 1, 22050);
-			var source = window.audioContext.createBufferSource();
-			source.buffer = buffer;
+    isPlaying = true
 
-			source.connect(window.audioContext.destination);
-
-			if (source.start) {
-				source.start(0);
-			} else if (source.play) {
-				source.play(0);
-			} else if (source.noteOn) {
-				source.noteOn(0);
-			}
-		}
-
-		document.removeEventListener('touchstart', fixAudioContext, true);
-		document.removeEventListener('touchend', fixAudioContext, true);
-		e.stopImmediatePropagation();
-	};
-	// iOS 6-8
-	document.addEventListener('touchstart', fixAudioContext, true);
-	// iOS 9
-	document.addEventListener('touchend', fixAudioContext, true);
+    return () => isPlaying = false
 }
-
-isMobile && warmUpAudio();
 
 export default {
-  play
+    play
 }

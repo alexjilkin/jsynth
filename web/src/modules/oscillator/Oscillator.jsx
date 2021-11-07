@@ -1,49 +1,30 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {getSineWave, getSquareWave, getSawWave} from "./waveFunctions"
 import debounce from 'lodash/debounce'
 import Cube from './Cube'
+import {addModule, updateArgs} from '../../output/browserPlayer'
 import './Oscillator.scss'
 
-const defaultState = {
-    frequency: 440,
-    sineAmount: 1,
-    sawAmount: 1.1,
-    squareAmount: 0
+const useOscillator = () => {
+    const [squareAmount, setSquareAmount] = useState(0.1)
+    const [sawAmount, setSawAmount] = useState(0.1)
+    const [sineAmount, setSineAmount] = useState(1)
+
+    const id = useRef()
+
+    useEffect(() => {
+        id.current = addModule('oscillator', 'generator', {squareAmount, sawAmount, sineAmount})
+    }, [])
+
+    useEffect(() => {
+        updateArgs(id.current, {squareAmount, sawAmount, sineAmount})
+    }, [squareAmount, sawAmount, sineAmount])
+
+    return {squareAmount, setSquareAmount, sawAmount, setSawAmount, sineAmount, setSineAmount}
 }
 
-const type = 'generator'
+const Oscillator = () => {
+    const {setSineAmount, setSawAmount, setSquareAmount} = useOscillator()
 
-const Oscillator = ({updateModulationFunction, updateState, persistentState = defaultState}) => {
-    const [frequency, setFrequency] = useState(persistentState.frequency);
-
-    const [squareAmount, setSquareAmount] = useState(persistentState.squareAmount)
-    const [sawAmount, setSawAmount] = useState(persistentState.sawAmount)
-    const [sineAmount, setSineAmount] = useState(persistentState.sineAmount)
-
-    useEffect((() => {
-        const oscillatorFunc = (y, x, frequencyModulation) => {
-            if (y === null) {
-                return [0, frequencyModulation]
-            }
-
-            let funcs = [];
-            funcs.push((x, f) => getSineWave(x, f) * Math.abs(sineAmount))
-            funcs.push((x, f) => getSquareWave(x, f) * Math.abs(squareAmount))
-            funcs.push((x, f) => getSawWave(x, f) * Math.abs(sawAmount))
-
-            const wave = funcs.reduce((acc, func) => {
-                
-                return acc + func(x, frequency * frequencyModulation)
-            }, 0)
-
-            return [y * wave, frequencyModulation];
-            
-        }
-        
-        updateModulationFunction(oscillatorFunc, type)
-        updateState({frequency, sawAmount, squareAmount, sineAmount})
-    }), [frequency, squareAmount, sineAmount, sawAmount]);
-    
     return(
         <div styleName="container">
             <div styleName="title">Cube of waves</div>

@@ -29,12 +29,11 @@ module.exports = {
                   ".scss": {
                     "syntax": "postcss-scss",
                     "plugins": [
-                      "postcss-nested"
                     ]
                   }
                 },
                 "exclude": "node_modules",
-                generateScopedName: '[path]___[name]__[local]___[hash:base64:5]',
+                generateScopedName: '[path]___[name]__[local]',
                 "webpackHotModuleReloading": true
               }],
             ],
@@ -46,7 +45,15 @@ module.exports = {
         include: path.resolve(__dirname, './src'),
         use: [
           'style-loader',
-          'css-loader?importLoader=1&modules&localIdentName=[path]___[name]__[local]___[hash:base64:5]'
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              modules: {
+                localIdentName: '[path]___[name]__[local]]'
+              }
+            }
+          }
         ]
       }, 
       {
@@ -54,7 +61,15 @@ module.exports = {
         include: path.resolve(__dirname, './src'),
         use: [
           'style-loader',
-          'css-loader?importLoader=1&modules&localIdentName=[path]___[name]__[local]___[hash:base64:5]',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 1,
+              modules: {
+                localIdentName: '[path]___[name]__[local]'
+              }
+            }
+          },
           'sass-loader'
         ]
       }
@@ -75,7 +90,7 @@ module.exports = {
     new webpack.HotModuleReplacementPlugin()
   ],
   devServer: {
-    contentBase: './dist',
+    static: './dist',
     hot: true,
     historyApiFallback: true
   }

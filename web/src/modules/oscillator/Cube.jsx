@@ -5,6 +5,8 @@ import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
 const orbitRadius = 12;
+const height = 168
+const width = 168
 
 const addLights = (scene) => {
     let light = new THREE.DirectionalLight( 0xffffff );
@@ -24,10 +26,10 @@ const setControls = (camera, element) => {
     controls.update();
 }
 const addCube = (scene) => {
-    const geometry = new THREE.BoxGeometry( 7, 7, 7 );
+    const geometry = new THREE.BoxGeometry( 8, 8, 8 );
         const cube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xff0000 } ) )
-        cube.rotateX(1)
-        cube.rotateX(1)
+        cube.rotateX(10)
+        cube.rotateX(10)
         scene.add(cube);
 }
 function Cube({onXChange, onYChange, onZChange}) {
@@ -38,7 +40,7 @@ function Cube({onXChange, onYChange, onZChange}) {
         scene.background = new THREE.Color( 0xe1e8f0 );
         const camera = new THREE.PerspectiveCamera( 75, 1, 0.1, 20);
         const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize( 150,150 );
+        renderer.setSize(width, height);
 
         addLights(scene);
         addCube(scene)
@@ -77,7 +79,7 @@ function Cube({onXChange, onYChange, onZChange}) {
 
     
     return (
-      <div style={{width: 150, height: 150, cursor: 'grab'}} ref={ref}>
+      <div style={{width, height, cursor: 'grab'}} ref={ref}>
 
       </div>
     )
