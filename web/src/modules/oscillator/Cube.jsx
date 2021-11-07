@@ -22,7 +22,7 @@ const setControls = (camera, element) => {
     const controls = new OrbitControls( camera, element );
     controls.enableZoom = false;
     controls.enablePan = false;
-    controls.rotateSpeed = 0.1;
+    controls.rotateSpeed = 0.2;
     controls.update();
 }
 const addCube = (scene) => {
