@@ -23,7 +23,7 @@ module.exports = {
       }
     ]
   },
-  watch: true,
+  watch: false,
   devtool: 'source-map',
   output: {
     path: __dirname + '/../web/dist',

@@ -3,7 +3,7 @@
   "main": "src/index.js",
   "version": "1.0.1",
   "scripts": {
-    "build": "(cd worklet && yarn build)",
+    "build": "(cd worklet && yarn build) & yarn workspace @jsynth/web run build",
     "start": "yarn build & yarn workspace @jsynth/web run start"
   },
   "private": "true",
