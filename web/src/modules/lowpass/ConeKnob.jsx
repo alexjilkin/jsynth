@@ -1,18 +1,12 @@
 
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useRef} from 'react';
 
 import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
-import {FontLoader} from 'three/examples/jsm/loaders/FontLoader.js'
-
-const orbitRadius = 20;
-
-const width = 150;
-const height = 150;
 
 const addLights = (scene) => {
     let light = new THREE.DirectionalLight( 0xffffff, 0.8 );
-    light.position.set( 90, 500, 0 )
+    light.position.set( -90, 400, 0 )
 
     const hemiLight = new THREE.HemisphereLight(0xffeeb1, 0x080820, 0.4);
     scene.add( hemiLight );
@@ -30,30 +24,30 @@ const setControls = (camera, element) => {
     controls.update();
 }
 
-const addCone = (scene, color = 'yellow') => {
-    const geometry = new THREE.ConeGeometry( 19, 23, 9 );
+const addCone = (scene, color = 'yellow', width, height) => {
+    const geometry = new THREE.ConeGeometry( width / 8, height / 5.4, 9);
     const cone = new THREE.Mesh(geometry, new THREE.MeshPhysicalMaterial( {
         color
     }));
-
+    cone.position.set(0, 5, 0)
     scene.add(cone);
 }
 
-function Cone({onChange, min = 0, max = 1, value = 1, color, title = ''}) {
+const Knob = ({onChange, min = 0, max = 1, value = 1, color, title = '', width = 150, height = 150, radialSegments = 9}) => {
     const ref = useRef()
 
     useEffect(() => {
+        const orbitRadius = width / 8.2 ;
+
         const scene = new THREE.Scene();
         scene.background = null;
         const camera = new THREE.PerspectiveCamera( 75, 1, 0.1, 1000 );
         const renderer = new THREE.WebGLRenderer({ antialias: true, alpha:true });
         renderer.setClearColor( 0xffffff, 0 );
-        renderer.setSize(width, height);
-        let font = null;
-        
+        renderer.setSize(width, height);        
 
         addLights(scene);
-        addCone(scene, color)
+        addCone(scene, color, width, height, radialSegments)
 
         let lastX;
         let lastY;
@@ -67,11 +61,6 @@ function Cone({onChange, min = 0, max = 1, value = 1, color, title = ''}) {
         camera.position.y = norm
         camera.position.z = (((value - min) / max) - 0.5)  * 2
 
-
-        // const norm = 
-        // camera.position.y = norm 
-        // camera.position.z = (((value - min) / max) - 0.5)  * 2 
-        //console.log(camera.position.z)
         ref.current.appendChild( renderer.domElement );
         
         setControls(camera, renderer.domElement);
@@ -104,14 +93,22 @@ function Cone({onChange, min = 0, max = 1, value = 1, color, title = ''}) {
     
     return (
         <div>
+            
             <div style={{width, height, cursor: 'grab'}} ref={ref}>
 
             </div>
-            <div style={{fontFamily: 'Roboto', fontWeight: 500}}>
-                {title}: {value}
+            {title &&<div style={{border: `solid 2px ${color}`, borderRadius: 5, textAlign: 'center', padding: 2}}>
+                {title}
+            </div>
+            }
+            <div style={{display: 'flex', justifyContent: 'center'}}>
+                <div style={{borderBottom: `solid 3px ${color}`, borderRadius: 1, textAlign: 'center', padding: 2}}>
+                    {value}
+                </div>
             </div>
         </div>
         
     )
   }
-export default Cone
+  
+export default Knob

@@ -6,12 +6,6 @@
     "start": "webpack-dev-server --config ./webpack.config.js --mode development",
     "build": "webpack --mode=production --config ./webpack.config.js"
   },
-  "private": "true",
-  "workspaces": [
-    "core",
-    "web",
-    "cli"
-  ],
   "dependencies": {
     "@jsynth/core": "*",
     "babel-polyfill": "^6.26.0",
@@ -41,7 +35,7 @@
     "postcss": "^8.3.8",
     "postcss-import": "^14.0.2",
     "postcss-loader": "^6.1.1",
-    "postcss-scss": "^4.0.1",
+    "postcss-scss": "4.0.1",
     "postcss-url": "^10.1.3",
     "postcss-nested": "^5.0.6",
     "react-hot-loader": "^4.13.0",

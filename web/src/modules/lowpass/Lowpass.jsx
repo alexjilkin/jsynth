@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef} from 'react' 
-import Cone from './ConeKnob';
+import Knob from './ConeKnob';
 import {addModule, updateArgs} from '../../output/browserPlayer'
 import './Lowpass.scss';
 
@@ -8,7 +8,7 @@ const useLowpass = () => {
     const id = useRef()
 
     useEffect(() => {
-        id.current = addModule('lowpass', 'transforming', {frequency})
+        id.current = addModule('lowpass', 'transform', {frequency})
     }, [])
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const Lowpass = () => {
     return (
         <div styleName="container">
             <div styleName="title"> Lowpass  </div>
-            <Cone title="Lowpass" onChange={setFrequency} min={0} max={1} value={frequency} color="orange" />
+            <Knob onChange={setFrequency} min={0.1} max={1} value={frequency} color="orange" />
         </div>
     )
 }

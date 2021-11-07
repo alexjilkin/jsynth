@@ -1,15 +1,15 @@
 import React, {useEffect, useState, useCallback, useRef} from 'react'
 import './Delay.scss'
 import {addModule, updateArgs} from '../../output/browserPlayer'
-import ConeKnob from '../lowpass/ConeKnob'
-const useDelay = (initialValue = {time: 0.2, depth: 4, gain: 0.2}) => {
+import Knob from '../lowpass/ConeKnob'
+const useDelay = (initialValue = {time: 0.1, depth: 4, gain: 0.2}) => {
     const [time, setTime] = useState(initialValue.time)
     const [depth, setDepth] = useState(initialValue.depth)
     const [gain, setGain] = useState(initialValue.gain)
     const id = useRef()
 
     useEffect(() => {
-        id.current = addModule('delay', 'transforming', {time, depth, gain})
+        id.current = addModule('delay', 'transform', {time, depth, gain})
     }, [])
     
     useEffect(() => {
@@ -41,15 +41,15 @@ const Delay = ({}) => {
            
             <div styleName="knobs">
                 <div styleName="knob">
-                    <ConeKnob title="Time" value={time} onChange={setTime} max={3} min={0.1} />
+                    <Knob title="Time" value={time} onChange={setTime} max={3} min={0.1} color="lightblue" />
                 </div>
 
                 <div styleName="knob">
-                    <ConeKnob title="Depth" value={depth} onChange={(v) => setDepth(Math.round(v))} max={6} min={1}/>
+                    <Knob title="Depth" value={depth} onChange={(v) => setDepth(Math.round(v))} max={6} min={1} color="lightblue"/>
                 </div>
 
                 <div styleName="knob">
-                    <ConeKnob title="Gain" value={gain} onChange={setGain} max={0.8} min={0.2} />
+                    <Knob title="Gain" value={gain} onChange={setGain} max={0.8} min={0.2} color="lightblue"/>
                 </div>
             
             </div>

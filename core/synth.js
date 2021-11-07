@@ -4,18 +4,36 @@ export const getMasterClock = () => masterClock
 
 let modules = []
 let generatingModules = []
+let monoTransformModules = []
 
 export const subscribeModule = (type, module) => {
-  type === 'generator' ? subscribeGeneratingModule(module) : subscribeTransformingModule(module)
+  switch (type) {
+    case 'generator': 
+      subscribeGeneratingModule(module)
+      break
+    case 'monoTransform':
+      subscribeMonoTransformModule(module)
+      break
+    case 'transform':
+      subscribeTransformingModule(module)
+      break
+  }
 }
   
-
 const subscribeTransformingModule = (module) => {
   modules.push(module)
 
   return () => {
     const index = modules.findIndex(_module => _module === module);
     modules = [...modules.slice(0, index), ...modules.slice(index + 1)]
+  }
+}
+
+const subscribeMonoTransformModule = (module) => {
+  monoTransformModules.push(module)
+  return () => {
+    const index = monoTransformModules.findIndex(_module => _module === module);
+    monoTransformModules = [...monoTransformModules.slice(0, index), ...monoTransformModules.slice(index + 1)]
   }
 }
 
@@ -30,6 +48,7 @@ const subscribeGeneratingModule = (module) => {
 export const clearModules = () => {
   modules = []
   generatingModules = []
+  monoTransformModules = []
 }
 
 export function waveGenerator(triggers) {
@@ -37,11 +56,10 @@ export function waveGenerator(triggers) {
 
   Object.keys(triggers).forEach((id) => {
     const {frequencyModulation, shouldGenerate} = triggers[id]
-
-    if (!shouldGenerate) return;
-
+    
+    handleTimings(shouldGenerate, id)
     wave = generatingModules.reduce((acc, {func, args}) => {
-      return acc + func(acc, masterClock, frequencyModulation, args)
+      return acc + func(acc, masterClock, frequencyModulation, {...args, nAtStart: timings[id].nAtStart, nAtStop: timings[id].nAtStop, shouldGenerate})
     }, wave)
   })
 
@@ -53,4 +71,27 @@ export function waveGenerator(triggers) {
   // Decrease volume 
   const mixVolume =  0.3
   return wave * mixVolume
+}
+
+const timings = {}
+
+function handleTimings(shouldGenerate, id) {
+  let timing = timings[id] || {}
+  const {isPressed} = timing
+
+  if (shouldGenerate && !isPressed) {
+    timing = {
+      ...timing,
+      nAtStart: masterClock,
+      isPressed: true
+    }
+  } else if (!shouldGenerate && isPressed) {
+    timing = {
+      ...timing,
+      nAtStop: masterClock,
+      isPressed: false
+    }
+  }
+
+  timings[id] = timing
 }
