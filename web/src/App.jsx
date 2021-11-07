@@ -1,7 +1,6 @@
 import React from 'react'
 import Keyboard from 'input/Keyboard'
 import Delay from './modules/delay/Delay'
-import Envelope from './modules/envelope/Envelope'
 import {Lowpass} from './modules/lowpass'
 import Oscillator from './modules/oscillator/Oscillator'
 

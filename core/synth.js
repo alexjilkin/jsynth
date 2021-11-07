@@ -31,7 +31,6 @@ const subscribeTransformingModule = (module) => {
 
 const subscribeMonoTransformModule = (module) => {
   monoTransformModules.push(module)
-  console.log(monoTransformModules)
   return () => {
     const index = monoTransformModules.findIndex(_module => _module === module);
     monoTransformModules = [...monoTransformModules.slice(0, index), ...monoTransformModules.slice(index + 1)]
@@ -52,31 +51,15 @@ export const clearModules = () => {
   monoTransformModules = []
 }
 
-const times = {}
-
 export function waveGenerator(triggers) {
   let wave = 0;
 
   Object.keys(triggers).forEach((id) => {
     const {frequencyModulation, shouldGenerate} = triggers[id]
-    if (!times[id]) {
-      times[id] = {}
-    }
-
-    if (shouldGenerate && !times[id].isPressed) {
-      times[id].nAtStart = masterClock
-      console.log('nAtStart', times[id].nAtStart)
-      times[id].isPressed = true
-    }
-
-    if (!shouldGenerate && times[id].isPressed) {
-      times[id].nAtStop = masterClock
-      console.log('nAtStop', times[id].nAtStop)
-      times[id].isPressed = false
-    } 
-
+    
+    handleTimings(shouldGenerate, id)
     wave = generatingModules.reduce((acc, {func, args}) => {
-      return acc + func(acc, masterClock, frequencyModulation, {...args, nAtStart: times[id].nAtStart, nAtStop: times[id].nAtStop, shouldGenerate})
+      return acc + func(acc, masterClock, frequencyModulation, {...args, nAtStart: timings[id].nAtStart, nAtStop: timings[id].nAtStop, shouldGenerate})
     }, wave)
   })
 
@@ -88,4 +71,27 @@ export function waveGenerator(triggers) {
   // Decrease volume 
   const mixVolume =  0.3
   return wave * mixVolume
+}
+
+const timings = {}
+
+function handleTimings(shouldGenerate, id) {
+  let timing = timings[id] || {}
+  const {isPressed} = timing
+
+  if (shouldGenerate && !isPressed) {
+    timing = {
+      ...timing,
+      nAtStart: masterClock,
+      isPressed: true
+    }
+  } else if (!shouldGenerate && isPressed) {
+    timing = {
+      ...timing,
+      nAtStop: masterClock,
+      isPressed: false
+    }
+  }
+
+  timings[id] = timing
 }
