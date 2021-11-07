@@ -34,10 +34,14 @@ __webpack_require__.r(__webpack_exports__);
     let returnFunc = (u, n, freqModulation) => [u, n, freqModulation]
 
     if (type === 'generator') {
-        returnFunc = (u, n, freqModulation, args) => {
-            return func(u, n, freqModulation, args)
+        returnFunc = (u, n, freqModulation, args, shouldGenerate) => {
+            return func(u, n, freqModulation, args, shouldGenerate)
         }
     } else if (type === 'transform') {
+        returnFunc = (u, n, args) => {
+            return func(u, n, args)
+        }
+    } else if (type === 'monoTransform') {
         returnFunc = (u, n, args) => {
             return func(u, n, args)
         }
@@ -93,6 +97,50 @@ const setTime = v => time = v;
 const setDepth = v => depth = v;
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_createModule__WEBPACK_IMPORTED_MODULE_1__["default"])(delay, 'transform'));
+
+/***/ }),
+
+/***/ "../../core/modules/envelope.js":
+/*!**************************************!*\
+  !*** ../../core/modules/envelope.js ***!
+  \**************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "envelope": () => (/* binding */ envelope)
+/* harmony export */ });
+const attackSize = 1000;
+const releaseSize = 10000;
+
+const envelope = (u, n, shouldGenerate, nAtStart, nAtStop) => {
+  const nSinceStart = n - nAtStart
+  if (nSinceStart < attackSize) {
+    return envelopeAttack(u, nSinceStart, attackSize)
+  } 
+  
+  if (!shouldGenerate) {
+    const nSinceStop = n - nAtStop
+    if (nSinceStop > releaseSize) {
+      return 0
+    } 
+
+    return envelopeRelease(u, nSinceStop, releaseSize)
+  }
+
+  return u
+}
+
+const envelopeAttack = (y, x, size) => {
+  const m = 1 / (size)
+  return y * (x * m)
+}
+
+const envelopeRelease = (y, x, size) => {
+  const m = -1 / (size);
+
+  return y * ((x * m) + (1))
+}
 
 /***/ }),
 
@@ -155,6 +203,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ });
 /* harmony import */ var _jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @jsynth/core/consts */ "../../core/consts.js");
 /* harmony import */ var _createModule__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./createModule */ "../../core/modules/createModule.js");
+/* harmony import */ var _envelope__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./envelope */ "../../core/modules/envelope.js");
+
 
 
 
@@ -162,34 +212,38 @@ const amplitude = 1;
 const PiDividedBySampleRate = Math.PI / _jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate;
 const twoPiDividedBySampleRate = PiDividedBySampleRate * 2;
 
+
 const baseFrequency = 440;
+
 function oscillator(u, n, freqModulation, args) {
-    const {sineAmount, sawAmount, squareAmount} = args
+    const {sineAmount, sawAmount, squareAmount, nAtStart, nAtStop, shouldGenerate} = args
     
     const totalAmount = Math.abs(sineAmount) + Math.abs(sawAmount) + Math.abs(squareAmount)
-    return ((getSineWave(u, n, freqModulation) * Math.abs(sineAmount)) + (getSquareWave(u, n, freqModulation) * Math.abs(squareAmount)) + (getSawWave(u, n, freqModulation) * Math.abs(sawAmount))) / totalAmount
+    const wave =  ((getSineWave(n, freqModulation) * Math.abs(sineAmount)) + (getSquareWave(n, freqModulation) * Math.abs(squareAmount)) + (getSawWave(n, freqModulation) * Math.abs(sawAmount))) / totalAmount
 
+    return (0,_envelope__WEBPACK_IMPORTED_MODULE_2__.envelope)(wave, n, shouldGenerate, nAtStart, nAtStop);
 }
-function getSineWave(u, n, freqModulation) {
+
+function getSineWave(n, freqModulation) {
     const frequency = baseFrequency * freqModulation
     const cyclicN= n % (~~(_jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate / frequency));
 
     return Math.cos(frequency * twoPiDividedBySampleRate * cyclicN) * amplitude
 }
 
-function getSquareWave(u, n, freqModulation) {
-    const frequency = baseFrequency * freqModulation
-    const cyclicX = n % (~~(_jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate / frequency));
+function getSquareWave(n, freqModulation) {
+  const frequency = baseFrequency * freqModulation
+  const cyclicX = n % (~~(_jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate / frequency));
 
-    return Math.sign(Math.sin(twoPiDividedBySampleRate* (frequency) * (cyclicX % _jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate))) * (amplitude / 2);
-  }
-  
-  function getSawWave(u, n, freqModulation) {
-    const frequency = baseFrequency * freqModulation
-    const cyclicX = n % (~~(_jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate / frequency));
-  
-    return (-1) * (amplitude / 2)  * arcctg(ctg((cyclicX) * frequency * PiDividedBySampleRate)) / Math.PI
-  }
+  return Math.sign(Math.sin(twoPiDividedBySampleRate* (frequency) * (cyclicX % _jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate))) * (amplitude / 2);
+}
+
+function getSawWave(n, freqModulation) {
+  const frequency = baseFrequency * freqModulation
+  const cyclicX = n % (~~(_jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate / frequency));
+
+  return (-1) * (amplitude / 2)  * arcctg(ctg((cyclicX) * frequency * PiDividedBySampleRate)) / Math.PI
+}
 
 function ctg(x) { return 1 / Math.tan(x); }
 function arcctg(x) { return Math.PI / 2 - Math.atan(x); }
@@ -216,18 +270,36 @@ const getMasterClock = () => masterClock
 
 let modules = []
 let generatingModules = []
+let monoTransformModules = []
 
 const subscribeModule = (type, module) => {
-  type === 'generator' ? subscribeGeneratingModule(module) : subscribeTransformingModule(module)
+  switch (type) {
+    case 'generator': 
+      subscribeGeneratingModule(module)
+      break
+    case 'monoTransform':
+      subscribeMonoTransformModule(module)
+      break
+    case 'transform':
+      subscribeTransformingModule(module)
+      break
+  }
 }
   
-
 const subscribeTransformingModule = (module) => {
   modules.push(module)
 
   return () => {
     const index = modules.findIndex(_module => _module === module);
     modules = [...modules.slice(0, index), ...modules.slice(index + 1)]
+  }
+}
+
+const subscribeMonoTransformModule = (module) => {
+  monoTransformModules.push(module)
+  return () => {
+    const index = monoTransformModules.findIndex(_module => _module === module);
+    monoTransformModules = [...monoTransformModules.slice(0, index), ...monoTransformModules.slice(index + 1)]
   }
 }
 
@@ -242,6 +314,7 @@ const subscribeGeneratingModule = (module) => {
 const clearModules = () => {
   modules = []
   generatingModules = []
+  monoTransformModules = []
 }
 
 function waveGenerator(triggers) {
@@ -249,11 +322,10 @@ function waveGenerator(triggers) {
 
   Object.keys(triggers).forEach((id) => {
     const {frequencyModulation, shouldGenerate} = triggers[id]
-
-    if (!shouldGenerate) return;
-
+    
+    handleTimings(shouldGenerate, id)
     wave = generatingModules.reduce((acc, {func, args}) => {
-      return acc + func(acc, masterClock, frequencyModulation, args)
+      return acc + func(acc, masterClock, frequencyModulation, {...args, nAtStart: timings[id].nAtStart, nAtStop: timings[id].nAtStop, shouldGenerate})
     }, wave)
   })
 
@@ -265,6 +337,29 @@ function waveGenerator(triggers) {
   // Decrease volume 
   const mixVolume =  0.3
   return wave * mixVolume
+}
+
+const timings = {}
+
+function handleTimings(shouldGenerate, id) {
+  let timing = timings[id] || {}
+  const {isPressed} = timing
+
+  if (shouldGenerate && !isPressed) {
+    timing = {
+      ...timing,
+      nAtStart: masterClock,
+      isPressed: true
+    }
+  } else if (!shouldGenerate && isPressed) {
+    timing = {
+      ...timing,
+      nAtStop: masterClock,
+      isPressed: false
+    }
+  }
+
+  timings[id] = timing
 }
 
 /***/ })
