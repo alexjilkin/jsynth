@@ -53,7 +53,7 @@ export const clearModules = () => {
 
 export function waveGenerator(triggers) {
   let wave = 0;
-
+  debugger
   Object.keys(triggers).forEach((id) => {
     const {frequencyModulation, shouldGenerate} = triggers[id]
     
