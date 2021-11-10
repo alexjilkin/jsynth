@@ -9,13 +9,15 @@ const height = 168
 const width = 168
 
 const addLights = (scene) => {
-    let light = new THREE.DirectionalLight( 0xffffff );
-    light.position.set( 50, 20, 40 )
-    scene.add( light );
+    const light1 = new THREE.DirectionalLight( 0xff00ff, 0.55 );
+    light1.position.set( 50, 400, 40 )
+    scene.add( light1 );
 
-    light = new THREE.DirectionalLight( 0xffffff );
-    light.position.set( -10, 0, -10 )
-    scene.add( light );
+    const light2 = new THREE.HemisphereLight(0xffffff, 0xffffff, 0.5);
+    light2.position.set( -30, -50, -30 )
+    scene.add( light2 );
+
+    return light1
 }
 
 const setControls = (camera, element) => {
@@ -25,14 +27,16 @@ const setControls = (camera, element) => {
     controls.rotateSpeed = 0.2;
     controls.update();
 }
+const color = 0xff0000
+
 const addCube = (scene) => {
     const geometry = new THREE.BoxGeometry( 8, 8, 8 );
-        const cube = new THREE.Mesh( geometry, new THREE.MeshLambertMaterial( { color: 0xff0000 } ) )
+        const cube = new THREE.Mesh( geometry, new THREE.MeshPhysicalMaterial({color}))
         cube.rotateX(10)
         cube.rotateX(10)
         scene.add(cube);
 }
-function Cube({onXChange, onYChange, onZChange}) {
+function Cube({onXChange, onYChange, onZChange, x, y, z}) {
     const ref = useRef()
 
     useEffect(() => {
@@ -42,7 +46,7 @@ function Cube({onXChange, onYChange, onZChange}) {
         const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(width, height);
 
-        addLights(scene);
+        const light = addLights(scene);
         addCube(scene)
 
         camera.position.x = orbitRadius;
@@ -59,19 +63,19 @@ function Cube({onXChange, onYChange, onZChange}) {
             requestAnimationFrame( animate );
             if (camera.position.x !== lastX) {
                 lastX = camera.position.x;
-                onXChange(lastX / orbitRadius)
+                onXChange(Math.abs(Math.floor(lastX / orbitRadius * 10) / 10))
             }
 
             if (camera.position.y !== lastY) {
                 lastY = camera.position.y;
-                onYChange(lastY / orbitRadius)
+                onYChange(Math.abs(Math.floor(lastY / orbitRadius * 10) / 10))
             }
 
             if (camera.position.z !== lastZ) {
                 lastZ = camera.position.z;
-                onZChange(lastZ / orbitRadius)
+                onZChange(Math.abs(Math.floor(lastZ / orbitRadius * 10) / 10))
             }
-
+            light.position.copy(camera.position)
             renderer.render(scene, camera);
         }
         animate();
@@ -79,9 +83,20 @@ function Cube({onXChange, onYChange, onZChange}) {
 
     
     return (
-      <div style={{width, height, cursor: 'grab'}} ref={ref}>
+      <div>
+        <div style={{width, height, cursor: 'grab'}} ref={ref}>
 
-      </div>
+        </div>
+        <div style={{border: `solid 2px #${color.toString(16)}`, borderRadius: 5, textAlign: 'center', padding: 2}}>
+          Sine
+        </div>
+          
+          <div style={{display: 'flex', justifyContent: 'center'}}>
+            <div style={{borderBottom: `solid 3px #${color.toString(16)}`, borderRadius: 1, textAlign: 'center', padding: 2}}>
+              {x}
+            </div>
+          </div>
+        </div>
     )
   }
 export default Cube

@@ -13,6 +13,9 @@ export const addModule = (name, type, args) => {
     return id;
 }
 
+let isPlaying = false
+export const getIsPlaying = () => isPlaying;
+
 export const updateArgs = (id, args) => {
     modules[id] = {
         ...modules[id],
@@ -23,8 +26,6 @@ export const updateArgs = (id, args) => {
 }
 
 export const play = async () => {
-    let isPlaying = false
-
     const context = new AudioContext({sampleRate})
     await context.audioWorklet.addModule('worklet.js')
     let synth = new AudioWorkletNode(context, 'synth')
@@ -42,7 +43,7 @@ export const play = async () => {
     }, 15)
 
     isPlaying = true
-
+    
     return () => isPlaying = false
 }
 

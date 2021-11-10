@@ -23,13 +23,13 @@ const useOscillator = () => {
 }
 
 const Oscillator = () => {
-    const {setSineAmount, setSawAmount, setSquareAmount} = useOscillator()
+    const {sineAmount, sawAmount, squareAmount, setSineAmount, setSawAmount, setSquareAmount} = useOscillator()
 
     return(
         <div styleName="container">
             <div styleName="title">Cube of waves</div>
             <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Cube onXChange={debounce(setSineAmount, 100)} onYChange={debounce(setSquareAmount, 100)} onZChange={debounce(setSawAmount, 100)}/>
+            <Cube onXChange={debounce(setSineAmount, 100)} onYChange={debounce(setSquareAmount, 100)} onZChange={debounce(setSawAmount, 100)} x={sineAmount} y={squareAmount} z={sawAmount}/>
             </div>   
         </div>
     )

@@ -13,16 +13,16 @@ export const press = (frequencyModulation, id) => {
         isFirstTime = false;
         return;
     }
+
+    if (!browserPlayer.getIsPlaying()) {
+        return
+    }
+
     triggers[id] = {
         shouldGenerate: true,
         frequencyModulation: frequencyModulation,
     }
     numOfGeneratingInstances++;
-
-    if (isFirstTime) {
-        browserPlayer.play()
-        isFirstTime = false;
-    }
 }
 
 export const release = (id) => {
