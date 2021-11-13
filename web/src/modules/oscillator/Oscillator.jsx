@@ -29,7 +29,7 @@ const Oscillator = () => {
         <div styleName="container">
             <div styleName="title">Cube of waves</div>
             <div style={{display: 'flex', justifyContent: 'center'}}>
-            <Cube onXChange={debounce(setSineAmount, 100)} onYChange={debounce(setSquareAmount, 100)} onZChange={debounce(setSawAmount, 100)} x={sineAmount} y={squareAmount} z={sawAmount}/>
+            <Cube onXChange={debounce(setSineAmount, 50)} onYChange={debounce(setSquareAmount, 50)} onZChange={debounce(setSawAmount, 50)} x={sineAmount} y={squareAmount} z={sawAmount}/>
             </div>   
         </div>
     )

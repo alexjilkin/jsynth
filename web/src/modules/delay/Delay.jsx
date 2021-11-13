@@ -1,8 +1,9 @@
 import React, {useEffect, useState, useCallback, useRef} from 'react'
 import './Delay.scss'
 import {addModule, updateArgs} from '../../output/browserPlayer'
-import Knob from '../lowpass/ConeKnob'
-const useDelay = (initialValue = {time: -15, depth: 4, gain: 0.2}) => {
+import Knob from 'react-non-conformist-knob'
+
+const useDelay = (initialValue = {time: 1, depth: 4, gain: 0.4}) => {
     const [time, setTime] = useState(initialValue.time)
     const [depth, setDepth] = useState(initialValue.depth)
     const [gain, setGain] = useState(initialValue.gain)

@@ -28,7 +28,7 @@ const setControls = (camera, element) => {
     controls.update();
 }
 const color = 0xff0000
-
+const borderBottom = (color) => ({borderBottom: `solid 3px #${color.toString(16)}`, borderRadius: 1, textAlign: 'center', padding: 2})
 const addCube = (scene) => {
     const geometry = new THREE.BoxGeometry( 8, 8, 8 );
         const cube = new THREE.Mesh( geometry, new THREE.MeshPhysicalMaterial({color}))
@@ -81,19 +81,23 @@ function Cube({onXChange, onYChange, onZChange, x, y, z}) {
         animate();
     }, [ref])
 
+    const borderStyle = borderBottom(color)
     
     return (
       <div>
         <div style={{width, height, cursor: 'grab'}} ref={ref}>
 
         </div>
-        <div style={{border: `solid 2px #${color.toString(16)}`, borderRadius: 5, textAlign: 'center', padding: 2}}>
-          Sine
-        </div>
           
-          <div style={{display: 'flex', justifyContent: 'center'}}>
-            <div style={{borderBottom: `solid 3px #${color.toString(16)}`, borderRadius: 1, textAlign: 'center', padding: 2}}>
+          <div style={{display: 'flex', justifyContent: 'space-between'}}>
+            <div style={borderBottom(color)}>
               {x}
+            </div>
+            <div style={borderStyle}>
+              {y}
+            </div>
+            <div style={borderStyle}>
+              {z}
             </div>
           </div>
         </div>
