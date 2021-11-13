@@ -52,25 +52,24 @@ export const clearModules = () => {
 }
 
 export function waveGenerator(triggers) {
-  let wave = 0;
-
+  let u = 0;
   Object.keys(triggers).forEach((id) => {
     const {frequencyModulation, shouldGenerate} = triggers[id]
     
     handleTimings(shouldGenerate, id)
-    wave = generatingModules.reduce((acc, {func, args}) => {
+    u = generatingModules.reduce((acc, {func, args}) => {
       return acc + func(acc, masterClock, frequencyModulation, {...args, nAtStart: timings[id].nAtStart, nAtStop: timings[id].nAtStop, shouldGenerate})
-    }, wave)
+    }, u)
   })
 
-  wave = modules.reduce((acc, {func, args}) => {
+  u = modules.reduce((acc, {func, args}) => {
     return func(acc, masterClock, args)
-  }, wave)
+  }, u)
   masterClock++
   
   // Decrease volume 
   const mixVolume =  0.3
-  return wave * mixVolume
+  return u * mixVolume
 }
 
 const timings = {}

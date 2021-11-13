@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react' 
-import Knob from './ConeKnob';
+import Knob from 'react-non-conformist-knob';
 import {addModule, updateArgs} from '../../output/browserPlayer'
 import './Lowpass.scss';
 
 const useLowpass = () => {
-    const [frequency, setFrequency] = useState(0.2)
+    const [frequency, setFrequency] = useState(0.6)
     const id = useRef()
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const Lowpass = () => {
     return (
         <div styleName="container">
             <div styleName="title"> Lowpass  </div>
-            <Knob onChange={setFrequency} min={0.1} max={1} value={frequency} color="orange" />
+            <Knob onChange={setFrequency} min={0.1} max={1} value={frequency} color={0x9999ff} />
         </div>
     )
 }

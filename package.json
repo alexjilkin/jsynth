@@ -12,5 +12,8 @@
 
   },
   "devDependencies": {
+  },
+  "resolutions": {
+    "postcss": "^8.3.8"
   }
 }

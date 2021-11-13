@@ -6,7 +6,6 @@ const amplitude = 1;
 const PiDividedBySampleRate = Math.PI / sampleRate;
 const twoPiDividedBySampleRate = PiDividedBySampleRate * 2;
 
-
 const baseFrequency = 440;
 
 function oscillator(u, n, freqModulation, args) {

@@ -4,13 +4,15 @@ import React, {useEffect, useRef} from 'react';
 import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
-const addLights = (scene) => {
-    let light = new THREE.DirectionalLight( 0xffffff, 0.8 );
+const addLights = (scene, color) => {
+    let light = new THREE.DirectionalLight( 0xffffff, 0.40 );
     light.position.set( -90, 400, 0 )
 
-    const hemiLight = new THREE.HemisphereLight(0xffeeb1, 0x080820, 0.4);
+    const hemiLight = new THREE.HemisphereLight(color, color, 0.3);
     scene.add( hemiLight );
     scene.add( light );
+
+    return [light, hemiLight]
 }
 
 const setControls = (camera, element) => {
@@ -33,7 +35,7 @@ const addCone = (scene, color = 'yellow', width, height) => {
     scene.add(cone);
 }
 
-const Knob = ({onChange, min = 0, max = 1, value = 1, color, title = '', width = 150, height = 150, radialSegments = 9}) => {
+const Knob = ({onChange, min = 0, max = 1, value = 1, color, title = '', width = 150, height = 150, radialSegments = 8}) => {
     const ref = useRef()
 
     useEffect(() => {
@@ -46,7 +48,7 @@ const Knob = ({onChange, min = 0, max = 1, value = 1, color, title = '', width =
         renderer.setClearColor( 0xffffff, 0 );
         renderer.setSize(width, height);        
 
-        addLights(scene);
+        const [light1, light2] = addLights(scene, color);
         addCone(scene, color, width, height, radialSegments)
 
         let lastX;
@@ -84,25 +86,25 @@ const Knob = ({onChange, min = 0, max = 1, value = 1, color, title = '', width =
 
                 onChange(rVal)
             }
-
+            light1.position.copy(camera.position).add(new THREE.Vector3(10, 10, 0))
             renderer.render(scene, camera);
         }
         animate();
     }, [ref])
 
-    
+    console.log(`solid 2px #${color}`)
     return (
         <div>
             
             <div style={{width, height, cursor: 'grab'}} ref={ref}>
 
             </div>
-            {title &&<div style={{border: `solid 2px ${color}`, borderRadius: 5, textAlign: 'center', padding: 2}}>
+            {title &&<div style={{border: `solid 2px #${color.toString(16)}`, borderRadius: 5, textAlign: 'center', padding: 2}}>
                 {title}
             </div>
             }
             <div style={{display: 'flex', justifyContent: 'center'}}>
-                <div style={{borderBottom: `solid 3px ${color}`, borderRadius: 1, textAlign: 'center', padding: 2}}>
+                <div style={{borderBottom: `solid 3px #${color.toString(16)}`, borderRadius: 1, textAlign: 'center', padding: 2}}>
                     {value}
                 </div>
             </div>

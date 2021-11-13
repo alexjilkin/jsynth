@@ -8,19 +8,26 @@ let numOfGeneratingInstances = 0;
 
 export const getTriggers = () => triggers
 export const press = (frequencyModulation, id) => {
+    if (isFirstTime) {
+        browserPlayer.play()
+        isFirstTime = false;
+        return;
+    }
+
+    if (!browserPlayer.getIsPlaying()) {
+        return
+    }
+
     triggers[id] = {
         shouldGenerate: true,
         frequencyModulation: frequencyModulation,
     }
     numOfGeneratingInstances++;
-
-    if (isFirstTime) {
-        browserPlayer.play()
-        isFirstTime = false;
-    }
 }
 
 export const release = (id) => {
+    if (!triggers[id])
+        return;
     triggers[id].shouldGenerate = false
     numOfGeneratingInstances--;
 }
