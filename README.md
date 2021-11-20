@@ -4,6 +4,7 @@ In pursuit of sound generation and manipulation knowledge, this synth creates
 all the sounds from scratch, from sine/square/saw waves creation to lowpass filtering, delay and distortion.
 
 [Checkout the demo here](https://alexjilkin.github.io/jsynth/)
+
 Rotate the cube of waves to mix different type of waves, while controlling
 delay and lowpass filtering with the 3d knob.
 

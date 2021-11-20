@@ -1,11 +1,42 @@
 .container {
-    display: grid;
-    grid-auto-rows: 0.1fr;
     background-color: #e1e8f0;
-    border-radius: 6px;
-    padding: 8px;
+    padding: 10px;
+    display: grid;
+    column-gap: 10px;
+    row-gap: 10px;
+    border-radius: 10px;
+    max-width: 600px;
 
-    .title {
-        margin-bottom: 4px;
+    .header {
+        display: flex;
+        justify-content: space-between;
     }
+    .title {
+        font-size: 24px;
+    }
+
+    .knobs {
+        display: flex;
+        .knob {
+            text-align: center;
+            
+        }
+    }
+}
+
+@mixin power-indicator {
+    padding: 5;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    cursor: pointer;
+}
+.on {
+    @include power-indicator;
+    background-color: red;
+}
+
+.off {
+    @include power-indicator;
+    background-color: black;
 }

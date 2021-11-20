@@ -2,8 +2,9 @@ import {waveGenerator, subscribeModule, clearModules} from '@jsynth/core/synth';
 import delay from '@jsynth/core/modules/delay'
 import lowpass from '@jsynth/core/modules/lowpass'
 import oscillator from '@jsynth/core/modules/oscillator'
+import distortion from '@jsynth/core/modules/distortion'
 
-const availableModules = {delay, lowpass, oscillator}
+const availableModules = {delay, lowpass, oscillator, distortion}
 let triggers = {}
 
 class SynthWorklet extends AudioWorkletProcessor {

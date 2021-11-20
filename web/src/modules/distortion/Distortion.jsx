@@ -1,34 +1,29 @@
-import React, {useState, useEffect} from 'react' 
-import { Donut } from 'react-dial-knob'
+import React, {useState, useEffect, useRef} from 'react' 
+import Knob from 'react-non-conformist-knob';
+import {addModule, updateArgs} from '../../output/browserPlayer'
 import './Distortion.scss';
-import {forwardEulerDistortion} from './distortions'
 
-const Distortion = ({updateModulationFunction, removeFunction}) => { 
-    const [gain, setGain] = useState(0);
+const useDistortion = () => {
+    const [gain, setGain] = useState(0.1)
+    const id = useRef()
 
     useEffect(() => {
-        updateModulationFunction((y, x, frequencyModulation) => {
-            if (gain === 0) {
-                return  [y, frequencyModulation]
-            }
-            // const q = y * gain;
-            // const result = Math.sign(q) * (1 - Math.exp((-1) * Math.abs(q)))
+         id.current = addModule('distortion', 'transform', {gain})
+    }, [])
 
-            const result = forwardEulerDistortion(y * 9, x, frequencyModulation) / 9
-
-            return [result, frequencyModulation];
-        })
+    useEffect(() => {
+        updateArgs(id.current, {gain})
     }, [gain])
+
+    return {gain, setGain}
+}
+const Distortion = () => { 
+    const {gain, setGain} = useDistortion()
 
     return (
         <div styleName="container">
-            <div styleName="title"> Distortion </div>
-            <Donut 
-                min={0}
-                max={10}
-                value={gain}
-                onValueChange={setGain}
-            />
+            <div styleName="title"> Distortion  </div>
+            <Knob onChange={setGain} min={0.1} max={2} value={gain} color={0x000000} />
         </div>
     )
 }
