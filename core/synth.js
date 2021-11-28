@@ -53,22 +53,31 @@ export const clearModules = () => {
 
 export function waveGenerator(triggers) {
   let u = 0;
+  let contributingTriggersCount = 1;
+
   Object.keys(triggers).forEach((id) => {
     const {frequencyModulation, shouldGenerate} = triggers[id]
     
     handleTimings(shouldGenerate, id)
-    u = generatingModules.reduce((acc, {func, args}) => {
-      return acc + func(acc, masterClock, frequencyModulation, {...args, nAtStart: timings[id].nAtStart, nAtStop: timings[id].nAtStop, shouldGenerate})
-    }, u)
+    u = generatingModules.reduce((acc, {func, args}) => 
+      acc + func(acc, masterClock, frequencyModulation, {...args, nAtStart: timings[id].nAtStart, nAtStop: timings[id].nAtStop, shouldGenerate})
+    , u)
+
+    if (Math.abs(u) > 0.01) {
+      contributingTriggersCount++
+    }
   })
 
+  // Reduce volume due to polysynthing
+  u = u / Math.sqrt(contributingTriggersCount)
+  
   u = modules.reduce((acc, {func, args}) => {
     return func(acc, masterClock, args)
   }, u)
   masterClock++
   
   // Decrease volume 
-  const mixVolume =  0.3
+  const mixVolume =  0.4
   return u * mixVolume
 }
 

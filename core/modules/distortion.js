@@ -6,12 +6,16 @@ let prevValue = 0;
 const distortion = (u, n, args) => {
     const {gain} = args
 
-    return forwardEulerDistortion(u * 2, n, 1 / gain)
+    return forwardEulerDistortion(u, n, 1 / gain)
 }
 
 export const forwardEulerDistortion = (y, x, gain) => {
+    // "Normalize" to 9
     let value = (y * 9)
+
+    // Cut
     if (y > 4.5) {
+        debugger;
         value = 4.5
     } else if (y < -4.5){
         value = -4.5
