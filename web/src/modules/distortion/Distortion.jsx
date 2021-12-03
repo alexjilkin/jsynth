@@ -23,7 +23,7 @@ const Distortion = () => {
     return (
         <div styleName="container">
             <div styleName="title"> Distortion  </div>
-            <Knob onChange={setGain} min={0.1} max={2} value={gain} color={0x000000} />
+            <Knob onChange={setGain} min={0.1} max={10} value={gain} color={0x000000} />
         </div>
     )
 }

@@ -6,7 +6,7 @@ let prevValue = 0;
 const distortion = (u, n, args) => {
     const {gain} = args
 
-    return forwardEulerDistortion(u, n, 1 / gain)
+    return forwardEulerDistortion(u * 2, n, 1 / gain)
 }
 
 export const forwardEulerDistortion = (y, x, gain) => {
@@ -14,8 +14,7 @@ export const forwardEulerDistortion = (y, x, gain) => {
     let value = (y * 9)
 
     // Cut
-    if (y > 4.5) {
-        debugger;
+    if (value > 4.5) {
         value = 4.5
     } else if (y < -4.5){
         value = -4.5
@@ -24,7 +23,7 @@ export const forwardEulerDistortion = (y, x, gain) => {
     value = prevValue + (circuit(prevValue, value, gain) * (1))
     prevValue = value;
 
-    return value / 4.5
+    return value / 9
 }
 
 

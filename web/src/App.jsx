@@ -19,9 +19,9 @@ const App = () => {
                 <span style={{margin: 10}}>
                     <Lowpass />
                 </span>
-                {/* <span style={{margin: 10}}>
+                <span style={{margin: 10}}>
                     <Distortion />
-                </span> */}
+                </span>
             </div>
             <span style={{margin: 10}}>
                 <Keyboard  />
