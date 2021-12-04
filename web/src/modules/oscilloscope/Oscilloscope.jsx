@@ -16,25 +16,26 @@ export const Oscilloscope = () => {
     const handleMessage = ({data}) => {
         sample = [...sample, ...Array.from(data)]
 
-        if (sample.length > 512 && throttleCount === 10) {
+        if (sample.length > 512 && throttleCount === 5) {
             const canvas = canvasRef.current;
 
             if (canvas.getContext) {
                 const context = canvas.getContext('2d');
                 context.clearRect(0, 0, width, height)
                 context.beginPath();
-                let prevValue;
-                const offset = sample.findIndex(y => {
-                    if (Math.abs(y) < 0.01 && y > prevValue) {
-                        return true;
+
+                let firstZeroIndex;
+
+                for (let i = 1; i < sample.length; i++) {
+                    if (Math.abs(sample[i]) < 0.1 && sample[i] > sample[i - 1]) {
+                        firstZeroIndex = i;
+                        break;
                     }
+                }
 
-                    prevValue = y
-                })
-
-                for (let x = offset; x < width + offset; x++) {
-                    const canvasWorldX = (x - offset) * xUnit
-                    const canvasWorldY = (height * (3/5)) + (sample[x] * yUnit)
+                for (let x = 0; x < width; x++) {
+                    const canvasWorldX = x * xUnit
+                    const canvasWorldY = (height * (3/5)) + (sample[firstZeroIndex + x] * yUnit)
                 
                     context.lineTo(canvasWorldX + xUnit, canvasWorldY);
                 }
