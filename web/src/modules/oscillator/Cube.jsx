@@ -5,8 +5,8 @@ import * as THREE from 'three'
 import {OrbitControls} from 'three/examples/jsm/controls/OrbitControls.js';
 
 const orbitRadius = 12;
-const height = 168
-const width = 168
+const height = 140
+const width = 140
 
 const addLights = (scene) => {
     const light1 = new THREE.DirectionalLight( 0xff00ff, 0.55 );

@@ -23,7 +23,7 @@ const Lowpass = () => {
     return (
         <div styleName="container">
             <div styleName="title"> Lowpass  </div>
-            <Knob onChange={setFrequency} min={0.1} max={1} value={frequency} color={0x9999ff} />
+            <Knob width={120} height={120} onChange={setFrequency} min={0.1} max={1} value={frequency} color={0x9999ff} />
         </div>
     )
 }
