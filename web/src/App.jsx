@@ -3,6 +3,7 @@ import Keyboard from 'input/Keyboard'
 import Delay from './modules/delay/Delay'
 import {Lowpass} from './modules/lowpass'
 import {Distortion} from './modules/distortion'
+import { Oscilloscope } from './modules/oscilloscope'
 
 import Oscillator from './modules/oscillator/Oscillator'
 
@@ -22,11 +23,17 @@ const App = () => {
                 <span style={{margin: 10}}>
                     <Distortion />
                 </span>
+                
             </div>
-            <span style={{margin: 10}}>
-                <Keyboard  />
-            </span>
-
+            <div style={{display: 'flex', width: '80%', flexWrap: 'wrap'}}>
+                <span style={{margin: 10}}>
+                    <Keyboard  />
+                </span>
+                <span style={{margin: 10}}>
+                    <Oscilloscope />
+                </span>
+            </div>
+            
         </>
     )
 }

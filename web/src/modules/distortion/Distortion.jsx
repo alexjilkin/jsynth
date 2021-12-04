@@ -1,10 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react' 
 import Knob from 'react-non-conformist-knob';
-import {addModule, updateArgs} from '../../output/browserPlayer'
+import {addModule, updateArgs} from '../../output/BrowserPlayer'
 import './Distortion.scss';
 
 const useDistortion = () => {
-    const [gain, setGain] = useState(0.1)
+    const [gain, setGain] = useState(0)
     const id = useRef()
 
     useEffect(() => {
@@ -23,7 +23,7 @@ const Distortion = () => {
     return (
         <div styleName="container">
             <div styleName="title"> Distortion  </div>
-            <Knob onChange={setGain} min={0.1} max={10} value={gain} color={0x000000} />
+            <Knob onChange={setGain} min={0} max={10} value={gain} color={0x000000} />
         </div>
     )
 }

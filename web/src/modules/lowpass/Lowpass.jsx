@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react' 
 import Knob from 'react-non-conformist-knob';
-import {addModule, updateArgs} from '../../output/browserPlayer'
+import {addModule, updateArgs} from '../../output/BrowserPlayer'
 import './Lowpass.scss';
 
 const useLowpass = () => {

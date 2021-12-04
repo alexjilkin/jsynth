@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useRef} from 'react';
 import debounce from 'lodash/debounce'
 import Cube from './Cube'
-import {addModule, updateArgs} from '../../output/browserPlayer'
+import {addModule, updateArgs} from '../../output/BrowserPlayer'
 import './Oscillator.scss'
 
 const useOscillator = () => {

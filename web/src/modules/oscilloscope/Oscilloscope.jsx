@@ -1,52 +1,53 @@
 import React, {useEffect, useRef} from 'react';
+import {subscribeToMessage} from '../../output/BrowserPlayer'
 
-const width = 300;
-const height = 200;
-const yUnit = height / 4;
-const xUnit = 2
-let lastX = 0;
-let lastY = 0;
+const width = 320;
+const height = 150;
+const yUnit = height;
+const xUnit = 1
 
 let sample = []
+let count = 1;
+let throttleCount = 1;
 
-const Oscilloscope = ({updateModulationFunction}) => {
+export const Oscilloscope = () => {
     const canvasRef = useRef(null)
 
-    useEffect(() => {
-        const canvas = canvasRef.current;
+    const handleMessage = ({data}) => {
+        sample = [...sample, ...Array.from(data)]
 
-        if (canvas.getContext) {
+        if (sample.length > 512 && throttleCount === 10) {
+            const canvas = canvasRef.current;
 
-            const context = canvas.getContext('2d');
-            updateModulationFunction((y, _x, frequencyModulation) => {
-
-                sample.push(y)
-
-                if (sample.length > 1000) {
-                    
-                    lastY = 0;
-                    context.clearRect(0, 0, width, height)
-                    context.beginPath();
-                    for (let x = 0; x < width; x++) {
-                        const canvasWorldX = x
-                        const canvasWorldY = (height * (3/5)) + (sample[x * 3] * yUnit)
-                    
-                        context.lineTo(canvasWorldX + xUnit, canvasWorldY);
-                        
-
-                        lastY = canvasWorldY;
+            if (canvas.getContext) {
+                const context = canvas.getContext('2d');
+                context.clearRect(0, 0, width, height)
+                context.beginPath();
+                let prevValue;
+                const offset = sample.findIndex(y => {
+                    if (Math.abs(y) < 0.01 && y > prevValue) {
+                        return true;
                     }
-                    context.stroke();
-                    sample = [];
-                }
 
+                    prevValue = y
+                })
+
+                for (let x = offset; x < width + offset; x++) {
+                    const canvasWorldX = (x - offset) * xUnit
+                    const canvasWorldY = (height * (3/5)) + (sample[x] * yUnit)
                 
-            
-                return [y, frequencyModulation];
-            })
+                    context.lineTo(canvasWorldX + xUnit, canvasWorldY);
+                }
+                context.stroke();    
+            }
+            sample = [];
+            throttleCount = 0;
         }
-        
-        
+        throttleCount++
+        count++
+    }
+    useEffect(() => {
+        subscribeToMessage(handleMessage)
     }, [canvasRef])
     return (
         <canvas ref={canvasRef} {...{height, width}}>
@@ -54,5 +55,3 @@ const Oscilloscope = ({updateModulationFunction}) => {
         </canvas>
     )
 }
-
-export default Oscilloscope

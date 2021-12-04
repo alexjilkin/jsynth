@@ -6,6 +6,9 @@ let prevValue = 0;
 const distortion = (u, n, args) => {
     const {gain} = args
 
+    if (gain < 0.2) {
+        return u
+    }
     return forwardEulerDistortion(u * 2, n, 1 / gain)
 }
 
