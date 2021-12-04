@@ -25,10 +25,14 @@ export const updateArgs = (id, args) => {
     isUpdated = true;
 }
 
+let synth;
+const cbs = []
+export const subscribeToMessage = (cb) => cbs.push(cb)
+
 export const play = async () => {
     const context = new AudioContext({sampleRate})
     await context.audioWorklet.addModule('worklet.js')
-    let synth = new AudioWorkletNode(context, 'synth')
+    synth = new AudioWorkletNode(context, 'synth')
     
     synth.connect(context.destination)
 
@@ -41,6 +45,8 @@ export const play = async () => {
 
         isUpdated && (isUpdated = false)
     }, 15)
+
+    synth.port.onmessage = cbs[0]
 
     isPlaying = true
     

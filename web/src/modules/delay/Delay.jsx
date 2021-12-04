@@ -1,6 +1,6 @@
 import React, {useEffect, useState, useCallback, useRef} from 'react'
 import './Delay.scss'
-import {addModule, updateArgs} from '../../output/browserPlayer'
+import {addModule, updateArgs} from '../../output/BrowserPlayer'
 import Knob from 'react-non-conformist-knob'
 
 const useDelay = (initialValue = {time: 1, depth: 4, gain: 0.4}) => {

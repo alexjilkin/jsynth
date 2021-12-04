@@ -1,4 +1,4 @@
-import * as browserPlayer from '../output/browserPlayer'
+import * as browserPlayer from '../output/BrowserPlayer'
 
 const triggers = {}
 
