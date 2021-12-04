@@ -100,6 +100,58 @@ const setDepth = v => depth = v;
 
 /***/ }),
 
+/***/ "../../core/modules/distortion.js":
+/*!****************************************!*\
+  !*** ../../core/modules/distortion.js ***!
+  \****************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "forwardEulerDistortion": () => (/* binding */ forwardEulerDistortion),
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _createModule__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./createModule */ "../../core/modules/createModule.js");
+
+
+let prevValue = 0;
+
+
+const distortion = (u, n, args) => {
+    const {gain} = args
+
+    if (gain < 0.2) {
+        return u
+    }
+    return forwardEulerDistortion(u * 2, n, 1 / gain)
+}
+
+const forwardEulerDistortion = (y, x, gain) => {
+    // "Normalize" to 9
+    let value = (y * 9)
+
+    // Cut
+    if (value > 4.5) {
+        value = 4.5
+    } else if (y < -4.5){
+        value = -4.5
+    }
+
+    value = prevValue + (circuit(prevValue, value, gain) * (1))
+    prevValue = value;
+
+    return value / 9
+}
+
+
+function circuit(x, u, R) {
+    return ((u - x) / (R * 10)) - ((0.504) * Math.sinh(x / 45.3)) 
+}
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_createModule__WEBPACK_IMPORTED_MODULE_0__["default"])(distortion, 'transform', {}));
+
+/***/ }),
+
 /***/ "../../core/modules/envelope.js":
 /*!**************************************!*\
   !*** ../../core/modules/envelope.js ***!
@@ -318,22 +370,31 @@ const clearModules = () => {
 
 function waveGenerator(triggers) {
   let u = 0;
+  let contributingTriggersCount = 1;
+
   Object.keys(triggers).forEach((id) => {
     const {frequencyModulation, shouldGenerate} = triggers[id]
     
     handleTimings(shouldGenerate, id)
-    u = generatingModules.reduce((acc, {func, args}) => {
-      return acc + func(acc, masterClock, frequencyModulation, {...args, nAtStart: timings[id].nAtStart, nAtStop: timings[id].nAtStop, shouldGenerate})
-    }, u)
+    u = generatingModules.reduce((acc, {func, args}) => 
+      acc + func(acc, masterClock, frequencyModulation, {...args, nAtStart: timings[id].nAtStart, nAtStop: timings[id].nAtStop, shouldGenerate})
+    , u)
+
+    if (Math.abs(u) > 0.01) {
+      contributingTriggersCount++
+    }
   })
 
+  // Reduce volume due to polysynthing
+  u = u / Math.sqrt(contributingTriggersCount)
+  
   u = modules.reduce((acc, {func, args}) => {
     return func(acc, masterClock, args)
   }, u)
   masterClock++
   
   // Decrease volume 
-  const mixVolume =  0.3
+  const mixVolume =  0.4
   return u * mixVolume
 }
 
@@ -429,13 +490,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _jsynth_core_modules_delay__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @jsynth/core/modules/delay */ "../../core/modules/delay.js");
 /* harmony import */ var _jsynth_core_modules_lowpass__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @jsynth/core/modules/lowpass */ "../../core/modules/lowpass/index.js");
 /* harmony import */ var _jsynth_core_modules_oscillator__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @jsynth/core/modules/oscillator */ "../../core/modules/oscillator.js");
+/* harmony import */ var _jsynth_core_modules_distortion__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @jsynth/core/modules/distortion */ "../../core/modules/distortion.js");
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
-
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -463,6 +523,9 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+
 
 
 
@@ -470,7 +533,8 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 var availableModules = {
   delay: _jsynth_core_modules_delay__WEBPACK_IMPORTED_MODULE_1__["default"],
   lowpass: _jsynth_core_modules_lowpass__WEBPACK_IMPORTED_MODULE_2__["default"],
-  oscillator: _jsynth_core_modules_oscillator__WEBPACK_IMPORTED_MODULE_3__["default"]
+  oscillator: _jsynth_core_modules_oscillator__WEBPACK_IMPORTED_MODULE_3__["default"],
+  distortion: _jsynth_core_modules_distortion__WEBPACK_IMPORTED_MODULE_4__["default"]
 };
 var triggers = {};
 
@@ -489,6 +553,8 @@ var SynthWorklet = /*#__PURE__*/function (_AudioWorkletProcesso) {
     }
 
     _this = _super.call.apply(_super, [this].concat(args));
+
+    _defineProperty(_assertThisInitialized(_this), "count", 1);
 
     _this.port.onmessage = function (e) {
       var data = JSON.parse(e.data);
@@ -526,6 +592,8 @@ var SynthWorklet = /*#__PURE__*/function (_AudioWorkletProcesso) {
         }
       }
 
+      this.port.postMessage(output[0]);
+      this.count++;
       return true;
     }
   }]);
