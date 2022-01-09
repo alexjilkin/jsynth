@@ -17,7 +17,7 @@
     "react": "^17.0.2",
     "react-device-detect": "^2.0.0",
     "react-dom": "^17.0.2",
-    "react-non-conformist-knob": "^1.0.5",
+    "react-non-conformist-knob": "^2.0.2",
     "react-transform-catch-errors": "^1.0.2",
     "react-transform-hmr": "^1.0.4",
     "three": "^0.133.0"

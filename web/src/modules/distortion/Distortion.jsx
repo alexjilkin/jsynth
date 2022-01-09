@@ -4,7 +4,7 @@ import {addModule, updateArgs} from '../../output/BrowserPlayer'
 import './Distortion.scss';
 
 const useDistortion = () => {
-    const [gain, setGain] = useState(0)
+    const [gain, setGain] = useState(5)
     const id = useRef()
 
     useEffect(() => {
