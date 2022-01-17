@@ -1,53 +1,53 @@
 .container {
-    display: grid;
-    grid-auto-flow: column;
-    position: relative;
-    height: 100px;
+  display: grid;
+  grid-auto-flow: column;
+  position: relative;
+  height: 100px;
+
+  .key-notation {
+    margin: 8px;
+    font-size: 14px;
+  }
+
+  .white-key {
+    background-color: ivory;
+    box-sizing: border-box;
+    border: 2px black solid;
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    .key-notation {
+      color: black;
+    }
+  }
+  .black-key {
+    background-color: black;
+    position: absolute;
+    height: 60px;
+    top: 0;
+    width: 30px;
+    border-radius: 3px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
 
     .key-notation {
-        margin: 8px;
-        font-size: 14px;
+      color: white;
     }
-    
-    .white-key {
-        background-color: ivory;
-        box-sizing: border-box;
-        border: 2px black solid;
-        border-radius: 6px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
-        align-items: center;
-        .key-notation {
-            color: black;
-        }
+    .white-line {
+      background-color: white;
+      width: 11px;
+      height: 3px;
+      border-radius: 3px;
+      position: absolute;
+      bottom: 10px;
+      margin-left: auto;
+      margin-right: auto;
+      left: 0;
+      right: 0;
     }
-    .black-key {
-        background-color: black;
-        position: absolute;
-        height: 60px;
-        top: 0;
-        width: 30px;
-        border-radius: 3px;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: center;
-
-        .key-notation {
-            color: white;
-        }
-        .white-line {
-            background-color: white;
-            width: 11px;
-            height: 3px;
-            border-radius: 3px;
-            position: absolute;
-            bottom: 10px;
-            margin-left: auto;
-            margin-right: auto;
-            left: 0;
-            right: 0;
-        }
-    }
+  }
 }

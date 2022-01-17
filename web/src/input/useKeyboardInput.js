@@ -1,51 +1,50 @@
-import {useState, useEffect} from 'react' 
-import {press, release, keyCodeToFrequencyModulation} from './KeyboardManager'
+import { useState, useEffect } from "react";
+import { press, release, keyCodeToFrequencyModulation } from "./KeyboardManager";
 let isPlayingByKey = {};
 
 export default () => {
-    const [playingKeyCodes, setPlayingKeyCodes] = useState({})
+  const [playingKeyCodes, setPlayingKeyCodes] = useState({});
 
-    const initKeyboardInput = () => {
-        window.addEventListener('keydown', (e) => {
-            keyDown(e.keyCode)
-        });
-    
-        window.addEventListener('keyup', (e) => {
-            keyUp(e.keyCode)
-        });
+  const initKeyboardInput = () => {
+    window.addEventListener("keydown", (e) => {
+      keyDown(e.keyCode);
+    });
+
+    window.addEventListener("keyup", (e) => {
+      keyUp(e.keyCode);
+    });
+  };
+
+  const keyDown = (keyCode) => {
+    if (isPlayingByKey[keyCode]) {
+      return;
     }
 
-    const keyDown = (keyCode) => {
-        if (isPlayingByKey[keyCode]) {
-            return;
-        }
-        
-        const frequencyModulation = keyCodeToFrequencyModulation[keyCode]
-    
-        if (!frequencyModulation) {
-            return;
-        }
-    
-        press(frequencyModulation, keyCode)
-        isPlayingByKey[keyCode] = true;
+    const frequencyModulation = keyCodeToFrequencyModulation[keyCode];
 
-        setPlayingKeyCodes({...isPlayingByKey})
-    }
-    
-    const keyUp = (keyCode) => {
-    
-        if (!isPlayingByKey[keyCode]) {
-            return;
-        }
-        isPlayingByKey[keyCode] = false;
-        release(keyCode);
-
-        setPlayingKeyCodes({...isPlayingByKey})
+    if (!frequencyModulation) {
+      return;
     }
 
-    useEffect(() => {
-        initKeyboardInput()
-    }, [])
+    press(frequencyModulation, keyCode);
+    isPlayingByKey[keyCode] = true;
 
-    return [playingKeyCodes]
-}
+    setPlayingKeyCodes({ ...isPlayingByKey });
+  };
+
+  const keyUp = (keyCode) => {
+    if (!isPlayingByKey[keyCode]) {
+      return;
+    }
+    isPlayingByKey[keyCode] = false;
+    release(keyCode);
+
+    setPlayingKeyCodes({ ...isPlayingByKey });
+  };
+
+  useEffect(() => {
+    initKeyboardInput();
+  }, []);
+
+  return [playingKeyCodes];
+};

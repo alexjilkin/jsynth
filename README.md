@@ -1,6 +1,6 @@
 # JSynth, a JavaScript web based synthesizer
 
-In pursuit of sound generation and manipulation knowledge, this synth creates 
+In pursuit of sound generation and manipulation knowledge, this synth creates
 all the sounds from scratch, from sine/square/saw waves creation to lowpass filtering, delay and distortion.
 
 [Checkout the demo here](https://alexjilkin.github.io/jsynth/)

@@ -1,1 +1,1 @@
-export {Oscilloscope} from './Oscilloscope'
+export { Oscilloscope } from "./Oscilloscope";

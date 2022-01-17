@@ -1,64 +1,63 @@
 .container {
-    background-color: #e1e8f0;
+  background-color: #e1e8f0;
+  display: grid;
+  border-radius: 6px;
+  grid-auto-rows: 30px 150px 30px auto;
+  width: 300px;
+  padding: 5px;
+
+  .bpm-container {
     display: grid;
-    border-radius: 6px;
-    grid-auto-rows: 30px 150px 30px auto;
-    width: 300px;
-	padding: 5px;
-    
-    .bpm-container {
-        display: grid;
-        justify-content: center;
-        
-        .bpm {
-            display: grid;
-            justify-content: center;
-            align-items: center;
-            font-size: 30px;
-            font-family: 'Fjalla One';
-            width: 80px;
-            height: 40px;
-            background-color: black;
-            color: red;
-        }
+    justify-content: center;
 
+    .bpm {
+      display: grid;
+      justify-content: center;
+      align-items: center;
+      font-size: 30px;
+      font-family: "Fjalla One";
+      width: 80px;
+      height: 40px;
+      background-color: black;
+      color: red;
     }
-	.markers {
-		padding: 4px;
-        display: flex;
-        flex-wrap: wrap;
+  }
+  .markers {
+    padding: 4px;
+    display: flex;
+    flex-wrap: wrap;
 
-		.marker {
-            background-color: black;
-            cursor: pointer;
-            
-            &.on {
-                background-color: blue;
-            }
+    .marker {
+      background-color: black;
+      cursor: pointer;
 
-            &.playing {
-                background-color: lightblue
-            }
-		}
+      &.on {
+        background-color: blue;
+      }
+
+      &.playing {
+        background-color: lightblue;
+      }
     }
-    
-    .beat {
-        cursor: pointer;
-        text-align: center;
-        font-weight: 900;
-        font-size: 16px;
+  }
+
+  .beat {
+    cursor: pointer;
+    text-align: center;
+    font-weight: 900;
+    font-size: 16px;
+  }
+
+  .envelope {
+    margin-left: 10px;
+    cursor: pointer;
+
+    &.on {
+      color: black;
     }
 
-    .envelope {
-        margin-left: 10px;
-        cursor: pointer;
-        
-        &.on {
-            color: black;
-        }
-
-        &.off {
-            color: lightgrey;
-        }
+    &.off {
+      color: lightgrey;
     }
+  }
 }

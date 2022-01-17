@@ -1,33 +1,31 @@
-const path = require('path');
-const context = path.resolve(__dirname, 'src');
+const path = require("path");
+const context = path.resolve(__dirname, "src");
 
 module.exports = {
-  entry: [
-    './index.js'
-  ],
+  entry: ["./index.js"],
   context,
   module: {
     rules: [
       {
         test: /\.(js)$/,
-        include: path.resolve(__dirname, './src'),
+        include: path.resolve(__dirname, "./src"),
         exclude: /node_modules/,
-        use: [{
-          loader: 'babel-loader',
-          options: {
-            "presets": [
-              "@babel/preset-env"
-            ]
-          }
-        }]
-      }
-    ]
+        use: [
+          {
+            loader: "babel-loader",
+            options: {
+              presets: ["@babel/preset-env"],
+            },
+          },
+        ],
+      },
+    ],
   },
   watch: true,
-  devtool: 'source-map',
+  devtool: "source-map",
   output: {
-    path: __dirname + '/../web/dist',
-    publicPath: '/',
-    filename: 'worklet.js'
-  }
+    path: __dirname + "/../web/dist",
+    publicPath: "/",
+    filename: "worklet.js",
+  },
 };

@@ -1,1 +1,1 @@
-export {default as Lowpass} from './Lowpass'
+export { default as Lowpass } from "./Lowpass";

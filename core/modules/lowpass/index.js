@@ -1,2 +1,2 @@
-import _ from './lowpass'
-export default _
+import _ from "./lowpass";
+export default _;
