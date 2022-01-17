@@ -249,6 +249,7 @@ function lowpass(u, n, args) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "getSineWave": () => (/* binding */ getSineWave),
+/* harmony export */   "getBellWave": () => (/* binding */ getBellWave),
 /* harmony export */   "getSquareWave": () => (/* binding */ getSquareWave),
 /* harmony export */   "getSawWave": () => (/* binding */ getSawWave),
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
@@ -277,23 +278,32 @@ function oscillator(u, n, freqModulation, args) {
 
 function getSineWave(n, freqModulation) {
     const frequency = baseFrequency * freqModulation
-    const cyclicN= n % (~~(_jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate / frequency));
+    const cyclicN = n % (~~(_jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate / frequency));
 
-    return Math.cos(frequency * twoPiDividedBySampleRate * cyclicN) * amplitude
+    const x = frequency * twoPiDividedBySampleRate * cyclicN
+    return Math.cos(x) * amplitude
+}
+
+function getBellWave(n, freqModulation) {
+  const frequency = baseFrequency * freqModulation
+  const cyclicN = n % (~~(_jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate / frequency));
+
+  const x = frequency * twoPiDividedBySampleRate * cyclicN
+  return Math.cos(x + Math.sin(x * 5)) * amplitude
 }
 
 function getSquareWave(n, freqModulation) {
   const frequency = baseFrequency * freqModulation
-  const cyclicX = n % (~~(_jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate / frequency));
+  const cyclicN = n % (~~(_jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate / frequency));
 
-  return Math.sign(Math.sin(twoPiDividedBySampleRate* (frequency) * (cyclicX % _jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate))) * (amplitude / 2);
+  return Math.sign(Math.sin(twoPiDividedBySampleRate * frequency * (cyclicN % _jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate))) * amplitude;
 }
 
 function getSawWave(n, freqModulation) {
   const frequency = baseFrequency * freqModulation
-  const cyclicX = n % (~~(_jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate / frequency));
+  const cyclicN = n % (~~(_jsynth_core_consts__WEBPACK_IMPORTED_MODULE_0__.sampleRate / frequency));
 
-  return (-1) * (amplitude / 2)  * arcctg(ctg((cyclicX) * frequency * PiDividedBySampleRate)) / Math.PI
+  return -amplitude * arcctg(ctg(cyclicN * frequency * PiDividedBySampleRate)) / Math.PI
 }
 
 function ctg(x) { return 1 / Math.tan(x); }
