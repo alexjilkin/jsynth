@@ -3,7 +3,7 @@ import "./Delay.scss";
 import { addModule, updateArgs } from "../../output/BrowserPlayer";
 import Knob from "react-non-conformist-knob";
 
-const useDelay = (initialValue = { time: 1, depth: 4, gain: 0.4 }) => {
+const useDelay = (initialValue = { time: 0.4, depth: 4, gain: 0.4 }) => {
   const [time, setTime] = useState(initialValue.time);
   const [depth, setDepth] = useState(initialValue.depth);
   const [gain, setGain] = useState(initialValue.gain);

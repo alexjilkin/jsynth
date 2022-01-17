@@ -10,7 +10,7 @@ import Oscillator from "./modules/oscillator/Oscillator";
 const App = () => {
   return (
     <>
-      <div style={{ display: "flex", maxWidth: "600px", flexWrap: "wrap" }}>
+      <div style={{ display: "flex", maxWidth: "800px", flexWrap: "wrap" }}>
         <span style={{ margin: 5 }}>
           <Oscillator />
         </span>

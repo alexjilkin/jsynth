@@ -10,7 +10,7 @@ const useOscillator = () => {
   const [sawAmount, setSawAmount] = useState(0.1);
   const [sineAmount, setSineAmount] = useState(1);
 
-  const [algoType, setAlgoType] = useState(1);
+  const [algoType, setAlgoType] = useState(2);
   const id = useRef();
 
   useEffect(() => {
@@ -23,8 +23,8 @@ const useOscillator = () => {
   }, []);
 
   useEffect(() => {
-    updateArgs(id.current, { squareAmount, sawAmount, sineAmount });
-  }, [squareAmount, sawAmount, sineAmount]);
+    updateArgs(id.current, { squareAmount, sawAmount, sineAmount, algoType });
+  }, [squareAmount, sawAmount, sineAmount, algoType]);
 
   return {
     squareAmount,
@@ -52,7 +52,7 @@ const Oscillator = () => {
 
   return (
     <div styleName="container">
-      <div styleName="title">Cube of waves</div>
+      <div styleName="title">Origin of sound</div>
       <div styleName="controls">
         <div style={{ display: "flex", justifyContent: "center" }}>
           <Cube
@@ -68,6 +68,7 @@ const Oscillator = () => {
           <Knob
             width={120}
             height={120}
+            title="Algorithm"
             onChange={(v) => setAlgoType(Math.round(v))}
             min={1}
             max={10}
