@@ -1,1 +1,1 @@
-export {default as Distortion} from './Distortion'
+export { default as Distortion } from "./Distortion";

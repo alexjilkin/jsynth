@@ -1,0 +1,7 @@
+*/dist
+*/node_modules
+
+node_modules
+dist
+.yalc
+yalc.lock

@@ -1,42 +1,41 @@
 .container {
-    background-color: #e1e8f0;
-    padding: 6px;
-    display: grid;
-    column-gap: 10px;
-    row-gap: 10px;
-    border-radius: 10px;
-    max-width: 600px;
+  background-color: #e1e8f0;
+  padding: 6px;
+  display: grid;
+  column-gap: 10px;
+  row-gap: 10px;
+  border-radius: 10px;
+  max-width: 600px;
 
-    .header {
-        display: flex;
-        justify-content: space-between;
-    }
-    .title {
-        font-size: 18px;
-    }
+  .header {
+    display: flex;
+    justify-content: space-between;
+  }
+  .title {
+    font-size: 18px;
+  }
 
-    .knobs {
-        display: flex;
-        .knob {
-            text-align: center;
-            
-        }
+  .knobs {
+    display: flex;
+    .knob {
+      text-align: center;
     }
+  }
 }
 
 @mixin power-indicator {
-    padding: 5;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    cursor: pointer;
+  padding: 5;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  cursor: pointer;
 }
 .on {
-    @include power-indicator;
-    background-color: red;
+  @include power-indicator;
+  background-color: red;
 }
 
 .off {
-    @include power-indicator;
-    background-color: black;
+  @include power-indicator;
+  background-color: black;
 }

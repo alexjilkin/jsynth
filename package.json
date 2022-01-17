@@ -4,14 +4,18 @@
   "version": "1.0.1",
   "scripts": {
     "build": "(cd worklet && yarn build) & yarn workspace @jsynth/web run build",
-    "start": "yarn build & yarn workspace @jsynth/web run start"
+    "start": "yarn build & yarn workspace @jsynth/web run start",
+    "format": "prettier --write --ignore-unknown ."
   },
   "private": "true",
-  "workspaces": ["core", "web", "worklet"],
-  "dependencies": {
-
-  },
+  "workspaces": [
+    "core",
+    "web",
+    "worklet"
+  ],
+  "dependencies": {},
   "devDependencies": {
+    "prettier": "^2.5.1"
   },
   "resolutions": {
     "postcss": "^8.3.8"

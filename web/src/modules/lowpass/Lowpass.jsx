@@ -1,31 +1,39 @@
-import React, {useState, useEffect, useRef} from 'react' 
-import Knob from 'react-non-conformist-knob';
-import {addModule, updateArgs} from '../../output/BrowserPlayer'
-import './Lowpass.scss';
+import React, { useState, useEffect, useRef } from "react";
+import Knob from "react-non-conformist-knob";
+import { addModule, updateArgs } from "../../output/BrowserPlayer";
+import "./Lowpass.scss";
 
 const useLowpass = () => {
-    const [frequency, setFrequency] = useState(0.6)
-    const id = useRef()
+  const [frequency, setFrequency] = useState(0.6);
+  const id = useRef();
 
-    useEffect(() => {
-        id.current = addModule('lowpass', 'transform', {frequency})
-    }, [])
+  useEffect(() => {
+    id.current = addModule("lowpass", "transform", { frequency });
+  }, []);
 
-    useEffect(() => {
-        updateArgs(id.current, {frequency})
-    }, [frequency])
+  useEffect(() => {
+    updateArgs(id.current, { frequency });
+  }, [frequency]);
 
-    return {frequency, setFrequency}
-}
-const Lowpass = () => { 
-    const {frequency, setFrequency} = useLowpass()
+  return { frequency, setFrequency };
+};
+const Lowpass = () => {
+  const { frequency, setFrequency } = useLowpass();
 
-    return (
-        <div styleName="container">
-            <div styleName="title"> Lowpass  </div>
-            <Knob width={120} height={120} onChange={setFrequency} min={0.1} max={1} value={frequency} color={0x9999ff} />
-        </div>
-    )
-}
+  return (
+    <div styleName="container">
+      <div styleName="title"> Lowpass </div>
+      <Knob
+        width={120}
+        height={120}
+        onChange={setFrequency}
+        min={0.1}
+        max={1}
+        value={frequency}
+        color={0x9999ff}
+      />
+    </div>
+  );
+};
 
-export default Lowpass
+export default Lowpass;
