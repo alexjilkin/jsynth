@@ -19,23 +19,32 @@ function oscillator(u, n, freqModulation, args) {
 
 export function getSineWave(n, freqModulation) {
     const frequency = baseFrequency * freqModulation
-    const cyclicN= n % (~~(sampleRate / frequency));
+    const cyclicN = n % (~~(sampleRate / frequency));
 
-    return Math.cos(frequency * twoPiDividedBySampleRate * cyclicN) * amplitude
+    const x = frequency * twoPiDividedBySampleRate * cyclicN
+    return Math.cos(x) * amplitude
+}
+
+export function getBellWave(n, freqModulation) {
+  const frequency = baseFrequency * freqModulation
+  const cyclicN = n % (~~(sampleRate / frequency));
+
+  const x = frequency * twoPiDividedBySampleRate * cyclicN
+  return Math.cos(x + Math.sin(x * 5)) * amplitude
 }
 
 export function getSquareWave(n, freqModulation) {
   const frequency = baseFrequency * freqModulation
-  const cyclicX = n % (~~(sampleRate / frequency));
+  const cyclicN = n % (~~(sampleRate / frequency));
 
-  return Math.sign(Math.sin(twoPiDividedBySampleRate* (frequency) * (cyclicX % sampleRate))) * (amplitude / 2);
+  return Math.sign(Math.sin(twoPiDividedBySampleRate * frequency * (cyclicN % sampleRate))) * amplitude;
 }
 
 export function getSawWave(n, freqModulation) {
   const frequency = baseFrequency * freqModulation
-  const cyclicX = n % (~~(sampleRate / frequency));
+  const cyclicN = n % (~~(sampleRate / frequency));
 
-  return (-1) * (amplitude / 2)  * arcctg(ctg((cyclicX) * frequency * PiDividedBySampleRate)) / Math.PI
+  return -amplitude * arcctg(ctg(cyclicN * frequency * PiDividedBySampleRate)) / Math.PI
 }
 
 function ctg(x) { return 1 / Math.tan(x); }

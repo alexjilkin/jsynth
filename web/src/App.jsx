@@ -10,26 +10,26 @@ import Oscillator from './modules/oscillator/Oscillator'
 const App = () => {
     return (
         <>
-            <div style={{display: 'flex', width: '80%', flexWrap: 'wrap'}}>
-                <span style={{margin: 10}}>
+            <div style={{display: 'flex', maxWidth: '600px', flexWrap: 'wrap'}}>
+                <span style={{margin: 5}}>
                     <Oscillator />
                 </span>
-                <span style={{margin: 10}}>
+                <span style={{margin: 5}}>
                     <Delay />
                 </span>
-                <span style={{margin: 10}}>
+                <span style={{margin: 5}}>
                     <Lowpass />
                 </span>
-                <span style={{margin: 10}}>
+                <span style={{margin: 5}}>
                     <Distortion />
                 </span>
                 
             </div>
-            <div style={{display: 'flex', width: '80%', flexWrap: 'wrap'}}>
-                <span style={{margin: 10}}>
+            <div style={{display: 'flex', maxWidth: '80%', flexWrap: 'wrap'}}>
+                <span style={{margin: 5}}>
                     <Keyboard  />
                 </span>
-                <span style={{margin: 10}}>
+                <span style={{margin: 5}}>
                     <Oscilloscope />
                 </span>
             </div>

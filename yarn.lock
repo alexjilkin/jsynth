@@ -11606,10 +11606,10 @@ react-lifecycles-compat@^3.0.4:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-non-conformist-knob@^1.0.5:
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/react-non-conformist-knob/-/react-non-conformist-knob-1.0.5.tgz#07f2c9a85d74ad38331d97aef9dd93c3950935fe"
-  integrity sha512-h2yWRms8Uvxr+yNBtfpvtjyovGP4JD7OqnKA0xezI/PealXEVDlHgXlKvVN8rINfA/3F5aImUSscaQm0ZK5pkQ==
+react-non-conformist-knob@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/react-non-conformist-knob/-/react-non-conformist-knob-2.0.2.tgz#7f12ca1ade0cbc8baf39780bc2a8e8c6c34ee726"
+  integrity sha512-yQl4hBq6UBpvbIlESxYcEFW5+3+a/ZWk+oH47bR1hypKh8vpBHfN1R1gEd2AH0MBp2UBfm0zbiTZ1MibyEoQiw==
   dependencies:
     "@testing-library/jest-dom" "^5.11.4"
     "@testing-library/react" "^11.1.0"
