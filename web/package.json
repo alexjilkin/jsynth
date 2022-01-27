@@ -20,7 +20,7 @@
     "react-non-conformist-knob": "^2.0.2",
     "react-transform-catch-errors": "^1.0.2",
     "react-transform-hmr": "^1.0.4",
-    "three": "^0.133.0"
+    "three": "^0.137.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.5",
